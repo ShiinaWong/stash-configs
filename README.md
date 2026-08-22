@@ -13,9 +13,9 @@
 
 ### BiliBili ADBlock Lite
 
-轻量版哔哩哔哩去广告覆写。
+轻量版哔哩哔哩去广告与界面净化覆写。
 
-基于 [BiliUniverse/ADBlock](https://github.com/BiliUniverse/ADBlock) `v0.6.24`，只保留开屏、首页信息流、搜索、番剧/影视页和直播间的常见广告处理。配置不接管评论、弹幕、视频详情和播放地址接口，以减少对视频加载与日常使用的影响。
+广告处理基于 [BiliUniverse/ADBlock](https://github.com/BiliUniverse/ADBlock) `v0.6.24`，并加入首页 Tab、“我的”页面与顶部活动入口净化。配置不接管评论、弹幕、视频详情和播放地址接口，也不修改 VIP 或账户权益字段。
 
 - 配置文件：[`overrides/bilibili-adblock-lite.stoverride`](overrides/bilibili-adblock-lite.stoverride)
 - 使用说明：[`docs/bilibili-adblock-lite.md`](docs/bilibili-adblock-lite.md)
