@@ -1,0 +1,81 @@
+name: "📺 BiliBili: 🛡️ ADBlock Lite"
+desc: |-
+  哔哩哔哩轻量去广告
+  仅处理开屏、首页、搜索、番剧/影视页和直播间常见广告
+  不接管评论、弹幕、视频详情和播放地址接口
+openUrl: "https://github.com/ShiinaWong/stash-configs/blob/main/docs/bilibili-adblock-lite.md"
+author: "ShiinaWong; based on BiliUniverse/ADBlock"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+icon: "https://github.com/BiliUniverse/ADBlock/raw/main/src/assets/icon_rounded.png"
+category: "🛡️ ADBlock"
+date: "2026-08-22"
+version: "0.1.0"
+
+# Upstream: BiliUniverse/ADBlock v0.6.24 (Apache-2.0)
+# https://github.com/BiliUniverse/ADBlock
+
+http:
+  mitm:
+    - "api.live.bilibili.com"
+    - "api.vc.bilibili.com"
+    - "app.bilibili.com"
+    - "app.biliapi.net"
+    - "api.bilibili.com"
+    - "api.biliapi.net"
+    - "grpc.biliapi.net"
+  url-rewrite:
+    # 去除搜索中的默认关键词
+    - ^https?:\/\/(grpc|app)\.bili(bili\.com|api\.net)\/bilibili\.app\.interface\.v1\.Search\/DefaultWords$ - reject
+    # 去除搜索中的“大家都在搜”
+    - ^https?:\/\/api\.vc\.bilibili\.com\/search_svr\/v\d\/Search\/recommend_words - reject-dict
+    # 去除直播间购物信息
+    - ^https?:\/\/api\.live\.bilibili\.com\/xlive\/e-commerce-interface\/v1\/ecommerce-user\/get_shopping_info\? - reject-dict
+  script:
+    # 首页信息流请求参数清理
+    - match: ^https?:\/\/app\.bili(bili\.com|api\.net)\/x\/v2\/feed\/index\?
+      name: 📺 BiliBili.ADBlock.Lite.request.json
+      type: request
+      require-body: false
+      argument: "Splash=true&Feed.AD=true&Feed.Activity=false&Feed.Vertical=false&Feed.Story=true&Search.AD=true&Search.HotSearch=true&PGC.AD=true&Xlive.AD=true&Dynamic.HotTopics=false&Dynamic.MostVisited=false&Dynamic.AdCard=false&View.AD=false&DM.Command=false&DM.Colorful=false&Reply.AD=false&LogLevel=WARN"
+    # 开屏、首页信息流与搜索页
+    - match: ^https?:\/\/app\.bili(bili\.com|api\.net)\/x\/v2\/(splash\/(brand\/list|event\/list2|list|show)|feed\/index(\/story)?|search\/square)
+      name: 📺 BiliBili.ADBlock.Lite.response.json
+      type: response
+      require-body: true
+      argument: "Splash=true&Feed.AD=true&Feed.Activity=false&Feed.Vertical=false&Feed.Story=true&Search.AD=true&Search.HotSearch=true&PGC.AD=true&Xlive.AD=true&Dynamic.HotTopics=false&Dynamic.MostVisited=false&Dynamic.AdCard=false&View.AD=false&DM.Command=false&DM.Colorful=false&Reply.AD=false&LogLevel=WARN"
+    # 首页推荐流
+    - match: ^https?:\/\/api\.bilibili\.com\/x\/web-interface\/wbi\/index\/top\/feed\/rcmd\?
+      name: 📺 BiliBili.ADBlock.Lite.response.json
+      type: response
+      require-body: true
+      argument: "Splash=true&Feed.AD=true&Feed.Activity=false&Feed.Vertical=false&Feed.Story=true&Search.AD=true&Search.HotSearch=true&PGC.AD=true&Xlive.AD=true&Dynamic.HotTopics=false&Dynamic.MostVisited=false&Dynamic.AdCard=false&View.AD=false&DM.Command=false&DM.Colorful=false&Reply.AD=false&LogLevel=WARN"
+    # 番剧与影视页（不包含播放地址）
+    - match: ^https?:\/\/api\.bili(bili\.com|api\.net)\/pgc\/page\/(bangumi|cinema\/tab\?)
+      name: 📺 BiliBili.ADBlock.Lite.response.json
+      type: response
+      require-body: true
+      argument: "Splash=true&Feed.AD=true&Feed.Activity=false&Feed.Vertical=false&Feed.Story=true&Search.AD=true&Search.HotSearch=true&PGC.AD=true&Xlive.AD=true&Dynamic.HotTopics=false&Dynamic.MostVisited=false&Dynamic.AdCard=false&View.AD=false&DM.Command=false&DM.Colorful=false&Reply.AD=false&LogLevel=WARN"
+    # 直播间信息
+    - match: ^https?:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v1\/index\/getInfoByRoom
+      name: 📺 BiliBili.ADBlock.Lite.response.json
+      type: response
+      require-body: true
+      argument: "Splash=true&Feed.AD=true&Feed.Activity=false&Feed.Vertical=false&Feed.Story=true&Search.AD=true&Search.HotSearch=true&PGC.AD=true&Xlive.AD=true&Dynamic.HotTopics=false&Dynamic.MostVisited=false&Dynamic.AdCard=false&View.AD=false&DM.Command=false&DM.Colorful=false&Reply.AD=false&LogLevel=WARN"
+    # 搜索结果
+    - match: ^https?:\/\/(grpc|app)\.bili(bili\.com|api\.net)\/bilibili\.polymer\.app\.search\.v1\.Search\/SearchAll$
+      name: 📺 BiliBili.ADBlock.Lite.response.grpc
+      type: response
+      require-body: true
+      binary-mode: true
+      argument: "Splash=true&Feed.AD=true&Feed.Activity=false&Feed.Vertical=false&Feed.Story=true&Search.AD=true&Search.HotSearch=true&PGC.AD=true&Xlive.AD=true&Dynamic.HotTopics=false&Dynamic.MostVisited=false&Dynamic.AdCard=false&View.AD=false&DM.Command=false&DM.Colorful=false&Reply.AD=false&LogLevel=WARN"
+
+script-providers:
+  📺 BiliBili.ADBlock.Lite.request.json:
+    url: https://github.com/BiliUniverse/ADBlock/releases/download/v0.6.24/request.bundle.js
+    interval: 86400
+  📺 BiliBili.ADBlock.Lite.response.json:
+    url: https://github.com/BiliUniverse/ADBlock/releases/download/v0.6.24/response.bundle.js
+    interval: 86400
+  📺 BiliBili.ADBlock.Lite.response.grpc:
+    url: https://github.com/BiliUniverse/ADBlock/releases/download/v0.6.24/response.bundle.js
+    interval: 86400
