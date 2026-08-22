@@ -1,6 +1,6 @@
 name: "📺 BiliBili: 🛡️ ADBlock Lite+"
 desc: |-
-  哔哩哔哩轻量去广告与界面净化
+  [v0.3.0] 哔哩哔哩轻量去广告与界面净化
   处理开屏、首页、搜索、番剧/影视页、直播间、首页Tab和“我的”页面
   不接管评论、弹幕、视频详情和播放地址接口
 openUrl: "https://github.com/ShiinaWong/stash-configs/blob/main/docs/bilibili-adblock-lite.md"
@@ -9,7 +9,7 @@ homepage: "https://github.com/ShiinaWong/stash-configs"
 icon: "https://github.com/BiliUniverse/ADBlock/raw/main/src/assets/icon_rounded.png"
 category: "🛡️ ADBlock"
 date: "2026-08-22"
-version: "0.2.0"
+version: "0.3.0"
 
 # Upstream: BiliUniverse/ADBlock v0.6.24 (Apache-2.0)
 # https://github.com/BiliUniverse/ADBlock
@@ -31,8 +31,8 @@ http:
     # 去除直播间购物信息
     - ^https?:\/\/api\.live\.bilibili\.com\/xlive\/e-commerce-interface\/v1\/ecommerce-user\/get_shopping_info\? - reject-dict
   script:
-    # 首页 Tab、“我的”页面和顶部活动入口净化；不修改 VIP 或账户权益
-    - match: ^https?:\/\/app\.bilibili\.com\/x\/(resource\/(show\/tab|top\/activity)|v2\/account\/mine)
+    # 首页信息流、首页 Tab、“我的”页面和顶部活动入口净化；不修改 VIP 或账户权益
+    - match: ^https?:\/\/app\.bilibili\.com\/x\/(resource\/(show\/tab|top\/activity)|v2\/(account\/mine|feed\/index\?))
       name: 📺 BiliBili.UI.Clean.response.json
       type: response
       require-body: true
@@ -42,8 +42,8 @@ http:
       type: request
       require-body: false
       argument: "Splash=true&Feed.AD=true&Feed.Activity=false&Feed.Vertical=false&Feed.Story=true&Search.AD=true&Search.HotSearch=true&PGC.AD=true&Xlive.AD=true&Dynamic.HotTopics=false&Dynamic.MostVisited=false&Dynamic.AdCard=false&View.AD=false&DM.Command=false&DM.Colorful=false&Reply.AD=false&LogLevel=WARN"
-    # 开屏、首页信息流与搜索页
-    - match: ^https?:\/\/app\.bili(bili\.com|api\.net)\/x\/v2\/(splash\/(brand\/list|event\/list2|list|show)|feed\/index(\/story)?|search\/square)
+    # 开屏、首页短视频流与搜索页；普通首页信息流由 UI Clean 严格过滤
+    - match: ^https?:\/\/app\.bili(bili\.com|api\.net)\/x\/v2\/(splash\/(brand\/list|event\/list2|list|show)|feed\/index\/story|search\/square)
       name: 📺 BiliBili.ADBlock.Lite.response.json
       type: response
       require-body: true

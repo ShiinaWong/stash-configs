@@ -15,7 +15,7 @@
 
 轻量版哔哩哔哩去广告与界面净化覆写。
 
-广告处理基于 [BiliUniverse/ADBlock](https://github.com/BiliUniverse/ADBlock) `v0.6.24`，并加入首页 Tab、“我的”页面与顶部活动入口净化。配置不接管评论、弹幕、视频详情和播放地址接口，也不修改 VIP 或账户权益字段。
+当前覆写版本为 `v0.3.0`。广告处理基于 [BiliUniverse/ADBlock](https://github.com/BiliUniverse/ADBlock) `v0.6.24`，并加入首页横幅、小程序/游戏卡片、推广卡片、首页 Tab、“我的”页面与顶部活动入口净化。配置不接管评论、弹幕、视频详情和播放地址接口，也不修改 VIP 或账户权益字段。
 
 - 配置文件：[`overrides/bilibili-adblock-lite.stoverride`](overrides/bilibili-adblock-lite.stoverride)
 - 使用说明：[`docs/bilibili-adblock-lite.md`](docs/bilibili-adblock-lite.md)

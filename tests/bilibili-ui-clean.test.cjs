@@ -56,4 +56,18 @@ const activity = run("https://app.bilibili.com/x/resource/top/activity", {
 assert.equal(activity.data.online.icon, "");
 assert.equal(activity.data.hash, "original");
 
+const feed = run("https://app.bilibili.com/x/v2/feed/index?device=phone", {
+  data: {
+    items: [
+      { id: "normal-small", card_type: "small_cover_v2", card_goto: "av" },
+      { id: "normal-large", card_type: "large_cover_v1", card_goto: "av" },
+      { id: "banner", card_type: "banner_v8", card_goto: "banner", banner_item: [] },
+      { id: "ad-info", card_type: "small_cover_v2", card_goto: "av", ad_info: {} },
+      { id: "promotion", card_type: "cm_v2", card_goto: "ad_av" },
+      { id: "mini-program", card_type: "small_cover_v10", card_goto: "game" },
+    ],
+  },
+});
+assert.deepEqual(Array.from(feed.data.items, (item) => item.id), ["normal-small", "normal-large"]);
+
 console.log("bilibili-ui-clean: all tests passed");

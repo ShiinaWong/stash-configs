@@ -13,7 +13,9 @@ try {
   const payload = JSON.parse(originalBody);
 
   let handled = true;
-  if (/\/x\/resource\/show\/tab/.test(url)) {
+  if (/\/x\/v2\/feed\/index(?:\?|$)/.test(url)) {
+    cleanHomeFeed(payload);
+  } else if (/\/x\/resource\/show\/tab/.test(url)) {
     cleanNavigation(payload);
   } else if (/\/x\/v2\/account\/mine/.test(url)) {
     cleanMinePage(payload);
@@ -62,6 +64,23 @@ function cleanNavigation(payload) {
     const allowedBottomIds = new Set([102, 104, 106, 177, 178, 179, 181, 486, 488, 489]);
     payload.data.bottom = payload.data.bottom.filter((item) => allowedBottomIds.has(item.id));
   }
+}
+
+function cleanHomeFeed(payload) {
+  if (!Array.isArray(payload.data?.items)) return;
+
+  const normalVideoCardTypes = new Set([
+    "small_cover_v2",
+    "large_cover_v1",
+    "large_cover_single_v9",
+  ]);
+
+  payload.data.items = payload.data.items.filter((item) => {
+    if (Object.prototype.hasOwnProperty.call(item, "banner_item")) return false;
+    if (Object.prototype.hasOwnProperty.call(item, "ad_info")) return false;
+    if (typeof item.card_goto === "string" && item.card_goto.includes("ad")) return false;
+    return normalVideoCardTypes.has(item.card_type);
+  });
 }
 
 function cleanMinePage(payload) {
