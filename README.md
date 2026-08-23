@@ -13,7 +13,7 @@
 
 ### Shiina Stash Essentials（推荐）
 
-统一订阅入口，当前包含国内轻量广告域名规则与 BiliBili ADBlock Lite，后续实用磁贴也会继续加入同一个链接。
+统一订阅入口，当前包含国内轻量广告域名规则、BiliBili ADBlock Lite，以及远程依赖健康检查磁贴。
 
 - 配置文件：[`overrides/stash-essentials.stoverride`](overrides/stash-essentials.stoverride)
 - 使用说明：[`docs/stash-essentials.md`](docs/stash-essentials.md)
