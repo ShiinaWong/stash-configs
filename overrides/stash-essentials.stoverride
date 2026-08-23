@@ -1,0 +1,75 @@
+name: "🧰 Shiina Stash Essentials"
+desc: |-
+  [v0.1.0] 安全精简去广告合集
+  包含国内轻量广告域名规则与 BiliBili ADBlock Lite v0.3.1
+  不使用全量开屏广告融合包，不接管评论、弹幕、视频详情和播放地址接口
+openUrl: "https://github.com/ShiinaWong/stash-configs/blob/main/docs/stash-essentials.md"
+author: "ShiinaWong"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png"
+category: "🧰 Essentials"
+date: "2026-08-23"
+version: "0.1.0"
+
+# AdBlock filters Lite, GPL-3.0, snapshot 2026-08-23
+# https://github.com/217heidai/adblockfilters
+rule-providers:
+  🛡️ AdBlock.DNS.Lite:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/217heidai/adblockfilters/cc26e315e0b2082f6d51286bb8dbbc5bc25bb89a/rules/adblockmihomolite.yaml
+
+rules:
+  - RULE-SET,🛡️ AdBlock.DNS.Lite,REJECT
+
+# BiliBili ADBlock Lite v0.3.1
+# Upstream: BiliUniverse/ADBlock v0.6.24 (Apache-2.0)
+http:
+  mitm:
+    - "api.live.bilibili.com"
+    - "api.vc.bilibili.com"
+    - "app.bilibili.com"
+  url-rewrite:
+    # 去除搜索中的默认关键词
+    - ^https?:\/\/app\.bilibili\.com\/bilibili\.app\.interface\.v1\.Search\/DefaultWords$ - reject
+    # 去除搜索中的“大家都在搜”
+    - ^https?:\/\/api\.vc\.bilibili\.com\/search_svr\/v\d\/Search\/recommend_words - reject-dict
+    # 去除直播间购物信息
+    - ^https?:\/\/api\.live\.bilibili\.com\/xlive\/e-commerce-interface\/v1\/ecommerce-user\/get_shopping_info\? - reject-dict
+  script:
+    # 首页信息流、首页 Tab、“我的”页面和顶部活动入口净化；不修改 VIP 或账户权益
+    - match: ^https?:\/\/app\.bilibili\.com\/x\/(resource\/(show\/tab|top\/activity)|v2\/(account\/mine|feed\/index\?))
+      name: 📺 BiliBili.UI.Clean.v0.3.1.response.json
+      type: response
+      require-body: true
+    # 首页信息流请求参数清理
+    - match: ^https?:\/\/app\.bilibili\.com\/x\/v2\/feed\/index\?
+      name: 📺 BiliBili.ADBlock.Lite.request.json
+      type: request
+      require-body: false
+      argument: "Splash=true&Feed.AD=true&Feed.Activity=false&Feed.Vertical=false&Feed.Story=true&Search.AD=true&Search.HotSearch=true&PGC.AD=true&Xlive.AD=true&Dynamic.HotTopics=false&Dynamic.MostVisited=false&Dynamic.AdCard=false&View.AD=false&DM.Command=false&DM.Colorful=false&Reply.AD=false&LogLevel=WARN"
+    # 开屏、首页短视频流与搜索页；普通首页信息流由 UI Clean 严格过滤
+    - match: ^https?:\/\/app\.bilibili\.com\/x\/v2\/(splash\/(brand\/list|event\/list2|list|show)|feed\/index\/story|search\/square)
+      name: 📺 BiliBili.ADBlock.Lite.response.json
+      type: response
+      require-body: true
+      argument: "Splash=true&Feed.AD=true&Feed.Activity=false&Feed.Vertical=false&Feed.Story=true&Search.AD=true&Search.HotSearch=true&PGC.AD=true&Xlive.AD=true&Dynamic.HotTopics=false&Dynamic.MostVisited=false&Dynamic.AdCard=false&View.AD=false&DM.Command=false&DM.Colorful=false&Reply.AD=false&LogLevel=WARN"
+    # 直播间信息
+    - match: ^https?:\/\/api\.live\.bilibili\.com\/xlive\/app-room\/v1\/index\/getInfoByRoom
+      name: 📺 BiliBili.ADBlock.Lite.response.json
+      type: response
+      require-body: true
+      argument: "Splash=true&Feed.AD=true&Feed.Activity=false&Feed.Vertical=false&Feed.Story=true&Search.AD=true&Search.HotSearch=true&PGC.AD=true&Xlive.AD=true&Dynamic.HotTopics=false&Dynamic.MostVisited=false&Dynamic.AdCard=false&View.AD=false&DM.Command=false&DM.Colorful=false&Reply.AD=false&LogLevel=WARN"
+
+script-providers:
+  📺 BiliBili.UI.Clean.v0.3.1.response.json:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/bilibili-ui-clean.js?v=0.3.1
+    interval: 86400
+  📺 BiliBili.ADBlock.Lite.request.json:
+    url: https://github.com/BiliUniverse/ADBlock/releases/download/v0.6.24/request.bundle.js
+    interval: 86400
+  📺 BiliBili.ADBlock.Lite.response.json:
+    url: https://github.com/BiliUniverse/ADBlock/releases/download/v0.6.24/response.bundle.js
+    interval: 86400
