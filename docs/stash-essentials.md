@@ -4,7 +4,7 @@
 
 ## 当前版本
 
-`v0.2.0`
+`v0.2.1`
 
 ## 已包含
 
@@ -51,5 +51,6 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/stash-
 
 ## 版本记录
 
+- `v0.2.1`：修复健康磁贴对 GitHub Release 跳转链接的误报。
 - `v0.2.0`：加入 Essentials 依赖健康检查磁贴。
 - `v0.1.0`：加入国内轻量广告域名规则和 BiliBili ADBlock Lite。
