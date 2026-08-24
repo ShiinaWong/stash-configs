@@ -1,9 +1,9 @@
-const VERSION = "0.2.1";
+const VERSION = "0.2.2";
 
 const dependencies = [
   ["统一覆写", "https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/stash-essentials.stoverride"],
-  ["健康磁贴", "https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/essentials-health-tile.js?v=0.2.1"],
-  ["B站界面脚本", "https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/bilibili-ui-clean.js?v=0.3.1"],
+  ["健康磁贴", "https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/essentials-health-tile.js?v=0.2.2"],
+  ["B站界面脚本", "https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/bilibili-ui-clean.js?v=0.3.2"],
   ["轻量广告规则", "https://raw.githubusercontent.com/217heidai/adblockfilters/cc26e315e0b2082f6d51286bb8dbbc5bc25bb89a/rules/adblockmihomolite.yaml"],
   ["B站上游脚本", "https://github.com/BiliUniverse/ADBlock/releases/download/v0.6.24/response.bundle.js"],
 ];

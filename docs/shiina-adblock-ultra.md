@@ -10,6 +10,11 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina
 
 在 Stash 中通过 URL 安装后，请确认已安装并信任 Stash CA 证书，否则 HTTPS 响应脚本无法生效。
 
+## v1.0.1 调整
+
+- 加强对带 `goto: ad_*`、`cm` 或 `is_ad` 标记的 B 站首页推广卡片识别。
+- 保持精简 MITM 范围，不新增备用 API、评论、详情或播放接口。
+
 ## v1.0.0 调整
 
 - 保留原 Ultra 的大范围 App 去广告规则。

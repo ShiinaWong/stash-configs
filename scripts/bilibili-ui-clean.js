@@ -78,7 +78,11 @@ function cleanHomeFeed(payload) {
   payload.data.items = payload.data.items.filter((item) => {
     if (Object.prototype.hasOwnProperty.call(item, "banner_item")) return false;
     if (Object.prototype.hasOwnProperty.call(item, "ad_info")) return false;
+    if (Object.prototype.hasOwnProperty.call(item, "cm")) return false;
+    if (item.is_ad === true || item.is_ad === 1) return false;
     if (typeof item.card_goto === "string" && item.card_goto.includes("ad")) return false;
+    if (typeof item.goto === "string" && item.goto.includes("ad")) return false;
+    if (typeof item.args?.goto === "string" && item.args.goto.includes("ad")) return false;
     return normalVideoCardTypes.has(item.card_type);
   });
 }
