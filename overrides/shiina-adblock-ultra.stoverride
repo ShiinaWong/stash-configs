@@ -3,14 +3,14 @@
 #!homepage=https://github.com/ShiinaWong/stash-configs
 #!author=ShiinaWong
 name: 🛡️ Shiina AdBlock Ultra
-desc: '[v1.1.0] 自维护综合去广告覆写；加入仓库内镜像的国内广告域名规则与 BiliBili 轻量脚本。'
+desc: '[v1.2.0] 自维护综合去广告覆写；Ultra 广覆盖规则经脚本源去重与失效修复，并整合 BiliBili ADBlock Lite。'
 openUrl: https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-ultra.md
 author: ShiinaWong; upstream rules by their respective authors
 homepage: https://github.com/ShiinaWong/stash-configs
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 🛡️ AdBlock
-date: '2026-08-24'
-version: 1.1.0
+date: '2026-08-25'
+version: 1.2.0
 rule-providers:
   🛡️ AdBlock.DNS.Lite:
     type: http
@@ -72,22 +72,22 @@ http:
   - '*mangaapi.manhuaren.*'
   - '*ziben.com'
   - 101.201.175.228
+  - 101.226.30.36
   - 101.227.139.118
   - 103.41.167.*
   - 103.41.167.237
   - 103.91.210.141
   - 116.85.2.14
   - 116.85.2.15
+  - 117.184.40.141
   - 118.178.214.118
   - 118.89.204.198
   - 120.241.*
-  - 120.55.71.177
-  - 121.40.128.214
-  - 121.40.189.47
-  - 121.40.195.238
-  - 121.40.226.146
+  - 123.249.33.119
+  - 124.70.90.16
   - 125.215.147.40
   - 140.179.224.63
+  - 140.207.67.231
   - 180.96.8.44
   - 182.92.251.113
   - 1jietu.com
@@ -122,6 +122,7 @@ http:
   - ads-img-al.xhscdn.com
   - ads.closeli.cn
   - advertise.bczeducation.cn
+  - advertise.zhiduodev.com
   - adx-cn.anythinktech.com
   - adx.zuoyebang.com
   - afd.baidu.com
@@ -142,6 +143,7 @@ http:
   - api-one-wscn.awtmt.com
   - api-one.wallstcn.com
   - api-sams.walmartmobile.cn
+  - api-tx.dsocial.xyz
   - api.00bang.cn
   - api.21ec74.com
   - api.21jingji.com
@@ -190,10 +192,13 @@ http:
   - api.psy-1.com
   - api.qbb6.com
   - api.qd-metro.com
+  - api.qeeniao.com
   - api.rr.tv
   - api.sfacg.com
   - api.shenyin.name
   - api.smart.jd.com
+  - api.ssp.xcultur.com
+  - api.szy.cn
   - api.taou.com
   - api.tipsoon.com
   - api.touker.com
@@ -244,11 +249,13 @@ http:
   - app.mixcapp.com
   - app.mval.qq.com
   - app.yinxiang.com
+  - app.yuebuy.cn
   - app.zhuanzhuan.com
   - app2.autoimg.cn
   - app3.qdaily.com
   - appactive.1234567.com.cn
   - appapi.huazhu.com
+  - appapi.lvcchong.com
   - appconf.mail.163.com
   - apps.api.ke.com
   - apps.teamair.cn
@@ -394,7 +401,6 @@ http:
   - iyes.youku.com
   - j1.pupuapi.com
   - jabi.coding.net
-  - jad-api.jin10.com
   - jdread-api.jd.com
   - js-ad.ayximgs.com
   - jt.jxjt888.top
@@ -434,11 +440,13 @@ http:
   - mapi.weibo.*
   - mapi.weibo.com
   - marketing-aibox.v.mitvos.com
+  - marki.markiapp.com
   - mbd.baidu.com
   - media.qyer.com
   - mgw.mpaas.cn-hangzhou.aliyuncs.com
   - mi.gdt.qq.com
   - mime.baidu.com
+  - misc.eol.cn
   - mix-api.camera360.com
   - mob.mddcloud.com.cn
   - mobads.baidu.com
@@ -475,6 +483,7 @@ http:
   - open.taou.com
   - open3.vistastory.com
   - optimus-ads.amap.com
+  - ossx-link.ztehome.com.cn
   - otheve.beacon.qq.com
   - overseas.weico.cc
   - p*.meituan.net
@@ -504,6 +513,7 @@ http:
   - res.pizzahut.com.cn
   - res.xiaojukeji.com
   - restapi.iyunmai.com
+  - rfs-fitness.rfsvr.net
   - router-app-api.jdcloud.com
   - rtbapi.douyucdn.cn
   - s-api.smzdm.com
@@ -572,6 +582,7 @@ http:
   - www.ahzs10000.com
   - www.bbkj.work
   - www.benbenfx.xyz
+  - www.biguotk.com
   - www.bodivis.com.cn
   - www.cntv.com
   - www.ctm.net
@@ -597,6 +608,7 @@ http:
   - xcx.xianbaow.com
   - yanxuan.nosdn.127.net
   - ytmsout.radio.cn
+  - yuudnn.lz-qs.com
   - yxyapi*.drcuiyutao.com
   - yyfapi.huatu.com
   - zconfig.alibabausercontent.com
@@ -683,11 +695,6 @@ http:
     timeout: 10
   - match: ^https\:\/\/(weixin110\.qq|security.wechat)\.com\/cgi-bin\/mmspamsupport-bin\/newredirectconfirmcgi\?
     name: Ultra.unblockurlinwechat.6d1ee8ef
-    type: response
-    require-body: true
-    timeout: 10
-  - match: ^https\:\/\/(weixin110\.qq|security.wechat)\.com\/cgi-bin\/mmspamsupport-bin\/newredirectconfirmcgi\?
-    name: Ultra.weixin110.0c4d719a
     type: response
     require-body: true
     timeout: 10
@@ -971,6 +978,11 @@ http:
     type: response
     require-body: true
     timeout: 10
+  - match: ^https?:\/\/napi\.ithome\.com\/api\/news\/indexv2\/iphone\/927
+    name: Ultra.ithome.b413e8b3
+    type: response
+    require-body: true
+    timeout: 10
   - match: ^https?:\/\/napi\.ithome\.com\/api\/(news\/index|topmenu\/getfeeds)
     name: Ultra.ithome.b413e8b3
     type: response
@@ -983,11 +995,6 @@ http:
     timeout: 10
   - match: ^https?:\/\/mobileso\.bz\.mgtv\.com\/mobile\/recommend\/v2\?
     name: Ultra.cnftp.47c24202
-    type: response
-    require-body: true
-    timeout: 10
-  - match: ^https?:\/\/mobile\.flightradar24\.com\/mobile\/(user-session|subscribe)
-    name: Ultra.flightradar24.30cea52b
     type: response
     require-body: true
     timeout: 10
@@ -1242,12 +1249,12 @@ http:
     require-body: true
     timeout: 10
   - match: ^https?:\/\/homepage-api\.smzdm\.com\/v3\/home
-    name: Ultra.smzdm_json.dbdcc5fc
+    name: Ultra.smzdm.1ca6ef13
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/homepage-api\.smzdm\.com\/v3\/home
-    name: Ultra.smzdm.1ca6ef13
+    name: Ultra.smzdm_json.dbdcc5fc
     type: response
     require-body: true
     timeout: 10
@@ -1267,12 +1274,12 @@ http:
     require-body: true
     timeout: 10
   - match: ^https?:\/\/haojia-api\.smzdm\.com\/home\/list
-    name: Ultra.smzdm_json.dbdcc5fc
+    name: Ultra.smzdm.1ca6ef13
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/haojia-api\.smzdm\.com\/home\/list
-    name: Ultra.smzdm.1ca6ef13
+    name: Ultra.smzdm_json.dbdcc5fc
     type: response
     require-body: true
     timeout: 10
@@ -1507,12 +1514,12 @@ http:
     require-body: true
     timeout: 10
   - match: ^https?:\/\/app-api\.smzdm\.com\/util\/loading
-    name: Ultra.smzdm_json.dbdcc5fc
+    name: Ultra.smzdm.1ca6ef13
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/app-api\.smzdm\.com\/util\/loading
-    name: Ultra.smzdm.1ca6ef13
+    name: Ultra.smzdm_json.dbdcc5fc
     type: response
     require-body: true
     timeout: 10
@@ -1852,82 +1859,82 @@ http:
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/system_service\/splash_config
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/system_service\/config\?
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/search\/trending
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/search\/notes\?
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/search\/hot_list
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/search\/hint
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/note\/widgets
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/note\/videofeed\?
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/note\/video\/save
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/note\/tabfeed
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/note\/redtube\?
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/note\/live_photo\/save
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/note\/imagefeed
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/note\/feed\?
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/homefeed\?
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
   - match: ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/homefeed\/categories
-    name: Ultra.xiaohongshu.9a709380
+    name: Ultra.redbook.ads.be946949
     type: response
     require-body: true
     timeout: 10
@@ -2118,6 +2125,21 @@ http:
     timeout: 10
   - match: ^https?:\/\/(edith|rec|www)\.xiaohongshu\.com\/api\/sns\/(v2\/note\/feed|v3\/note\/videofeed)\?
     name: Ultra.xiaohongshu.9f5ee26c
+    type: response
+    require-body: true
+    timeout: 10
+  - match: ^https?:\/\/(cl-)?gateway\.tuhu\.cn(\/cl)?\/cl-shop-api\/shopTab\/getModuleForC
+    name: Ultra.tuhu.75dcaa1d
+    type: response
+    require-body: true
+    timeout: 10
+  - match: ^https?:\/\/(cl-)?gateway\.tuhu\.cn(\/cl)?\/cl-common-api\/api\/personalCenter\/getCmsModuleList
+    name: Ultra.tuhu.75dcaa1d
+    type: response
+    require-body: true
+    timeout: 10
+  - match: ^https?:\/\/(cl-)?gateway\.tuhu\.cn(\/cl)?\/[a-z-]+\/homePage\/getHomePageInfo
+    name: Ultra.tuhu.75dcaa1d
     type: response
     require-body: true
     timeout: 10
@@ -2441,8 +2463,8 @@ http:
     type: response
     require-body: true
     timeout: 10
-  - match: ^https?:\/\/app\.bilibili\.com\/x\/(resource\/(show\/tab|top\/activity)|v2\/(account\/mine|feed\/index\?))
-    name: 📺 BiliBili.UI.Clean.v0.3.3.response.json
+  - match: ^https?:\/\/app\.bilibili\.com\/x\/(resource\/(show\/tab|top\/activity)|v2\/(account\/(mine|myinfo\?)|feed\/index\?))
+    name: 📺 BiliBili.UI.Clean.v0.4.0.response.json
     type: response
     require-body: true
   - match: ^https?:\/\/app\.bilibili\.com\/x\/v2\/feed\/index\?
@@ -2525,6 +2547,7 @@ http:
   - ^https?:\/\/zconfig\.alibabausercontent\.com\/zconfig - reject
   - ^https?:\/\/z\.onewo\.com\/passer\/api\/ads\/v1\/8\/list - reject-200
   - ^https?:\/\/yyfapi\.huatu\.com\/common\/ad\/ - reject-200
+  - ^https?:\/\/yuudnn.lz-qs.com.*\/mrtb\/getAdSlotList - reject
   - ^https?:\/\/yunbusiness\.ccb\.com\/clp_service\/txCtrl\?txcode=A3341A00(2|9) - reject-200
   - ^https?:\/\/yun\.tuitiger\.com\/mami-media - reject-200
   - ^https?:\/\/ytmsout\.radio\.cn\/publish\/recScreen\/getLoadPage - reject-200
@@ -2574,6 +2597,7 @@ http:
   - ^https?:\/\/www\.cntv\.cn\/nettv\/adp\/ - reject-200
   - ^https?:\/\/www\.cmbc\.com\.cn\/m\/image\/loadingpage\/ - reject-200
   - ^https?:\/\/www\.cmbc\.com\.cn\/m\/image\/banner\/.*.png - reject-200
+  - ^https?:\/\/www\.biguotk\.com\/api\/advertising - reject
   - ^https?:\/\/www\.banyuetanapp\.com\/byt-api\/ad\/getAdvertList\?adSpaceId=100000002 - reject-200
   - ^https?:\/\/www\.ahzs10000\.com\/palmhall\/client\/base\/newVerson_getStartUp\.action - reject-200
   - ^https?:\/\/www\.1314zhilv\.com\/ltsstnew\/(guideScenic\/getRecentlyUpdatedScenic|city\/getWeatherByCityName) - reject-dict
@@ -2731,6 +2755,7 @@ http:
   - ^https?:\/\/richmanrules\.ksedt\.com\/intellectWaterfall(Bidding)?\/find - reject
   - ^https?:\/\/richmanmain\.jxedt\.com\/advertisement\/fallback - reject-img
   - ^https?:\/\/richmanapi\.jxedt\.com\/api\/(ad|adplus|banadplus)\/ - reject-200
+  - ^https?:\/\/rfs-fitness\.rfsvr\.net\/indoor\/v\d\/app\/adverts - reject
   - ^https?:\/\/restapi\.iyunmai\.com\/api\/ios\/ad\/ - reject-200
   - ^https?:\/\/restapi\.iyunmai\.com\/ad-api\/ - reject-200
   - ^https?:\/\/res\.xiaojukeji\.com\/resapi\/activity\/mget - reject
@@ -2830,6 +2855,7 @@ http:
   - ^https?:\/\/oxadmin\.cp\.com\.cn\/api\/advertise\/banner - reject-dict
   - ^https?:\/\/overseas\.weico\.cc\/portal\.php\?a=get_coopen_ads - reject-200
   - ^https?:\/\/overseas.weico.cc\/portal.php\?a=get_coopen_ads - reject-200
+  - ^https?:\/\/ossx-link\.ztehome\.com\.cn.*\/get-ad-position-info - reject-200
   - ^https?:\/\/ossweb-img\.qq\.com\/upload\/adw\/image\/[0-9]{3}\/202[0-9]{5}\/[a-z0-9]{32}\.(jpg|jpeg) - reject-200
   - ^https?:\/\/ossgw.alicdn.com\/creatives-assets\/image\/ - reject-200
   - ^https?:\/\/oral\.youdao\.com\/oral\/adInfo - reject-img
@@ -2909,8 +2935,8 @@ http:
   - ^https?:\/\/mlol\.qt\.qq\.com\/go\/recommend\/(?!v2\/platactivity.*) - reject
   - ^https?:\/\/mlol\.qt\.qq\.com\/go\/recommend\/(?!v) - reject-200
   - ^https?:\/\/mlife\.jf365\.boc\.cn\/AppPrj\/FirstPic\.do\?txnId=2PIC000001 - reject-200
-  - ^https?:\/\/mkt-gateway\.tuhu\.cn\/mkt-scene-marketing-service\/api\/scene\/queryScheme - reject-dict
   - ^https?:\/\/mix-api\.camera360\.com\/v\d\/operational-positions - reject-200
+  - ^https?:\/\/misc\.eol\.cn\/js\/target\/move\/zskyApp\/Appqdkp\/.*json - reject
   - ^https?:\/\/minipro\.95504\.net\/app\/json\/ad\/getPopAdData - reject-dict
   - ^https?:\/\/minipro\.95504\.net\/app\/json\/ad\/getIndexAdData - reject-dict
   - ^https?:\/\/mime\.baidu\.com\/v\d\/activity\/advertisement - reject-200
@@ -2938,6 +2964,7 @@ http:
   - ^https?:\/\/mbd\.baidu\.com\/ccs\/v1\/start\/confsync\?appname=baidu_input - reject-dict
   - ^https?:\/\/mbank\.grcbank\.com\/ydyh\/resources\/startpage\/.*.(jpg|png) - reject-200
   - ^https?:\/\/mbank5\.jsbchina\.cn:443 - reject-dict
+  - ^https?:\/\/marki\.markiapp\.com\/mkg\/Advertising - reject-200
   - ^https?:\/\/marketing-aibox\.v\.mitvos\.com\/advertise\/splash - reject-200
   - ^https?:\/\/mapiweb\.babytree\.com\/newapi\/luban\/behavior\/receive - reject-200
   - ^https?:\/\/mapi\.txcmapp\.com\/api\/open\/atx2\/ad\.php - reject-200
@@ -3020,13 +3047,14 @@ http:
   - ^https?:\/\/lofter\.lf127\.net\/ad\-material - reject-200
   - ^https?:\/\/lives\.l\.qq\.com\/livemsg\?sdtfrom= - reject-img
   - ^https?:\/\/live\.inst-service\.htsc\.com\/live - reject-dict
-  - ^https?:\/\/list-app-m\.i4\.cn\/getopfstadinfo\.xhtml - reject-200
   - ^https?:\/\/list-app-m\.i4\.cn\/(adclickcb|getHotSearchList|getopfstadinfo)\.xhtml - reject
+  - ^https?:\/\/list-app-m\.i4\.cn.*adinfo\.xhtml - reject-200
   - ^https?:\/\/lf\-cdn\-tos\.bytescm\.com\/obj\/static\/ad - reject
   - ^https?:\/\/lens\.leoao\.com\/lens\/conduct\/app\/rpc\/v2\/com\.lefit\.dubbo\.cms\.api\.front\.AppAdvertisingFrontService\/getAppAdvertisingNew - reject-dict
   - ^https?:\/\/lens\.leoao\.com\/lens\/conduct\/app\/rpc\/v2\/com\.lefit\.dubbo\.cms\.api\.front\.AdvertiseConfigFrontService\/getAdvertiseConfigNew - reject-dict
   - ^https?:\/\/lens\.leoao\.com\/lens\/conduct\/app\/rpc\/v2\/com\.lefit\.dubbo\.cms\.api\.bff\.ClientFrontFacade\/queryHomeMiddleInfo - reject-dict
   - ^https?:\/\/lens\.leoao\.com\/lens\/.+(getUserScheme|queryAppBanners|Advert|popup) - reject-200
+  - ^https?:\/\/lens\.leoao\.com\/lens\/.*Advertising - reject-200
   - ^https?:\/\/learn\.chaoxing\.com\/apis\/service\/appConfig\? - reject
   - ^https?:\/\/learn\.chaoxing\.com\/apis\/service\/appConfig - reject-200
   - ^https?:\/\/lchttpapi\.xczim\.com\/1\.1\/functions\/getLaunchImageForIOS - reject-200
@@ -3044,7 +3072,6 @@ http:
   - ^https?:\/\/js-ad\.ayximgs\.com\.ad-universe-cdn\.hzhcbkj\.cn\/xgapp\.php\/v2\/top_notice - reject
   - ^https?:\/\/jdread-api\.jd\.com\/jdread\/api\/popup - reject-200
   - ^https?:\/\/jdread-api\.jd\.com\/jdread\/api\/channel\/module\/opens - reject-200
-  - ^https?:\/\/jad-api\.jin10\.com\/ad - reject-200
   - ^https?:\/\/jad-api\.jin10\.com\/ad - reject
   - ^https?:\/\/j5\.dfcfw\.com\/WG\/conf\/202[0-9]{5}/.*.(jpg|png) - reject-200
   - ^https?:\/\/j5\.dfcfw\.com\/WG\/appconf\/202[0-9]{5}/.*.(jpg|png) - reject-200
@@ -3124,7 +3151,6 @@ http:
   - ^https?:\/\/iadmusicmat\.music.126.net\/.*?jpg$ - reject
   - ^https?:\/\/i\d\.hoopchina\.com\.cn/blogfile\//d+\//d+\/BbsImg\.(?<=(big.(png|jpg)))$ - reject-img
   - ^https?:\/\/i\d\.hdslb\.com\/bfs\/manga-static\/\w+\.(?>jpg|png)@1200w_1500h_1e_1c - reject-200
-  - ^https?:\/\/i\d\.hdslb\.com\/bfs\/manga-static\/\w+\.(?>jpg|png)$ - reject-200
   - ^https?:\/\/i\d\.hdslb\.com\/bfs\/fawkes - reject-dict
   - ^https?:\/\/i\.zhaojinapp\.com\/APPAD - reject-200
   - ^https?:\/\/i\.ys7\.com\/api\/ads\/ - reject-200
@@ -3420,7 +3446,6 @@ http:
   - ^https?:\/\/capis(-\d)?\.didapinche\.com\/ad\/ - reject
   - ^https?:\/\/capis(-?\w*)?\.didapinche\.com\/publish\/api\/upgrade - reject-dict
   - ^https?:\/\/capi\.mwee\.cn\/app-api\/V\d{2}\/app\/(ad|getstartad) - reject
-  - ^https?:\/\/capi\.lkcoffee\.com\/resource\/m\/sys\/(homePage\/contactor\/modules|app\/adposNew) - reject-200
   - ^https?:\/\/capi\.douyucdn\.cn\/lapi\/sign\/app(api)?\/getinfo\?client_sys=ios - reject
   - ^https?:\/\/capi\.douyucdn\.cn\/api\/v1\/getStartSend?client_sys=ios - reject-img
   - ^https?:\/\/capi\.douyucdn\.cn\/api\/ios_app\/check_update - reject-img
@@ -3471,6 +3496,7 @@ http:
   - ^https?:\/\/appconf\.mail\.163\.com\/mmad\/get\.do - reject-200
   - ^https?:\/\/appconf\.mail\.163\.com\/mmad\/ - reject-200
   - ^https?:\/\/appconf\.mail\.163\.com\/mmad\/ - reject
+  - ^https?:\/\/appapi\.lvcchong\.com\/appBaseApi\/.*vertisement - reject-200
   - ^https?:\/\/appapi\.huazhu\.com:\d{4}\/client\/app\/getAppStartPage\/ - reject-200
   - ^https?:\/\/appapi\.huazhu\.com:\d+\/client\/app\/getAppStartPage\/ - reject
   - ^https?:\/\/appapi\.51job(app)?\.com\/api\/util\/get_version - reject-dict
@@ -3483,6 +3509,7 @@ http:
   - ^https?:\/\/app\.zhuanzhuan\.com\/zz\/v2\/zzlogic\/getOpenScreen - reject-dict
   - ^https?:\/\/app\.zhuanzhuan\.com\/zz\/transfer\/userred\?scene=homePage - reject-dict
   - ^https?:\/\/app\.zhoudamozi\.com\/ad\/.+ - reject-200
+  - ^https?:\/\/app\.yuebuy\.cn\/api\/Portal\/startUp - reject
   - ^https?:\/\/app\.yinxiang\.com\/ads\/ - reject-200
   - ^https?:\/\/app\.xinpianchang\.com\/open_screen\? - reject
   - ^https?:\/\/app\.wy\.guahao\.com\/json\/white\/dayquestion\/getpopad - reject
@@ -3532,7 +3559,6 @@ http:
   - ^https?:\/\/apiwz\.midukanshu\.com\/advert\/treasureInfo$ - reject
   - ^https?:\/\/apiwz\.midukanshu\.com\/advert\/getPopup$ - reject
   - ^https?:\/\/apio\.zhengqi100\.com\/forum\/thread\/listsHome - reject-dict
-  - ^https?:\/\/apimobile\.meituan\.com\/group\/v1\/recommend\/unity\/recommends - reject-dict
   - ^https?:\/\/apicloud\.zol\.com\.cn\/Article\/WapLaunchLogo - reject-dict
   - ^https?:\/\/apicloud\.zol\.com\.cn\/Article\/WapLaunchLogo - reject-200
   - ^https?:\/\/api\d\.tuisong\.baidu\.com - reject-img
@@ -3600,6 +3626,8 @@ http:
   - ^https?:\/\/api\.tipsoon\.com\/api\/v1\/top\/ad - reject-img
   - ^https?:\/\/api\.taptapdada\.com\/startup-logo\/v\d\/combo\? - reject-dict
   - ^https?:\/\/api\.taou\.com\/sdk\/global\/splash_ad - reject-200
+  - ^https?:\/\/api\.szy\.cn\/appOpenServer\/ad - reject
+  - ^https?:\/\/api\.ssp\.xcultur\.com\/api\/v\d\/ad - reject
   - ^https?:\/\/api\.sogaha\.cn\/ssp\/ad\/get\?ip - reject-dict
   - ^https?:\/\/api\.sodalife\.xyz\/v1\/posters\?location=SODA_APP%3AREWARDS%3ACENTER - reject-dict
   - ^https?:\/\/api\.sodalife\.xyz\/v1\/posters\?location=SODA_APP%3AMINE%3ABOTTOM - reject-dict
@@ -3745,6 +3773,7 @@ http:
   - ^https?:\/\/api.gotokeep.com/cauchy/growth/init - reject-200
   - ^https?:\/\/api.gotokeep.com/cauchy/growth/init - reject
   - ^https?:\/\/api-wanda\.liepin\.com\/api\/com\.liepin\.cbp\.baizhong\.op\.v2-show-4app - reject-200
+  - ^https?:\/\/api-tx\.dsocial\.xyz\/api\/.*\/ad_ - reject-200
   - ^https?:\/\/api-shoulei-ssl\.xunlei\.com\/flowhub\/v\d\/slots:batchGet - reject-200
   - ^https?:\/\/api-sams\.walmartmobile\.cn\/api\/v\d\/sams\/trade\/order\/getOftenBuyGoods - reject-dict
   - ^https?:\/\/api-sams\.walmartmobile\.cn\/api\/v\d\/sams\/sams-user\/(window\/getGoUpPlus|screen_promotion\/get) - reject
@@ -3790,6 +3819,7 @@ http:
   - ^https?:\/\/adx.*anythinktech\.com\/bid - reject-200
   - ^https?:\/\/adx-cn\.anythinktech\.com\/bid - reject-dict
   - ^https?:\/\/adx-cn\.anythinktech\.com\/bid - reject-200
+  - ^https?:\/\/advertise\.zhiduodev\.com\/adv\/app\/getAdvSpaceInfo - reject-200
   - ^https?:\/\/adv\.ccb\.com\/ebda\/ctm_adv - reject-200
   - ^https?:\/\/adui\.tg\.meitu\.com - reject-dict
   - ^https?:\/\/adstatic\.peopleapp\.com\/upload\/AppLoad\/.*.(jpg|png) - reject-200
@@ -3870,6 +3900,7 @@ http:
   - ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/search\/notes\/recommend_info\? - reject-200
   - ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/guide\/home_guide - reject-200
   - ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/sns\/v\d+\/(tag\/)?ads - reject-200
+  - ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/httpdns - reject-200
   - ^https?:\/\/[a-z]+\.xiaohongshu\.com\/api\/gslb - reject-200
   - ^https?:\/\/[a-z]+\.eastmoney\.com\/infoService\/ - reject-200
   - ^https?:\/\/[a-z]*\.rsscc\.com\/[a-z]*\/adver - reject
@@ -3901,7 +3932,7 @@ http:
   - ^https?:\/\/3g\.csair\.com\/CSMBP\/bookProcess\/homepopup\/queryAdvertisement - reject-200
   - ^https?:\/\/2402:4e00:1200:ed00:0:9089:6dac:96b6 - reject-200
   - ^https?:\/\/203\.107\.1\.97\/v - reject
-  - ^https?:\/\/2026.01.08/c402/v2.0.630 - reject-200
+  - ^https?:\/\/2026.06.29/c415/v2.0.647 - reject-200
   - ^https?:\/\/1jietu\.com\/apiv\d\/ad - reject-200
   - ^https?:\/\/182\.92\.244\.70\/d\/json - reject-dict
   - ^https?:\/\/180\.96\.8\.44\/smartad\/ad - reject-200
@@ -4000,6 +4031,11 @@ http:
   - ^https?:\/\/(nr-op|cube)\.elemecdn\.com\/.+\.jpeg\?x-oss-process=image\/resize,m_fill,w_\d{4,},h_\d{4,}\/($|format,webp\/$) - reject
   - ^https?:\/\/(mobile|shop)\.laichon\.com\/api\/(v1\/goods\/goodsList|exposureAdvStatistics|getWebAdvList) - reject-200
   - ^https?:\/\/(mobile|shop)\.laichon\.com\/api\/(v1\/goods\/goodsList|exposureAdvStatistics|getWebAdvList) - reject
+  - ^https?:\/\/(mkt-)?gateway\.tuhu\.cn(\/mkt)?\/mlp-product-search-api\/search\/helper\/defaultAndHotWord - reject
+  - ^https?:\/\/(mkt-)?gateway\.tuhu\.cn(\/mkt)?\/mkt-scene-marketing-service\/api\/scene\/queryScheme - reject
+  - ^https?:\/\/(mkt-)?gateway\.tuhu\.cn(\/mkt)?\/mkt-push-message-box\/banner\/cms\/getIndexBanner - reject
+  - ^https?:\/\/(mkt-)?gateway\.tuhu\.cn(\/mkt)?\/mkt-cms\/circle\/recommend\/ - reject
+  - ^https?:\/\/(mkt-)?gateway\.tuhu\.cn(\/mkt)?\/[a-z-]+\/recommend - reject-dict
   - ^https?:\/\/(info\.mina\.xiaoaisound|marketing-aibox\.v\.mitvos)\.com\/popup - reject-dict
   - ^https?:\/\/(info\.mina\.xiaoaisound|marketing-aibox\.v\.mitvos)\.com\/payGuide\/userCenter - reject
   - ^https?:\/\/(info\.mina\.xiaoaisound|marketing-aibox\.v\.mitvos)\.com\/advertise(?!\/banner) - reject
@@ -4007,6 +4043,9 @@ http:
   - ^https?:\/\/(discardrp|startup)\.umetrip\.com\/gateway\/api\/umetrip\/native - reject-200
   - ^https?:\/\/(commontgw|comapi)\.reader\.qq\.com\/(common\/adV|com-ad\/config) - reject-200
   - ^https?:\/\/(client\.app\.coc|app)\.10086\.cn\/biz-orange\/DN\/emotionMarket - reject
+  - ^https?:\/\/(cl-)?gateway\.tuhu\.cn(\/cl)?\/ext-website-cl-beauty-api\/channelPage\/v\d\/channelPageCouponPromptComponent - reject
+  - ^https?:\/\/(cl-)?gateway\.tuhu\.cn(\/cl)?\/ext-website-cl-beauty-api\/beautyIndex\/getBeautyIndex - reject
+  - ^https?:\/\/(cl-)?gateway\.tuhu\.cn(\/cl)?\/cl-common-api\/api\/personalCenter\/getAutoSuperConfig - reject
   - ^https?:\/\/(bdsp-x|dsp-x)\.jd\.com\/adx\/ - reject-200
   - ^https?:\/\/(api|atrace)\.chelaile\.net\.cn\/adpub\/ - reject
   - ^https?:\/\/(api|api-bk\d+)\.tv\.sohu\.com\/agg\/api\/app\/config\/bootstrap - reject
@@ -4350,6 +4389,7 @@ http:
   - ^https?://(api|api-bk\d+)\.tv\.sohu\.com/agg/api/app/config/bootstrap - reject
   - ^https:\/\/zlsdk\.1rtb\.net\/sdk\/req_ad\?sdk_version=\d+\.\d+\.\d+\.\d+&device_os=iOS&accept_ad_type=\d+&app_id=\d+&pid=\d+&sdk_version_code=\d+ - reject-dict
   - ^https:\/\/zhuanlan\.zhihu\.com\/api\/articles\/\d+\/recommendation - reject
+  - ^https:\/\/zhstatic\.zhihu\.com\/brand-ad - reject
   - ^https:\/\/xxyx-client-api\.xiaoxiaoyouxuan\.com\/new_banner\? - reject
   - ^https:\/\/xxyx-client-api\.xiaoxiaoyouxuan\.com\/get_index_activity_list_ad - reject
   - ^https:\/\/xxyx-client-api\.xiaoxiaoyouxuan\.com\/bottom_banner - reject
@@ -4394,6 +4434,7 @@ http:
   - ^https:\/\/patient-api\.suh\.cn\/apt\/api\/userinfo\/GetNotice\?appname=pmsys&channel=6&device=ios&language=1&source=2&version= - reject-dict
   - ^https:\/\/p0\.pipi\.cn\/adAdmin\/\w+\.jpg\?imageMogr2\/quality\/ - reject-dict
   - ^https:\/\/p0\.pipi\.cn\/adAdmin\/\w+\.(jpg|png)\?imageMogr2\/thumbnail\/(860x0|!165x165|!1049x1169) - reject-dict
+  - ^https:\/\/oss\.umetrip\.com\/fs\/advert\/polite - reject
   - ^https:\/\/order-app-api\.lbdj\.com\/lbdj\/apporder\/ad\/ - reject-dict
   - ^https:\/\/open\.xueqiu\.com\/mpaas\/config\/content\?.+home_visitor_relation_config - reject-dict
   - ^https:\/\/open\.xueqiu\.com\/mpaas\/config\/content\?.+cube_detail_bottom_operation_trade_button - reject-dict
@@ -4435,6 +4476,8 @@ http:
   - ^https:\/\/j1\.pupuapi\.com\/client\/marketing\/channel\/global_redeem\/top_tip\/v2 - reject-dict
   - ^https:\/\/j1\.pupuapi\.com\/client\/marketing\/advertisement\/search_input_ranking - reject-dict
   - ^https:\/\/j1\.pupuapi\.com\/client\/assets\/discount\/order - reject-dict
+  - ^https:\/\/interface\.hstong\.com\/pdp\/ad\/images\/v2 - reject-200
+  - ^https:\/\/interface\.hstong\.com\/ad\/images\/v2 - reject-200
   - ^https:\/\/img01\.51jobcdn\.com\/im\/mkt/(?:tg/((19|20)\d{2})banner/(?!jcgz2/)|\d{4}/bd/\d{4}/).*\.jpg - reject
   - ^https:\/\/imcs\.citicbank\.com\/cloud\/([a-fA-F0-9]{32})\.(jpg|png) - reject
   - ^https:\/\/imagepc\.ctaiot\.com\/dlabel\/0\/startpage - reject
@@ -4450,6 +4493,7 @@ http:
   - ^https:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.taobao\.(volvo\.secondfloor\.getconfig|wireless\.home\.newface\.awesome\.get) - reject-dict
   - ^https:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-dict
   - ^https:\/\/gateway\.benewtech\.cn\/resources-app\/app\/startup\/prepage - reject-dict
+  - ^https:\/\/gae2-spclient\.spotify\.com:443\/ad - reject
   - ^https:\/\/gab\.122\.gov\.cn\/eapp\/m\/sysquery - reject-200
   - ^https:\/\/external\.fcbox\.com\/wxgw\/post\/suggestion\/query - reject
   - ^https:\/\/ether-pack\.pangolin-sdk-toutiao\.com\/union\/endcard\/ - reject
@@ -4526,6 +4570,7 @@ http:
   - ^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.trip\.activity\.querytmsresources - reject-dict
   - ^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.taobao\.idle\.home\.welcome - reject-dict
   - ^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.o2o\.ad\.gateway\.get - reject-dict
+  - ^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.fliggy\.crm\.screen\.availablesplashstrategies - reject-200
   - ^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.fliggy\.crm\.screen\.allresource - reject-200
   - ^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.fliggy\.crm\.screen\.(allresource|predict) - reject-dict
   - ^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.film\.mtopadvertiseapi\.queryadvertise - reject-dict
@@ -4598,6 +4643,16 @@ http:
   - ^https?:\/\/app\.bilibili\.com\/bilibili\.app\.interface\.v1\.Search\/DefaultWords$ - reject
   - ^https?:\/\/api\.vc\.bilibili\.com\/search_svr\/v\d\/Search\/recommend_words - reject-dict
   - ^https?:\/\/api\.live\.bilibili\.com\/xlive\/e-commerce-interface\/v1\/ecommerce-user\/get_shopping_info\? - reject-dict
+  - ^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.fliggy\.crm\.screen\.(allresource|availablesplashstrategies) - reject-200
+  - ^https?:\/\/api\.qeeniao\.com\/nap\/ad - reject-200
+  - ^https?:\/\/yuudnn\.lz-qs\.com.*\/mrtb\/getAdSlotList - reject-200
+  - ^https?:\/\/lens\.leoao\.com\/lens\/.*(Advert|Advertising|queryAppBanners|popup) - reject-200
+  - ^https?:\/\/app\.yuebuy\.cn\/api\/Portal\/startUp - reject-200
+  - ^https?:\/\/rfs-fitness\.rfsvr\.net\/indoor\/v\d\/app\/adverts - reject-200
+  - ^https?:\/\/api\.ssp\.xcultur\.com\/api\/v\d\/ad - reject-200
+  - ^https?:\/\/api\.szy\.cn\/appOpenServer\/ad - reject-200
+  - ^https?:\/\/www\.biguotk\.com\/api\/advertising - reject-200
+  - ^https?:\/\/misc\.eol\.cn\/js\/target\/move\/zskyApp\/Appqdkp\/.*json - reject-200
 script-providers:
   Ultra.12306.05954700:
     url: https://raw.githubusercontent.com/ddgksf2013/Scripts/refs/heads/master/12306.js
@@ -4716,9 +4771,6 @@ script-providers:
   Ultra.fenbi.c5e86164:
     url: https://raw.githubusercontent.com/fmz200/wool_scripts/main/Scripts/fenbi.js
     interval: 86400
-  Ultra.flightradar24.30cea52b:
-    url: https://raw.githubusercontent.com/fmz200/wool_scripts/main/QuantumultX/scripts/Flightradar24.js
-    interval: 86400
   Ultra.fly.52681dc2:
     url: https://raw.githubusercontent.com/ddgksf2013/Scripts/refs/heads/master/fly.js
     interval: 86400
@@ -4827,6 +4879,9 @@ script-providers:
   Ultra.quda.a5bda7e3:
     url: https://raw.githubusercontent.com/fmz200/wool_scripts/main/Scripts/QuDa.js
     interval: 86400
+  Ultra.redbook.ads.be946949:
+    url: https://royal-block-f6b1.q00.workers.dev/scripts/redbook.ads.js
+    interval: 86400
   Ultra.reddit.fc4b214b:
     url: https://raw.githubusercontent.com/fmz200/wool_scripts/main/Scripts/reddit.js
     interval: 86400
@@ -4866,6 +4921,9 @@ script-providers:
   Ultra.tieba-proto.f38021eb:
     url: https://raw.githubusercontent.com/app2smile/rules/master/js/tieba-proto.js
     interval: 86400
+  Ultra.tuhu.75dcaa1d:
+    url: https://raw.githubusercontent.com/zirawell/R-Store/main/Res/Scripts/AntiAd/tuhu.js
+    interval: 86400
   Ultra.umetrip_ads.06d3dd7a:
     url: https://raw.githubusercontent.com/fmz200/wool_scripts/main/Scripts/umetrip/umetrip_ads.js
     interval: 86400
@@ -4890,17 +4948,11 @@ script-providers:
   Ultra.weibo_search_topic.2bd76811:
     url: https://raw.githubusercontent.com/ddgksf2013/Scripts/refs/heads/master/weibo_search_topic.json
     interval: 86400
-  Ultra.weixin110.0c4d719a:
-    url: https://raw.githubusercontent.com/ddgksf2013/Scripts/master/weixin110.js
-    interval: 86400
   Ultra.wnbz.8cd9d950:
     url: https://raw.githubusercontent.com/Sliverkiss/QuantumultX/main/AdBlock/xmApp/wnbz.js
     interval: 86400
   Ultra.wyres.9f029b3f:
     url: https://raw.githubusercontent.com/Keywos/rule/main/script/wy/js/wyres.js
-    interval: 86400
-  Ultra.xiaohongshu.9a709380:
-    url: https://raw.githubusercontent.com/fmz200/wool_scripts/main/Scripts/xiaohongshu/xiaohongshu.js
     interval: 86400
   Ultra.xiaohongshu.9f5ee26c:
     url: https://github.com/fmz200/wool_scripts/raw/main/Scripts/xiaohongshu/xiaohongshu.js
@@ -4938,8 +4990,8 @@ script-providers:
   Ultra.zhuanzhuan.5af7cfca:
     url: https://raw.githubusercontent.com/fmz200/wool_scripts/main/Scripts/zhuanzhuan/zhuanzhuan.js
     interval: 86400
-  📺 BiliBili.UI.Clean.v0.3.3.response.json:
-    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/bilibili-ui-clean.js?v=0.3.3
+  📺 BiliBili.UI.Clean.v0.4.0.response.json:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/bilibili-ui-clean.js?v=0.4.0
     interval: 86400
   📺 BiliBili.ADBlock.Lite.request.json:
     url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/vendor/biliuniverse-adblock/request.bundle.js?v=0.6.24

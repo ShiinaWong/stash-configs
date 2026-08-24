@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build Shiina AdBlock from an upstream Ultra override plus local BiliBili Lite.
+"""Build Shiina AdBlock from upstream Ultra, curated StartUpAds and BiliBili Lite.
 
 The builder intentionally keeps third-party scripts remote. It deduplicates Stash
 script providers by URL, replaces known dead upstream URLs, removes obsolete V2EX
@@ -18,8 +18,49 @@ from urllib.parse import urlparse
 import yaml
 
 
-VERSION = "1.1.0"
-DATE = "2026-08-24"
+VERSION = "1.2.0"
+DATE = "2026-08-25"
+
+# Conservative additions selected from ddgksf2013/StartUpAds. Only endpoints
+# whose path explicitly denotes splash/startup/advertising inventory are kept.
+# Broad RPC/body mutations, finance, entitlement and region rules stay out.
+CURATED_STARTUP_MITM_HOSTS = (
+    "advertise.zhiduodev.com",
+    "api-tx.dsocial.xyz",
+    "api.qeeniao.com",
+    "api.ssp.xcultur.com",
+    "api.szy.cn",
+    "app.yuebuy.cn",
+    "appapi.lvcchong.com",
+    "lens.leoao.com",
+    "list-app-m.i4.cn",
+    "marki.markiapp.com",
+    "misc.eol.cn",
+    "ossx-link.ztehome.com.cn",
+    "rfs-fitness.rfsvr.net",
+    "www.biguotk.com",
+    "yuudnn.lz-qs.com",
+)
+
+CURATED_STARTUP_REWRITES = (
+    r"^https?:\/\/api-tx\.dsocial\.xyz\/api\/.*\/ad_ - reject-200",
+    r"^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.fliggy\.crm\.screen\.(allresource|availablesplashstrategies) - reject-200",
+    r"^https?:\/\/(discardrp|startup)\.umetrip\.com\/gateway\/api\/umetrip\/native - reject-200",
+    r"^https?:\/\/list-app-m\.i4\.cn.*adinfo\.xhtml - reject-200",
+    r"^https?:\/\/api\.qeeniao\.com\/nap\/ad - reject-200",
+    r"^https?:\/\/yuudnn\.lz-qs\.com.*\/mrtb\/getAdSlotList - reject-200",
+    r"^https?:\/\/lens\.leoao\.com\/lens\/.*(Advert|Advertising|queryAppBanners|popup) - reject-200",
+    r"^https?:\/\/appapi\.lvcchong\.com\/appBaseApi\/.*vertisement - reject-200",
+    r"^https?:\/\/marki\.markiapp\.com\/mkg\/Advertising - reject-200",
+    r"^https?:\/\/app\.yuebuy\.cn\/api\/Portal\/startUp - reject-200",
+    r"^https?:\/\/rfs-fitness\.rfsvr\.net\/indoor\/v\d\/app\/adverts - reject-200",
+    r"^https?:\/\/api\.ssp\.xcultur\.com\/api\/v\d\/ad - reject-200",
+    r"^https?:\/\/advertise\.zhiduodev\.com\/adv\/app\/getAdvSpaceInfo - reject-200",
+    r"^https?:\/\/api\.szy\.cn\/appOpenServer\/ad - reject-200",
+    r"^https?:\/\/ossx-link\.ztehome\.com\.cn.*\/get-ad-position-info - reject-200",
+    r"^https?:\/\/www\.biguotk\.com\/api\/advertising - reject-200",
+    r"^https?:\/\/misc\.eol\.cn\/js\/target\/move\/zskyApp\/Appqdkp\/.*json - reject-200",
+)
 
 REPLACEMENTS = {
     "https://raw.githubusercontent.com/ZenmoFeiShi/Qx/main/Smzdm.js":
@@ -116,12 +157,18 @@ def build(upstream: dict, bilibili: dict) -> dict:
     for host in bilibili["http"]["mitm"]:
         if host not in mitm:
             mitm.append(host)
+    for host in CURATED_STARTUP_MITM_HOSTS:
+        if host not in mitm:
+            mitm.append(host)
 
     rewrites = [
         rule for rule in upstream["http"].get("rewrite", [])
         if not is_removed_rewrite(rule)
     ]
     for rule in bilibili["http"].get("url-rewrite", []):
+        if rule not in rewrites:
+            rewrites.append(rule)
+    for rule in CURATED_STARTUP_REWRITES:
         if rule not in rewrites:
             rewrites.append(rule)
 

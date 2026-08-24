@@ -43,12 +43,23 @@ const mine = run("https://app.bilibili.com/x/v2/account/mine", {
     ],
   },
 });
-assert.deepEqual(mine.data.vip, { status: 0, type: 0, due_date: 0 });
+assert.equal(mine.data.vip.status, 1);
+assert.equal(mine.data.vip.type, 2);
+assert.equal(mine.data.vip.due_date, 4669824160000);
 assert.equal("vip_section_v2" in mine.data, false);
 assert.deepEqual(mine.data.live_tip, {});
 assert.equal(mine.data.sections_v2.length, 1);
 assert.deepEqual(Array.from(mine.data.sections_v2[0].items, (item) => item.id), [396]);
 assert.equal("title" in mine.data.sections_v2[0], false);
+
+const myinfo = run("https://app.bilibili.com/x/v2/account/myinfo?access_key=test", {
+  data: { vip: { status: 0, type: 0, due_date: 0 }, name: "tester" },
+});
+assert.equal(myinfo.data.vip.status, 1);
+assert.equal(myinfo.data.vip.type, 2);
+assert.equal(myinfo.data.vip.vip_pay_type, 1);
+assert.equal(myinfo.data.vip.due_date, 4669824160000);
+assert.equal(myinfo.data.name, "tester");
 
 const activity = run("https://app.bilibili.com/x/resource/top/activity", {
   data: { online: { icon: "https://example.com/ad.png" }, hash: "original" },

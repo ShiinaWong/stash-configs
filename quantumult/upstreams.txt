@@ -1,0 +1,5 @@
+# Quantumult X ad-block upstream archive
+# One public source URL per line. Do not add private subscription URLs here.
+https://yfamilys.com/rewrite/adultraplus.conf
+https://ddgksf2013.top/rewrite/StartUpAds.conf
+https://ddgksf2013.top/rewrite/BiliBiliAdsLite.conf
