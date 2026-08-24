@@ -3,14 +3,23 @@
 #!homepage=https://github.com/ShiinaWong/stash-configs
 #!author=ShiinaWong
 name: 🛡️ Shiina AdBlock Ultra
-desc: '[v1.0.1] 自维护综合去广告覆写；Ultra 广覆盖规则经脚本源去重与失效修复，并整合 BiliBili ADBlock Lite。'
+desc: '[v1.1.0] 自维护综合去广告覆写；加入仓库内镜像的国内广告域名规则与 BiliBili 轻量脚本。'
 openUrl: https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-ultra.md
 author: ShiinaWong; upstream rules by their respective authors
 homepage: https://github.com/ShiinaWong/stash-configs
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 🛡️ AdBlock
 date: '2026-08-24'
-version: 1.0.1
+version: 1.1.0
+rule-providers:
+  🛡️ AdBlock.DNS.Lite:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 28800
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/rules/adblockmihomolite.yaml
+rules:
+- RULE-SET,🛡️ AdBlock.DNS.Lite,REJECT
 http:
   mitm:
   - '*-release.wuta-cam.com'
@@ -2433,7 +2442,7 @@ http:
     require-body: true
     timeout: 10
   - match: ^https?:\/\/app\.bilibili\.com\/x\/(resource\/(show\/tab|top\/activity)|v2\/(account\/mine|feed\/index\?))
-    name: 📺 BiliBili.UI.Clean.v0.3.2.response.json
+    name: 📺 BiliBili.UI.Clean.v0.3.3.response.json
     type: response
     require-body: true
   - match: ^https?:\/\/app\.bilibili\.com\/x\/v2\/feed\/index\?
@@ -4929,12 +4938,12 @@ script-providers:
   Ultra.zhuanzhuan.5af7cfca:
     url: https://raw.githubusercontent.com/fmz200/wool_scripts/main/Scripts/zhuanzhuan/zhuanzhuan.js
     interval: 86400
-  📺 BiliBili.UI.Clean.v0.3.2.response.json:
-    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/bilibili-ui-clean.js?v=0.3.2
+  📺 BiliBili.UI.Clean.v0.3.3.response.json:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/bilibili-ui-clean.js?v=0.3.3
     interval: 86400
   📺 BiliBili.ADBlock.Lite.request.json:
-    url: https://github.com/BiliUniverse/ADBlock/releases/download/v0.6.24/request.bundle.js
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/vendor/biliuniverse-adblock/request.bundle.js?v=0.6.24
     interval: 86400
   📺 BiliBili.ADBlock.Lite.response.json:
-    url: https://github.com/BiliUniverse/ADBlock/releases/download/v0.6.24/response.bundle.js
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/vendor/biliuniverse-adblock/response.bundle.js?v=0.6.24
     interval: 86400

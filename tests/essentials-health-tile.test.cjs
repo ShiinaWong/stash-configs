@@ -38,12 +38,12 @@ function run(statuses = {}) {
   assert.equal(healthy.requests.length, 5);
   assert.ok(healthy.requests.every((request) => request.headers.Range === "bytes=0-0"));
   assert.ok(healthy.requests.every((request) => request["auto-redirect"] === true));
-  assert.match(healthy.result.title, /v0\.2\.2/);
+  assert.match(healthy.result.title, /v0\.3\.0/);
   assert.match(healthy.result.content, /全部依赖正常/);
 
   const failingUrl = healthy.requests[3].url;
   const unhealthy = await run({ [failingUrl]: 503 });
-  assert.match(unhealthy.result.content, /❌ 轻量广告规则 \(503\)/);
+  assert.match(unhealthy.result.content, /❌ 轻量广告规则镜像 \(503\)/);
   assert.match(unhealthy.result.content, /异常 1 项/);
 
   console.log("essentials-health-tile: all tests passed");
