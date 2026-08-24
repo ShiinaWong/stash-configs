@@ -11,6 +11,20 @@
 
 ## 当前配置
 
+### Shiina AdBlock Ultra（综合版）
+
+面向直接订阅的广覆盖综合去广告覆写。基于公开 Ultra 规则进行脚本源去重、失效修复，并整合本仓库的 BiliBili ADBlock Lite。仓库会定时检查所有远程脚本依赖。
+
+- 配置文件：[`overrides/shiina-adblock-ultra.stoverride`](overrides/shiina-adblock-ultra.stoverride)
+- 使用与维护说明：[`docs/shiina-adblock-ultra.md`](docs/shiina-adblock-ultra.md)
+- Stash 订阅链接：
+
+```text
+https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina-adblock-ultra.stoverride
+```
+
+该版本已经包含 BiliBili ADBlock Lite，不要再同时启用下面的独立 B 站覆写。
+
 ### Shiina Stash Essentials（推荐）
 
 统一订阅入口，当前包含国内轻量广告域名规则、BiliBili ADBlock Lite，以及远程依赖健康检查磁贴。

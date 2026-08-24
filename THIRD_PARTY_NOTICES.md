@@ -1,5 +1,15 @@
 # Third-party notices
 
+## APP 启动页去广告 Ultra+
+
+`overrides/shiina-adblock-ultra.stoverride` 以公开的 Ultra+ 聚合覆写为功能基线，对脚本提供器进行了去重，并替换或移除了失效依赖。
+
+- Source: https://yfamilys.com/stoverride/adultraplus.stoverride
+- Project: https://github.com/deezertidal/stash-override
+- Verification mirror: https://github.com/liuqing2030/magic/blob/2044096cfca8b8d7751959cee05340fa58b7fac8/adultraplus.stoverride
+
+生成的覆写仅引用第三方脚本 URL，不在本仓库镜像这些 JavaScript 文件。原聚合仓库未声明许可证；本仓库保留来源说明，不对第三方内容重新授权。
+
 ## BiliUniverse/ADBlock
 
 `overrides/bilibili-adblock-lite.stoverride` 基于以下项目的 Stash 模板与发布脚本：
