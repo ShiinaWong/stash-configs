@@ -18,7 +18,7 @@ from urllib.parse import urlparse
 import yaml
 
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 DATE = "2026-08-24"
 
 REPLACEMENTS = {
@@ -36,6 +36,7 @@ REMOVED_PROVIDER_URLS = {
 
 REMOVED_MITM_HOSTS = {
     "app.bilibili.com",
+    "app.biliapi.net",
     "app.biliintl.com",
     "manga.bilibili.com",
     "passport.biliintl.com",
@@ -73,7 +74,7 @@ def is_removed_rewrite(rule: str) -> bool:
     lowered = rule.lower()
     return any(
         token in lowered
-        for token in ("bilibili", "biliintl", "v2ex", *SENSITIVE_FINANCIAL_TOKENS)
+        for token in ("bilibili", "biliapi", "biliintl", "v2ex", *SENSITIVE_FINANCIAL_TOKENS)
     )
 
 
@@ -92,6 +93,8 @@ def build(upstream: dict, bilibili: dict) -> dict:
         if (
             url in REMOVED_PROVIDER_URLS
             or "v2ex" in lowered_match
+            or "bilibili" in lowered_match
+            or "biliapi" in lowered_match
             or any(token in lowered_match for token in SENSITIVE_FINANCIAL_TOKENS)
         ):
             continue

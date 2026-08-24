@@ -14,7 +14,6 @@ abort "UI provider URL must include version" unless provider.fetch("url").end_wi
 ui_rule = config.dig("http", "script").find { |rule| rule["match"].include?("feed\\/index") }
 abort "feed UI rule missing" unless ui_rule
 abort "feed UI rule must reference versioned provider" unless ui_rule["name"] == expected_provider
-
 expected_mitm = ["api.live.bilibili.com", "api.vc.bilibili.com", "app.bilibili.com"]
 abort "MitM hosts must stay minimal" unless config.dig("http", "mitm").sort == expected_mitm.sort
 
