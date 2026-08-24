@@ -2,7 +2,8 @@
  * BiliBili UI Clean for Stash
  *
  * Cleans selected app UI responses without touching comments, danmaku,
- * playback URLs, account entitlements, or VIP status fields.
+ * playback URLs. Account endpoints optionally expose the legacy Quantumult X
+ * 1080P/high-bitrate capability requested by this configuration.
  * UI behavior is inspired by ddgksf2013's BiliBiliAdsLite configuration.
  */
 
@@ -19,6 +20,9 @@ try {
     cleanNavigation(payload);
   } else if (/\/x\/v2\/account\/mine/.test(url)) {
     cleanMinePage(payload);
+    enable1080p(payload);
+  } else if (/\/x\/v2\/account\/myinfo(?:\?|$)/.test(url)) {
+    enable1080p(payload);
   } else if (/\/x\/resource\/top\/activity/.test(url)) {
     cleanTopActivity(payload);
   } else {
@@ -119,7 +123,17 @@ function cleanMinePage(payload) {
   if ("live_tip" in payload.data) payload.data.live_tip = {};
   if ("answer" in payload.data) payload.data.answer = {};
 
-  // Deliberately preserve payload.data.vip and every account entitlement field.
+}
+
+function enable1080p(payload) {
+  if (!payload.data || typeof payload.data !== "object") return;
+  if (!payload.data.vip || typeof payload.data.vip !== "object") payload.data.vip = {};
+
+  payload.data.vip_type = 2;
+  payload.data.vip.type = 2;
+  payload.data.vip.status = 1;
+  payload.data.vip.vip_pay_type = 1;
+  payload.data.vip.due_date = 4669824160000;
 }
 
 function cleanTopActivity(payload) {
