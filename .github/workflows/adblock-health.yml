@@ -1,0 +1,28 @@
+name: AdBlock dependency health
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 2 * * 1,4"
+  push:
+    paths:
+      - "overrides/shiina-adblock-ultra.stoverride"
+      - "overrides/bilibili-adblock-lite.stoverride"
+      - "scripts/bilibili-ui-clean.js"
+      - "tools/build_shiina_adblock.py"
+      - "tools/check_shiina_adblock.py"
+      - ".github/workflows/adblock-health.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
+      - run: python tools/check_shiina_adblock.py --remote
