@@ -15,6 +15,8 @@
 
 面向直接订阅的广覆盖综合去广告覆写。基于公开 Ultra 规则进行脚本源去重、失效修复，并整合本仓库的 BiliBili ADBlock Lite。仓库会定时检查所有远程脚本依赖。
 
+`v1.1.0` 同时加入本仓库镜像的国内轻量 DNS 广告规则，并将 BiliUniverse 的固定版本脚本镜像到本仓库，降低外部下载失效概率。上游通过 GitHub Actions 定时同步；B 站仍只处理轻量接口。
+
 - 配置文件：[`overrides/shiina-adblock-ultra.stoverride`](overrides/shiina-adblock-ultra.stoverride)
 - 使用与维护说明：[`docs/shiina-adblock-ultra.md`](docs/shiina-adblock-ultra.md)
 - Stash 订阅链接：
@@ -41,7 +43,7 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/stash-
 
 轻量版哔哩哔哩去广告与界面净化覆写。
 
-当前覆写版本为 `v0.3.2`。广告处理基于 [BiliUniverse/ADBlock](https://github.com/BiliUniverse/ADBlock) `v0.6.24`，并加入首页横幅、小程序/游戏卡片、推广卡片、首页 Tab、“我的”页面与顶部活动入口净化。MITM 域名保持精简，不接管备用 API 主机、gRPC 搜索、评论、弹幕、视频详情和播放地址接口，也不修改 VIP 或账户权益字段。
+当前覆写版本为 `v0.3.3`。广告处理基于 [BiliUniverse/ADBlock](https://github.com/BiliUniverse/ADBlock) `v0.6.24`，并加入首页横幅、小程序/游戏卡片、推广卡片、首页 Tab、“我的”页面与顶部活动入口净化。MITM 域名保持精简，不接管备用 API 主机、gRPC 搜索、评论、弹幕、视频详情和播放地址接口，也不修改 VIP 或账户权益字段。
 
 - 配置文件：[`overrides/bilibili-adblock-lite.stoverride`](overrides/bilibili-adblock-lite.stoverride)
 - 使用说明：[`docs/bilibili-adblock-lite.md`](docs/bilibili-adblock-lite.md)
@@ -53,4 +55,4 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/bilibi
 
 ## 上游与许可
 
-本仓库中的 BiliBili ADBlock Lite 基于 [BiliUniverse/ADBlock](https://github.com/BiliUniverse/ADBlock)，统一订阅中的轻量广告域名规则来自 [217heidai/adblockfilters](https://github.com/217heidai/adblockfilters)。详见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) 和 [`licenses/BiliUniverse-ADBlock-LICENSE`](licenses/BiliUniverse-ADBlock-LICENSE)。
+本仓库中的 BiliBili ADBlock Lite 基于 [BiliUniverse/ADBlock](https://github.com/BiliUniverse/ADBlock)，统一订阅中的轻量广告域名规则来自 [217heidai/adblockfilters](https://github.com/217heidai/adblockfilters)。详见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)、[`licenses/BiliUniverse-ADBlock-LICENSE`](licenses/BiliUniverse-ADBlock-LICENSE) 和 [`licenses/217heidai-adblockfilters-LICENSE`](licenses/217heidai-adblockfilters-LICENSE)。

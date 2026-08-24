@@ -1,0 +1,35 @@
+name: Sync selected adblock upstreams
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "37 1 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-adblock-upstreams
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python tools/sync_upstreams.py
+      - run: python tools/sync_upstreams.py --check
+      - name: Commit updated mirrors
+        run: |
+          if git diff --quiet -- rules vendor; then
+            echo "No upstream changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add rules vendor
+          git commit -m "chore: sync selected adblock upstreams"
+          git push

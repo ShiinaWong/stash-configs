@@ -40,6 +40,7 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/bilibi
 
 ## 版本
 
+- `v0.3.3`：把 BiliUniverse `v0.6.24` 发布脚本镜像到本仓库，避免 GitHub Release 重定向造成脚本下载失败；接口范围不变。
 - `v0.3.2`：加强对伪装成普通视频卡片的推广内容识别；继续不接管备用 API、评论、详情和播放链路。
 - `v0.3.1`：界面脚本 provider 名称和 URL 加入版本号，强制 Stash 刷新脚本缓存；同时移除 gRPC、Web 推荐和备用 API 主机的接管，降低评论与相似视频链路的 MITM 开销。
 - `v0.3.0`：描述中显示版本号；首页信息流采用更严格的普通视频卡型白名单，移除横幅、小程序/游戏入口和推广卡片。

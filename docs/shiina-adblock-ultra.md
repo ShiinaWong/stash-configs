@@ -2,6 +2,8 @@
 
 自维护的 Stash 综合去广告覆写。它以 APP 启动页去广告 Ultra+ 的公开规则为功能基线，修复失效依赖、合并重复脚本下载，并整合本仓库的 BiliBili ADBlock Lite。
 
+从 `v1.1.0` 开始，订阅还会加载本仓库镜像的国内轻量 DNS 广告域名规则。DNS 拦截不需要扩大 HTTPS MITM，可补足仅靠脚本/重写无法覆盖的广告请求。
+
 ## 订阅地址
 
 ```text
@@ -9,6 +11,13 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina
 ```
 
 在 Stash 中通过 URL 安装后，请确认已安装并信任 Stash CA 证书，否则 HTTPS 响应脚本无法生效。
+
+## v1.1.0 调整
+
+- 将 `217heidai/adblockfilters` 的国内 Lite 域名规则镜像到本仓库，并加入统一 Ultra 订阅。
+- 将 BiliUniverse `v0.6.24` 请求/响应脚本镜像到本仓库，避开 GitHub Release 多次重定向导致的下载失败。
+- 新增每日上游同步工作流；BiliUniverse 版本继续固定，未经测试不会自动升级。
+- 只部分引入上游：继续排除 B 站评论、详情、相关推荐、弹幕、播放和 gRPC 接口。
 
 ## v1.0.1 调整
 

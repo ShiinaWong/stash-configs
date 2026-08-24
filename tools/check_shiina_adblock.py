@@ -44,6 +44,7 @@ def validate(config: dict) -> list[str]:
     scripts = http.get("script", [])
     providers = config.get("script-providers", {})
     provider_urls = [provider.get("url") for provider in providers.values()]
+    rule_provider = config.get("rule-providers", {}).get("🛡️ AdBlock.DNS.Lite")
 
     if config.get("name") != "🛡️ Shiina AdBlock Ultra":
         errors.append("unexpected config name")
@@ -55,6 +56,12 @@ def validate(config: dict) -> list[str]:
         errors.append("script providers were not deduplicated")
     if len(provider_urls) != len(set(provider_urls)):
         errors.append("duplicate script provider URLs remain")
+    if not rule_provider:
+        errors.append("local DNS adblock provider is missing")
+    elif "ShiinaWong/stash-configs/main/rules/adblockmihomolite.yaml" not in rule_provider.get("url", ""):
+        errors.append("DNS adblock provider must use the repository mirror")
+    if config.get("rules") != ["RULE-SET,🛡️ AdBlock.DNS.Lite,REJECT"]:
+        errors.append("DNS adblock rule is missing or reordered")
 
     referenced = {rule.get("name") for rule in scripts}
     missing = sorted(name for name in referenced if name not in providers)
@@ -103,7 +110,11 @@ def check_url(url: str, retries: int = 3) -> tuple[str, str]:
 
 
 def remote_errors(config: dict) -> list[str]:
-    urls = sorted({provider["url"] for provider in config["script-providers"].values()})
+    urls = {
+        provider["url"] for provider in config["script-providers"].values()
+    }
+    urls.update(provider["url"] for provider in config.get("rule-providers", {}).values())
+    urls = sorted(urls)
     failures: list[str] = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
         for url, result in executor.map(check_url, urls):

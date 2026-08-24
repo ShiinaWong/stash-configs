@@ -18,7 +18,7 @@ from urllib.parse import urlparse
 import yaml
 
 
-VERSION = "1.0.1"
+VERSION = "1.1.0"
 DATE = "2026-08-24"
 
 REPLACEMENTS = {
@@ -142,6 +142,16 @@ def build(upstream: dict, bilibili: dict) -> dict:
         "category": "🛡️ AdBlock",
         "date": DATE,
         "version": VERSION,
+        "rule-providers": {
+            "🛡️ AdBlock.DNS.Lite": {
+                "type": "http",
+                "behavior": "domain",
+                "format": "yaml",
+                "interval": 28800,
+                "url": "https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/rules/adblockmihomolite.yaml",
+            }
+        },
+        "rules": ["RULE-SET,🛡️ AdBlock.DNS.Lite,REJECT"],
         "http": {
             "mitm": mitm,
             "script": scripts,
