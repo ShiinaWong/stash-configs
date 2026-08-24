@@ -38,7 +38,7 @@ function run(statuses = {}) {
   assert.equal(healthy.requests.length, 5);
   assert.ok(healthy.requests.every((request) => request.headers.Range === "bytes=0-0"));
   assert.ok(healthy.requests.every((request) => request["auto-redirect"] === true));
-  assert.match(healthy.result.title, /v0\.3\.0/);
+  assert.match(healthy.result.title, /v0\.4\.0/);
   assert.match(healthy.result.content, /全部依赖正常/);
 
   const failingUrl = healthy.requests[3].url;
