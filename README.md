@@ -12,6 +12,18 @@
 
 ## 当前配置
 
+### ChatGPT 出口 IP 检测
+
+显示 ChatGPT 实际路由出口的 IP、地区、ASN/运营商及住宅网络判断，并识别常见机房、VPN、代理和 Tor 标记。
+
+- 配置文件：[`overrides/chatgpt-ip-check.stoverride`](overrides/chatgpt-ip-check.stoverride)
+- 使用说明：[`docs/chatgpt-ip-check.md`](docs/chatgpt-ip-check.md)
+- Stash 覆写链接：
+
+```text
+https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/chatgpt-ip-check.stoverride
+```
+
 ### Shiina AdBlock Ultra（综合版）
 
 面向直接订阅的广覆盖综合去广告覆写。基于公开 Ultra 规则进行脚本源去重、失效修复，并整合本仓库的 BiliBili ADBlock Lite。仓库会定时检查所有远程脚本依赖。
