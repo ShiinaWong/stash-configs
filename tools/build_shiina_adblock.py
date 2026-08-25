@@ -18,8 +18,16 @@ from urllib.parse import urlparse
 import yaml
 
 
-VERSION = "1.2.0"
+VERSION = "1.2.1"
 DATE = "2026-08-25"
+
+CAINIAO_PROVIDER = "📦 Cainiao.Splash.Clean.v1.2.1"
+CAINIAO_PROVIDER_URL = (
+    "https://raw.githubusercontent.com/ShiinaWong/stash-configs/"
+    "main/scripts/cainiao-splash-clean.js?v=1.2.1"
+)
+CAINIAO_AD_API = "mtop.cainiao.guoguo.nbnetflow.ads."
+CAINIAO_HANDLED_ACTIONS = ("show", "mshow", "batch.show")
 
 # Conservative additions selected from ddgksf2013/StartUpAds. Only endpoints
 # whose path explicitly denotes splash/startup/advertising inventory are kept.
@@ -119,6 +127,18 @@ def is_removed_rewrite(rule: str) -> bool:
     )
 
 
+def is_cainiao_overlap(value: str) -> bool:
+    """Remove only rules superseded by the maintained splash handler."""
+    lowered = value.lower().replace("\\", "")
+    if CAINIAO_AD_API not in lowered:
+        return False
+    return (
+        any(action in lowered for action in CAINIAO_HANDLED_ACTIONS)
+        or lowered.rstrip().endswith(("ads. - reject-200", "ads. - reject"))
+        or "(?!.*_home)" in lowered
+    )
+
+
 def build(upstream: dict, bilibili: dict) -> dict:
     source_providers = upstream["script-providers"]
     old_to_url = {
@@ -137,6 +157,7 @@ def build(upstream: dict, bilibili: dict) -> dict:
             or "bilibili" in lowered_match
             or "biliapi" in lowered_match
             or any(token in lowered_match for token in SENSITIVE_FINANCIAL_TOKENS)
+            or is_cainiao_overlap(lowered_match)
         ):
             continue
         rewritten = dict(rule)
@@ -160,10 +181,17 @@ def build(upstream: dict, bilibili: dict) -> dict:
     for host in CURATED_STARTUP_MITM_HOSTS:
         if host not in mitm:
             mitm.append(host)
+    for host in (
+        "guide-acs4miniapp-inner.m.taobao.com",
+        "netflow-mtop.cainiao.com",
+        "netflow-reply-mtop.cainiao.com",
+    ):
+        if host not in mitm:
+            mitm.append(host)
 
     rewrites = [
         rule for rule in upstream["http"].get("rewrite", [])
-        if not is_removed_rewrite(rule)
+        if not is_removed_rewrite(rule) and not is_cainiao_overlap(rule)
     ]
     for rule in bilibili["http"].get("url-rewrite", []):
         if rule not in rewrites:
@@ -175,6 +203,32 @@ def build(upstream: dict, bilibili: dict) -> dict:
     scripts.extend(dict(rule) for rule in bilibili["http"]["script"])
     for name, settings in bilibili["script-providers"].items():
         providers[name] = dict(settings)
+
+    cainiao_match = (
+        r"^https?:\/\/(?:cn-acs\.m\.cainiao\.com|netflow(?:-reply)?-mtop\.cainiao\.com|"
+        r"(?:guide-)?acs4miniapp-inner\.m\.taobao\.com|guide-acs\.m\.taobao\.com|acs\.m\.taobao\.com)"
+        r"\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(?:show(?:\.login)?|batch\.show(?:\.v2)?|mshow)"
+    )
+    scripts.extend((
+        {
+            "match": cainiao_match,
+            "name": CAINIAO_PROVIDER,
+            "type": "request",
+            "require-body": False,
+            "timeout": 10,
+        },
+        {
+            "match": cainiao_match,
+            "name": CAINIAO_PROVIDER,
+            "type": "response",
+            "require-body": True,
+            "timeout": 10,
+        },
+    ))
+    providers[CAINIAO_PROVIDER] = {
+        "url": CAINIAO_PROVIDER_URL,
+        "interval": 86400,
+    }
 
     return {
         "name": "🛡️ Shiina AdBlock Ultra",
