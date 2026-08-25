@@ -1,0 +1,30 @@
+name: "💬 Tieba AdBlock Conservative"
+desc: "[v1.0.0] 百度贴吧保守去广告；不接管帖子、评论、看图和同步接口"
+author: "ShiinaWong"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-25"
+version: "1.0.0"
+
+http:
+  mitm:
+    - tiebac.baidu.com
+    - c.tieba.baidu.com
+    - tb1.bdstatic.com
+    - tb2.bdstatic.com
+  script:
+    - match: ^https?:\/\/(?:tiebac|c\.tieba)\.baidu\.com\/c\/f\/ad\/getSplashAd(?:\?.*)?$
+      name: 💬 Tieba.Splash.Clean.v1.2.2
+      type: response
+      require-body: true
+      timeout: 10
+  url-rewrite:
+    - ^https?:\/\/tiebac\.baidu\.com\/c\/f\/ad\/getFeedAd - reject-200
+    - ^https?:\/\/tb2\.bdstatic\.com\/tb\/mobile\/spb\/widget\/jump - reject-img
+    - ^https?:\/\/tb1\.bdstatic\.com\/tb\/cms\/ngmis\/adsense\/*.jpg - reject
+    - ^https?:\/\/c\.tieba\.baidu\.com\/c\/f\/forum\/getAdInfo - reject
+
+script-providers:
+  💬 Tieba.Splash.Clean.v1.2.2:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/tieba-splash-clean.js?v=1.2.2
+    interval: 86400
