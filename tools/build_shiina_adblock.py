@@ -18,7 +18,7 @@ from urllib.parse import urlparse
 import yaml
 
 
-VERSION = "1.2.1"
+VERSION = "1.2.2"
 DATE = "2026-08-25"
 
 CAINIAO_PROVIDER = "📦 Cainiao.Splash.Clean.v1.2.1"
@@ -28,6 +28,12 @@ CAINIAO_PROVIDER_URL = (
 )
 CAINIAO_AD_API = "mtop.cainiao.guoguo.nbnetflow.ads."
 CAINIAO_HANDLED_ACTIONS = ("show", "mshow", "batch.show")
+
+TIEBA_PROVIDER = "💬 Tieba.Splash.Clean.v1.2.2"
+TIEBA_PROVIDER_URL = (
+    "https://raw.githubusercontent.com/ShiinaWong/stash-configs/"
+    "main/scripts/tieba-splash-clean.js?v=1.2.2"
+)
 
 # Conservative additions selected from ddgksf2013/StartUpAds. Only endpoints
 # whose path explicitly denotes splash/startup/advertising inventory are kept.
@@ -139,6 +145,18 @@ def is_cainiao_overlap(value: str) -> bool:
     )
 
 
+def is_tieba_deep_script(value: str) -> bool:
+    lowered = value.lower().replace("\\", "")
+    return "tieba" in lowered and "baidu.com" in lowered
+
+
+def is_tieba_unsafe_rewrite(value: str) -> bool:
+    lowered = value.lower().replace("\\", "")
+    return "c.tieba.baidu.com" in lowered and any(
+        action in lowered for action in ("newrnsync", "mlog", "(sync|")
+    )
+
+
 def build(upstream: dict, bilibili: dict) -> dict:
     source_providers = upstream["script-providers"]
     old_to_url = {
@@ -158,6 +176,7 @@ def build(upstream: dict, bilibili: dict) -> dict:
             or "biliapi" in lowered_match
             or any(token in lowered_match for token in SENSITIVE_FINANCIAL_TOKENS)
             or is_cainiao_overlap(lowered_match)
+            or is_tieba_deep_script(lowered_match)
         ):
             continue
         rewritten = dict(rule)
@@ -191,7 +210,9 @@ def build(upstream: dict, bilibili: dict) -> dict:
 
     rewrites = [
         rule for rule in upstream["http"].get("rewrite", [])
-        if not is_removed_rewrite(rule) and not is_cainiao_overlap(rule)
+        if not is_removed_rewrite(rule)
+        and not is_cainiao_overlap(rule)
+        and not is_tieba_unsafe_rewrite(rule)
     ]
     for rule in bilibili["http"].get("url-rewrite", []):
         if rule not in rewrites:
@@ -227,6 +248,18 @@ def build(upstream: dict, bilibili: dict) -> dict:
     ))
     providers[CAINIAO_PROVIDER] = {
         "url": CAINIAO_PROVIDER_URL,
+        "interval": 86400,
+    }
+
+    scripts.append({
+        "match": r"^https?:\/\/(?:tiebac|c\.tieba)\.baidu\.com\/c\/f\/ad\/getSplashAd(?:\?.*)?$",
+        "name": TIEBA_PROVIDER,
+        "type": "response",
+        "require-body": True,
+        "timeout": 10,
+    })
+    providers[TIEBA_PROVIDER] = {
+        "url": TIEBA_PROVIDER_URL,
         "interval": 86400,
     }
 
