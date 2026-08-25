@@ -1,0 +1,35 @@
+name: "📦 Cainiao AdBlock Conservative"
+desc: "[v1.0.0] 菜鸟裹裹保守去广告；只处理明确广告接口"
+author: "ShiinaWong"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-25"
+version: "1.0.0"
+
+http:
+  mitm:
+    - cn-acs.m.cainiao.com
+    - netflow-mtop.cainiao.com
+    - netflow-reply-mtop.cainiao.com
+    - guide-acs4miniapp-inner.m.taobao.com
+    - acs4miniapp-inner.m.taobao.com
+    - guide-acs.m.taobao.com
+    - acs.m.taobao.com
+  script:
+    - match: ^https?:\/\/(?:cn-acs\.m\.cainiao\.com|netflow(?:-reply)?-mtop\.cainiao\.com|(?:guide-)?acs4miniapp-inner\.m\.taobao\.com|guide-acs\.m\.taobao\.com|acs\.m\.taobao\.com)\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(?:show(?:\.login)?|batch\.show(?:\.v2)?|mshow)
+      name: 📦 Cainiao.Splash.Clean.v1.2.1
+      type: request
+      require-body: false
+      timeout: 10
+    - match: ^https?:\/\/(?:cn-acs\.m\.cainiao\.com|netflow(?:-reply)?-mtop\.cainiao\.com|(?:guide-)?acs4miniapp-inner\.m\.taobao\.com|guide-acs\.m\.taobao\.com|acs\.m\.taobao\.com)\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(?:show(?:\.login)?|batch\.show(?:\.v2)?|mshow)
+      name: 📦 Cainiao.Splash.Clean.v1.2.1
+      type: response
+      require-body: true
+      timeout: 10
+  url-rewrite:
+    - ^https?:\/\/(?:guide-acs|acs)\.m\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-dict
+
+script-providers:
+  📦 Cainiao.Splash.Clean.v1.2.1:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/cainiao-splash-clean.js?v=1.2.1
+    interval: 86400
