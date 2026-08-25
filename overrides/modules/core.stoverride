@@ -1,0 +1,18 @@
+name: "🧩 Shiina AdBlock Core"
+desc: "[v1.0.0] 国内轻量 DNS 广告域名规则；不启用 HTTPS MITM"
+author: "ShiinaWong"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-25"
+version: "1.0.0"
+
+rule-providers:
+  🛡️ AdBlock.DNS.Lite:
+    type: http
+    behavior: domain
+    format: yaml
+    interval: 86400
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/rules/adblockmihomolite.yaml
+
+rules:
+  - RULE-SET,🛡️ AdBlock.DNS.Lite,REJECT

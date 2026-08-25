@@ -1,6 +1,6 @@
 # Shiina Stash Essentials
 
-这是推荐使用的统一 Stash 覆写订阅。目标是在尽量少配置订阅的前提下，只收录经过范围检查、可以明确说明数据来源和影响面的功能。
+这是旧版精简合集，为已有订阅保留。新的日常去广告订阅请使用 [`Shiina AdBlock Lite`](shiina-adblock-lite.md)；Lite 已用模块化方式加入菜鸟和贴吧保守规则。
 
 ## 当前版本
 

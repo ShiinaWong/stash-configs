@@ -12,9 +12,23 @@
 
 ## 当前配置
 
-### Shiina AdBlock Ultra（综合版）
+### Shiina AdBlock Lite（日常推荐）
 
-面向直接订阅的广覆盖综合去广告覆写。基于公开 Ultra 规则进行脚本源去重、失效修复，并整合本仓库的 BiliBili ADBlock Lite。仓库会定时检查所有远程脚本依赖。
+按模块生成的日常稳定版，当前包含 Core 域名规则、精选开屏广告、B 站、菜鸟裹裹和百度贴吧。不加载 Ultra 中数百个未选 App 的 MITM、脚本和重写。
+
+- 配置文件：[`overrides/shiina-adblock-lite.stoverride`](overrides/shiina-adblock-lite.stoverride)
+- 使用与模块说明：[`docs/shiina-adblock-lite.md`](docs/shiina-adblock-lite.md)
+- Stash 订阅链接：
+
+```text
+https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina-adblock-lite.stoverride
+```
+
+不要同时启用 Lite、Ultra 或已被 Lite 包含的独立 App 覆写。
+
+### Shiina AdBlock Ultra（Legacy 全量版）
+
+广覆盖规则库和兼容订阅。基于公开 Ultra 规则进行脚本源去重、失效修复，并整合本仓库的 BiliBili ADBlock Lite。它继续保留作为后续抽取 App 规则的来源，不再作为日常首选。
 
 `v1.2.0` 在仓库镜像的国内轻量 DNS 广告规则基础上，选择性补入 StartUpAds 中接口明确的开屏广告规则。B 站加入旧 Quantumult X 配置中的 1080P/高码率账户能力，但仍不接管评论、详情、相关推荐、播放或 gRPC 链路。
 
@@ -28,13 +42,13 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina
 
 该版本已经包含 BiliBili ADBlock Lite，不要再同时启用下面的独立 B 站覆写。
 
-### Shiina Stash Essentials（推荐）
+### Shiina Stash Essentials（兼容保留）
 
-统一订阅入口，当前包含国内轻量广告域名规则、BiliBili ADBlock Lite，以及远程依赖健康检查磁贴。
+旧版精简合集，包含国内轻量广告域名规则、BiliBili ADBlock Lite 和依赖健康检查磁贴。原订阅地址继续有效；新的日常去广告请使用 Shiina AdBlock Lite。
 
 - 配置文件：[`overrides/stash-essentials.stoverride`](overrides/stash-essentials.stoverride)
 - 使用说明：[`docs/stash-essentials.md`](docs/stash-essentials.md)
-- 唯一推荐订阅链接：
+- 兼容订阅链接：
 
 ```text
 https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/stash-essentials.stoverride

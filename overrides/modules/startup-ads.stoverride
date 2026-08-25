@@ -1,0 +1,46 @@
+name: "🚀 Shiina Startup Ads"
+desc: "[v1.0.0] 仅收录接口语义明确的开屏与广告请求"
+author: "ShiinaWong; selected from ddgksf2013/StartUpAds"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-25"
+version: "1.0.0"
+
+http:
+  mitm:
+    - advertise.zhiduodev.com
+    - api-tx.dsocial.xyz
+    - api.qeeniao.com
+    - api.ssp.xcultur.com
+    - api.szy.cn
+    - app.yuebuy.cn
+    - appapi.lvcchong.com
+    - lens.leoao.com
+    - list-app-m.i4.cn
+    - marki.markiapp.com
+    - misc.eol.cn
+    - ossx-link.ztehome.com.cn
+    - rfs-fitness.rfsvr.net
+    - www.biguotk.com
+    - yuudnn.lz-qs.com
+    - acs.m.taobao.com
+    - startup.umetrip.com
+    - discardrp.umetrip.com
+  url-rewrite:
+    - ^https?:\/\/api-tx\.dsocial\.xyz\/api\/.*\/ad_ - reject-200
+    - ^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.fliggy\.crm\.screen\.(allresource|availablesplashstrategies) - reject-200
+    - ^https?:\/\/(discardrp|startup)\.umetrip\.com\/gateway\/api\/umetrip\/native - reject-200
+    - ^https?:\/\/list-app-m\.i4\.cn.*adinfo\.xhtml - reject-200
+    - ^https?:\/\/api\.qeeniao\.com\/nap\/ad - reject-200
+    - ^https?:\/\/yuudnn\.lz-qs\.com.*\/mrtb\/getAdSlotList - reject-200
+    - ^https?:\/\/lens\.leoao\.com\/lens\/.*(Advert|Advertising|queryAppBanners|popup) - reject-200
+    - ^https?:\/\/appapi\.lvcchong\.com\/appBaseApi\/.*vertisement - reject-200
+    - ^https?:\/\/marki\.markiapp\.com\/mkg\/Advertising - reject-200
+    - ^https?:\/\/app\.yuebuy\.cn\/api\/Portal\/startUp - reject-200
+    - ^https?:\/\/rfs-fitness\.rfsvr\.net\/indoor\/v\d\/app\/adverts - reject-200
+    - ^https?:\/\/api\.ssp\.xcultur\.com\/api\/v\d\/ad - reject-200
+    - ^https?:\/\/advertise\.zhiduodev\.com\/adv\/app\/getAdvSpaceInfo - reject-200
+    - ^https?:\/\/api\.szy\.cn\/appOpenServer\/ad - reject-200
+    - ^https?:\/\/ossx-link\.ztehome\.com\.cn.*\/get-ad-position-info - reject-200
+    - ^https?:\/\/www\.biguotk\.com\/api\/advertising - reject-200
+    - ^https?:\/\/misc\.eol\.cn\/js\/target\/move\/zskyApp\/Appqdkp\/.*json - reject-200
