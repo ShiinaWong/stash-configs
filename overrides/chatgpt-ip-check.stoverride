@@ -1,0 +1,26 @@
+name: "🤖 ChatGPT 出口 IP 检测"
+desc: |-
+  [v1.0.0] 检测 ChatGPT 实际出口 IP、地区、ASN/运营商与网络类型
+  区分常见机房、VPN、代理、Tor、移动网络和疑似家庭宽带
+openUrl: "https://github.com/ShiinaWong/stash-configs/blob/main/docs/chatgpt-ip-check.md"
+author: "ShiinaWong"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+icon: "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/ChatGPT.png"
+category: "🧰 Network"
+date: "2026-08-25"
+version: "1.0.0"
+
+tiles:
+  - name: 🤖 ChatGPT.IP.Check.v1.0.0
+    title: ChatGPT 出口检测
+    content: 点击刷新检测…
+    icon: network
+    backgroundColor: "#10A37F"
+    interval: 3600
+    timeout: 20
+    url: https://github.com/ShiinaWong/stash-configs/blob/main/docs/chatgpt-ip-check.md
+
+script-providers:
+  🤖 ChatGPT.IP.Check.v1.0.0:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/chatgpt-ip-check.js?v=1.0.0
+    interval: 86400
