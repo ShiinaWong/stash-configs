@@ -12,7 +12,7 @@
 
 ## BiliUniverse/ADBlock
 
-`overrides/bilibili-adblock-lite.stoverride` 基于以下项目的 Stash 模板与发布脚本：
+`overrides/bilibili-adblock-lite.stoverride` 和生成的 `overrides/shiina-adblock-lite.stoverride` 基于以下项目的 Stash 模板与发布脚本：
 
 - Project: BiliUniverse/ADBlock
 - Source: https://github.com/BiliUniverse/ADBlock
@@ -32,7 +32,7 @@ Apache License 2.0 全文见 `licenses/BiliUniverse-ADBlock-LICENSE`。
 
 ## 217heidai/adblockfilters
 
-`rules/adblockmihomolite.yaml` 是该项目生成的国内轻量广告域名规则镜像，同时供 Essentials 与 Ultra 使用。镜像由定时工作流同步，不修改规则内容。
+`rules/adblockmihomolite.yaml` 是该项目生成的国内轻量广告域名规则镜像，同时供 Core、Lite、Essentials 与 Ultra 使用。镜像不修改规则内容，需要时通过保留的手动工作流同步。
 
 - Project: 217heidai/adblockfilters
 - Source: https://github.com/217heidai/adblockfilters
@@ -40,3 +40,11 @@ Apache License 2.0 全文见 `licenses/BiliUniverse-ADBlock-LICENSE`。
 - License: GNU General Public License v3.0
 
 GPL-3.0 全文见 `licenses/217heidai-adblockfilters-LICENSE`。
+
+## ddgksf2013/StartUpAds
+
+`overrides/modules/startup-ads.stoverride` 从 StartUpAds 中选取接口语义明确的开屏和广告重写，没有整体复制上游配置，也没有引入会员、地区、金融或宽泛 RPC 修改。
+
+- Project: ddgksf2013/Rewrite
+- Source: https://github.com/ddgksf2013/Rewrite/blob/master/AdBlock/StartUpAds.conf
+- Author: ddgksf2013
