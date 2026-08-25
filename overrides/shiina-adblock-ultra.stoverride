@@ -3,14 +3,14 @@
 #!homepage=https://github.com/ShiinaWong/stash-configs
 #!author=ShiinaWong
 name: 🛡️ Shiina AdBlock Ultra
-desc: '[v1.2.0] 自维护综合去广告覆写；Ultra 广覆盖规则经脚本源去重与失效修复，并整合 BiliBili ADBlock Lite。'
+desc: '[v1.2.1] 自维护综合去广告覆写；Ultra 广覆盖规则经脚本源去重与失效修复，并整合 BiliBili ADBlock Lite。'
 openUrl: https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-ultra.md
 author: ShiinaWong; upstream rules by their respective authors
 homepage: https://github.com/ShiinaWong/stash-configs
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 🛡️ AdBlock
 date: '2026-08-25'
-version: 1.2.0
+version: 1.2.1
 rule-providers:
   🛡️ AdBlock.DNS.Lite:
     type: http
@@ -622,6 +622,9 @@ http:
   - api.live.bilibili.com
   - api.vc.bilibili.com
   - app.bilibili.com
+  - guide-acs4miniapp-inner.m.taobao.com
+  - netflow-mtop.cainiao.com
+  - netflow-reply-mtop.cainiao.com
   script:
   - match: https?:\/\/(ipv4|interface\d?)\.music\.163\.com\/e?api\/user\/follow\/users\/mixed\/get
     name: Ultra.wyres.9f029b3f
@@ -1424,11 +1427,6 @@ http:
     require-body: true
     timeout: 10
   - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbpresentation\.(pickup\.empty\.page|protocol\.homepage)\.get\.cn
-    name: Ultra.cainiao.05f68b57
-    type: response
-    require-body: true
-    timeout: 10
-  - match: ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.m?show\.cn
     name: Ultra.cainiao.05f68b57
     type: response
     require-body: true
@@ -2248,11 +2246,6 @@ http:
     type: response
     require-body: true
     timeout: 10
-  - match: ^https:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.mshow
-    name: Ultra.cainiao.05f68b57
-    type: response
-    require-body: true
-    timeout: 10
   - match: ^https:\/\/g-acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idlemtopsearch\.search\/
     name: Ultra.goofish.d28d901f
     type: response
@@ -2482,6 +2475,16 @@ http:
     type: response
     require-body: true
     argument: Splash=true&Feed.AD=true&Feed.Activity=false&Feed.Vertical=false&Feed.Story=true&Search.AD=true&Search.HotSearch=true&PGC.AD=true&Xlive.AD=true&Dynamic.HotTopics=false&Dynamic.MostVisited=false&Dynamic.AdCard=false&View.AD=false&DM.Command=false&DM.Colorful=false&Reply.AD=false&LogLevel=WARN
+  - match: ^https?:\/\/(?:cn-acs\.m\.cainiao\.com|netflow(?:-reply)?-mtop\.cainiao\.com|(?:guide-)?acs4miniapp-inner\.m\.taobao\.com|guide-acs\.m\.taobao\.com|acs\.m\.taobao\.com)\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(?:show(?:\.login)?|batch\.show(?:\.v2)?|mshow)
+    name: 📦 Cainiao.Splash.Clean.v1.2.1
+    type: request
+    require-body: false
+    timeout: 10
+  - match: ^https?:\/\/(?:cn-acs\.m\.cainiao\.com|netflow(?:-reply)?-mtop\.cainiao\.com|(?:guide-)?acs4miniapp-inner\.m\.taobao\.com|guide-acs\.m\.taobao\.com|acs\.m\.taobao\.com)\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(?:show(?:\.login)?|batch\.show(?:\.v2)?|mshow)
+    name: 📦 Cainiao.Splash.Clean.v1.2.1
+    type: response
+    require-body: true
+    timeout: 10
   rewrite:
   - https?:\/\/res\.xiaojukeji\.com\/resapi\/activity\/get(Ruled|Preload|PasMultiNotices) - reject-200
   - https?:\/\/m\.sd\.10086\.cn\/zapi\/app_common\/homeWelcome\/welcome.do - reject-200
@@ -3370,8 +3373,6 @@ http:
   - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbpresentation\.(homepage\.merge|tabbar\.marketing)\.get\.cn - reject-dict
   - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbopen\.miniapp\.recommend\.cpc\.cn - reject-dict
   - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbmensa\.research\.researchservice\.(acquire|event|close)\.cn - reject-dict
-  - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(show|mshow)\.cn\/ - reject-200
-  - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(batch\.show\.v2|index)\.cn - reject-dict
   - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.cncommunity\.my\.station\.query\.cn - reject-dict
   - ^https?:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.adkeyword\.get\.cn - reject-dict
   - ^https?:\/\/cmt\.comp\.360os\.com\/adv - reject-200
@@ -3905,12 +3906,9 @@ http:
   - ^https?:\/\/[a-z]+\.eastmoney\.com\/infoService\/ - reject-200
   - ^https?:\/\/[a-z]*\.rsscc\.com\/[a-z]*\/adver - reject
   - ^https?:\/\/[a-zA-Z0-9_.-]+\.taobao\.com\/gw\/mtop\.cainiao\.nbmensa\.research\.researchservice\.consultmerge - reject-200
-  - ^https?:\/\/[a-zA-Z0-9_.-]+\.taobao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\. - reject-200
   - ^https?:\/\/[a-zA-Z0-9_.-]+\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-200
   - ^https?:\/\/[a-zA-Z0-9_.-]+\.taobao\.com\/gw\/mtop\.alimama\.abyss\.unionpage\.get - reject-200
   - ^https?:\/\/[a-zA-Z0-9_.-]+\.cainiao\.com\/gw\/mtop\.cainiao\.nbcps\.presentation\.fetch\.cn - reject-200
-  - ^https?:\/\/[a-zA-Z0-9_.-]+\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.mshow\.cn - reject-200
-  - ^https?:\/\/[a-zA-Z0-9_.-]+\.cainiao\.com\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(?!.*_home) - reject-200
   - ^https?:\/\/[a-zA-Z0-9_.-]+\.cainiao\.com\/gw\/mtop\.cainiao\.app\.home\.v\d+\.bottom\.area - reject-200
   - ^https?:\/\/[a-zA-Z0-9_-]+\.weathercn\.com\/(.*bypage|appindexicon) - reject-200
   - ^https?:\/\/[a-zA-Z0-9_-]+\.tianmu\.mobi\/ad - reject-200
@@ -4208,7 +4206,6 @@ http:
   - ^https?://cube\.elemecdn\.com/[\w/]+\.jpeg\?x-oss-process=image/resize,m_fill,w_6\d{2},h_8\d{2}/format,webp/ - reject
   - ^https?://cube\.elemecdn\.com/[\w/]+\.jpeg\?x-oss-process=image/resize,m_fill,w_1\d{3},h_2\d{3}/format,webp/ - reject
   - ^https?://cn\.ultraiso\.net/ https://cn.ezbsystems.com/ultraiso/ 302
-  - ^https?://cn-acs\.m\.cainiao\.com/gw/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(show|mshow)\.cn/ - reject-200
   - ^https?://cmsapi\.wifi8\.com/v\d/(emptyAd|adNew)/ - reject
   - ^https?://cloud\.189\.cn/include/splash/ - reject
   - ^https?://clientaccess\.10086\.cn/biz-orange/DN/init/startInit - reject
@@ -4998,4 +4995,7 @@ script-providers:
     interval: 86400
   📺 BiliBili.ADBlock.Lite.response.json:
     url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/vendor/biliuniverse-adblock/response.bundle.js?v=0.6.24
+    interval: 86400
+  📦 Cainiao.Splash.Clean.v1.2.1:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/cainiao-splash-clean.js?v=1.2.1
     interval: 86400
