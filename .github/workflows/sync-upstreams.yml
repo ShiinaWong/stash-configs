@@ -2,8 +2,6 @@ name: Sync selected adblock upstreams
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "37 1 * * *"
 
 permissions:
   contents: write
