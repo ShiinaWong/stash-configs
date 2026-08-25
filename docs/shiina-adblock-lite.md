@@ -1,0 +1,38 @@
+# Shiina AdBlock Lite
+
+日常使用的模块化 Stash 去广告覆写。它不是从零维护的空配置，而是从 Ultra 和已审核上游中只选择范围明确、实际需要的模块。
+
+## 订阅地址
+
+```text
+https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina-adblock-lite.stoverride
+```
+
+## v1.0.0 已包含
+
+- Core：国内轻量 DNS 广告域名规则，不需要 MITM。
+- Startup Ads：17 条接口语义明确的开屏/广告规则。
+- BiliBili Lite：开屏、首页、搜索、直播间、导航与 1080P 账户能力；不接管评论、详情和播放。
+- 菜鸟裹裹：仅处理明确的开屏与 `flyad` 广告接口。
+- 百度贴吧：仅保留开屏、Feed 广告、广告素材和 `getAdInfo`；不修改帖子、评论和同步。
+
+## 与 Ultra 的关系
+
+- Lite 是推荐日常订阅，只合并已选模块。
+- Ultra 继续保留为 Legacy 全量规则库，不会因本次拆分丢失规则。
+- 不要同时启用 Lite 与 Ultra，否则同一请求可能被重复处理。
+- 新 App 可以先从 Legacy Ultra 抽取已有规则，审核和测试后再加入 Lite，无需每次从零抓包。
+
+## 模块与生成
+
+- 通用模块：`overrides/modules/`
+- App 模块：`overrides/apps/`
+- Lite 生成器：`tools/build_shiina_adblock_lite.py`
+
+生成命令：
+
+```bash
+python3 tools/build_shiina_adblock_lite.py
+```
+
+后续可以通过调整生成器的模块列表来改变 Lite 收录范围，而不需要手工维护一个数千行文件。
