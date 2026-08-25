@@ -3,14 +3,14 @@
 #!homepage=https://github.com/ShiinaWong/stash-configs
 #!author=ShiinaWong
 name: 🛡️ Shiina AdBlock Ultra
-desc: '[v1.2.1] 自维护综合去广告覆写；Ultra 广覆盖规则经脚本源去重与失效修复，并整合 BiliBili ADBlock Lite。'
+desc: '[v1.2.2] 自维护综合去广告覆写；Ultra 广覆盖规则经脚本源去重与失效修复，并整合 BiliBili ADBlock Lite。'
 openUrl: https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-ultra.md
 author: ShiinaWong; upstream rules by their respective authors
 homepage: https://github.com/ShiinaWong/stash-configs
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 🛡️ AdBlock
 date: '2026-08-25'
-version: 1.2.1
+version: 1.2.2
 rule-providers:
   🛡️ AdBlock.DNS.Lite:
     type: http
@@ -2076,16 +2076,6 @@ http:
     type: response
     require-body: true
     timeout: 10
-  - match: ^https?:\/\/(tiebac|c\.tieba)\.baidu\.com\/c\/(b\/ad\/adBid|f\/(frs\/(page|threadlist|generalTabList)|ad\/getFeedAd|pb\/page|excellent\/personalized))\?cmd
-    name: Ultra.tieba-proto.f38021eb
-    type: response
-    require-body: true
-    timeout: 10
-  - match: ^https?:\/\/(tiebac|c\.tieba)\.baidu\.com\/(c\/(s\/sync|f\/(ad\/getSplashAd|frs\/(page|threadlist|generalTabList)|pb\/(pic)?page|excellent\/personalized))$|tiebaads\/commonbatch\?)
-    name: Ultra.tieba-json.9d456958
-    type: response
-    require-body: true
-    timeout: 10
   - match: ^https?:\/\/(so|edith)\.xiaohongshu\.com\/api\/sns\/v\d+\/search\/notes\?
     name: Ultra.xiaohongshu.9f5ee26c
     type: response
@@ -2441,16 +2431,6 @@ http:
     type: response
     require-body: true
     timeout: 10
-  - match: ^http(s:\/\/tiebac|:\/\/c\.tieba)\.baidu\.com\/c\/(b\/ad\/adBid|f\/(frs\/(page|threadlist|generalTabList)|ad\/getFeedAd|pb\/page|excellent\/personalized))\?cmd
-    name: Ultra.tieba-proto.f38021eb
-    type: response
-    require-body: true
-    timeout: 10
-  - match: ^http(s:\/\/tiebac|:\/\/c\.tieba)\.baidu\.com\/(c\/(s\/sync|f\/(ad\/getSplashAd|frs\/(page|threadlist|generalTabList)|pb\/(pic)?page|excellent\/personalized))$|tiebaads\/commonbatch\?)
-    name: Ultra.tieba-json.9d456958
-    type: response
-    require-body: true
-    timeout: 10
   - match: ^(https?://)?([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2
     name: Ultra.applet.a94e56a8
     type: response
@@ -2482,6 +2462,11 @@ http:
     timeout: 10
   - match: ^https?:\/\/(?:cn-acs\.m\.cainiao\.com|netflow(?:-reply)?-mtop\.cainiao\.com|(?:guide-)?acs4miniapp-inner\.m\.taobao\.com|guide-acs\.m\.taobao\.com|acs\.m\.taobao\.com)\/gw\/mtop\.cainiao\.guoguo\.nbnetflow\.ads\.(?:show(?:\.login)?|batch\.show(?:\.v2)?|mshow)
     name: 📦 Cainiao.Splash.Clean.v1.2.1
+    type: response
+    require-body: true
+    timeout: 10
+  - match: ^https?:\/\/(?:tiebac|c\.tieba)\.baidu\.com\/c\/f\/ad\/getSplashAd(?:\?.*)?$
+    name: 💬 Tieba.Splash.Clean.v1.2.2
     type: response
     require-body: true
     timeout: 10
@@ -4217,7 +4202,6 @@ http:
   - ^https?://capi\.mwee\.cn/app-api/V\d+/app/(ad|getstartad) - reject
   - ^https?://cap\.caocaokeji\.cn/advert-bss/ - reject
   - ^https?://c\.tieba\.baidu\.com/c/f/forum/getAdInfo - reject
-  - ^https?://c\.tieba\.baidu\.com/\w+/\w+/(sync|newRnSync|mlog) - reject
   - ^https?://business\.msstatic\.com/advertiser/ - reject
   - ^https?://bk\.bingo\.qq\.com/bk/crx/data/videoAd.*$ - reject-dict
   - ^https?://appconf\.mail\.163\.com/mmad/ - reject
@@ -4912,12 +4896,6 @@ script-providers:
   Ultra.stay.a143ff8f:
     url: https://raw.githubusercontent.com/ddgksf2013/Scripts/refs/heads/master/stay.js
     interval: 86400
-  Ultra.tieba-json.9d456958:
-    url: https://raw.githubusercontent.com/app2smile/rules/master/js/tieba-json.js
-    interval: 86400
-  Ultra.tieba-proto.f38021eb:
-    url: https://raw.githubusercontent.com/app2smile/rules/master/js/tieba-proto.js
-    interval: 86400
   Ultra.tuhu.75dcaa1d:
     url: https://raw.githubusercontent.com/zirawell/R-Store/main/Res/Scripts/AntiAd/tuhu.js
     interval: 86400
@@ -4998,4 +4976,7 @@ script-providers:
     interval: 86400
   📦 Cainiao.Splash.Clean.v1.2.1:
     url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/cainiao-splash-clean.js?v=1.2.1
+    interval: 86400
+  💬 Tieba.Splash.Clean.v1.2.2:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/tieba-splash-clean.js?v=1.2.2
     interval: 86400
