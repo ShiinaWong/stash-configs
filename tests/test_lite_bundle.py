@@ -18,9 +18,10 @@ generated = yaml.safe_load(
     (ROOT / "overrides/shiina-adblock-lite.stoverride").read_text(encoding="utf-8")
 )
 
-assert config["version"] == "1.0.0"
+assert config["version"] == "1.0.1"
 assert generated == config
-assert config["rules"] == ["RULE-SET,🛡️ AdBlock.DNS.Lite,REJECT"]
+assert "rule-providers" not in config
+assert "rules" not in config
 assert len(http["mitm"]) <= 35
 assert len(http["script"]) == 7
 assert len(http["url-rewrite"]) <= 30
@@ -49,6 +50,13 @@ for unsafe in (
     "bankcomm",
 ):
     assert unsafe not in serialized
+
+# Keep Core available as an explicit rollback module, but never load it by default.
+core = ROOT / "overrides/modules/core.stoverride"
+assert core not in tuple(ROOT / path for path in DEFAULT_MODULES)
+with_core = build((core, *(ROOT / path for path in DEFAULT_MODULES)))
+assert "🛡️ AdBlock.DNS.Lite" in with_core["rule-providers"]
+assert with_core["rules"] == ["RULE-SET,🛡️ AdBlock.DNS.Lite,REJECT"]
 
 print(
     "lite bundle: "
