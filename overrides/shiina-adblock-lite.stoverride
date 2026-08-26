@@ -3,23 +3,14 @@
 #!homepage=https://github.com/ShiinaWong/stash-configs
 #!author=ShiinaWong
 name: 🛡️ Shiina AdBlock Lite
-desc: '[v1.0.0] 日常稳定版；Core + 精选开屏 + B站 + 菜鸟 + 贴吧，不加载 Legacy Ultra 的数百 App 规则。'
+desc: '[v1.0.1] 内存观察版；精选开屏 + B站 + 菜鸟 + 贴吧，暂停加载 Core 通用 DNS 广告规则和 Legacy Ultra。'
 openUrl: https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-lite.md
 author: ShiinaWong; upstream rules by their respective authors
 homepage: https://github.com/ShiinaWong/stash-configs
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 🛡️ AdBlock
-date: '2026-08-25'
-version: 1.0.0
-rule-providers:
-  🛡️ AdBlock.DNS.Lite:
-    type: http
-    behavior: domain
-    format: yaml
-    interval: 86400
-    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/rules/adblockmihomolite.yaml
-rules:
-- RULE-SET,🛡️ AdBlock.DNS.Lite,REJECT
+date: '2026-08-26'
+version: 1.0.1
 http:
   mitm:
   - advertise.zhiduodev.com

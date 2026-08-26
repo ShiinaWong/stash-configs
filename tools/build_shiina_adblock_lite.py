@@ -9,10 +9,9 @@ from pathlib import Path
 import yaml
 
 
-VERSION = "1.0.0"
-DATE = "2026-08-25"
+VERSION = "1.0.1"
+DATE = "2026-08-26"
 DEFAULT_MODULES = (
-    Path("overrides/modules/core.stoverride"),
     Path("overrides/modules/startup-ads.stoverride"),
     Path("overrides/bilibili-adblock-lite.stoverride"),
     Path("overrides/apps/cainiao.stoverride"),
@@ -62,11 +61,11 @@ def build(module_paths: tuple[Path, ...]) -> dict:
     if missing:
         raise ValueError(f"missing script providers: {', '.join(sorted(missing))}")
 
-    return {
+    result = {
         "name": "🛡️ Shiina AdBlock Lite",
         "desc": (
-            f"[v{VERSION}] 日常稳定版；Core + 精选开屏 + B站 + 菜鸟 + 贴吧，"
-            "不加载 Legacy Ultra 的数百 App 规则。"
+            f"[v{VERSION}] 内存观察版；精选开屏 + B站 + 菜鸟 + 贴吧，"
+            "暂停加载 Core 通用 DNS 广告规则和 Legacy Ultra。"
         ),
         "openUrl": "https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-lite.md",
         "author": "ShiinaWong; upstream rules by their respective authors",
@@ -75,8 +74,6 @@ def build(module_paths: tuple[Path, ...]) -> dict:
         "category": "🛡️ AdBlock",
         "date": DATE,
         "version": VERSION,
-        "rule-providers": rule_providers,
-        "rules": rules,
         "http": {
             "mitm": mitm,
             "script": scripts,
@@ -84,6 +81,11 @@ def build(module_paths: tuple[Path, ...]) -> dict:
         },
         "script-providers": script_providers,
     }
+    if rule_providers:
+        result["rule-providers"] = rule_providers
+    if rules:
+        result["rules"] = rules
+    return result
 
 
 def main() -> None:
