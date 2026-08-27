@@ -8,16 +8,16 @@
 https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina-adblock-lite.stoverride
 ```
 
-## v1.0.1 已包含
+## v1.0.2 已包含
 
 - Startup Ads：17 条接口语义明确的开屏/广告规则。
 - BiliBili Lite：开屏、首页、搜索、直播间、导航与 1080P 账户能力；不接管评论、详情和播放。
 - 菜鸟裹裹：仅处理明确的开屏与 `flyad` 广告接口。
-- 百度贴吧：仅保留开屏、Feed 广告、广告素材和 `getAdInfo`；不修改帖子、评论和同步。
+- 百度贴吧：保留开屏、Feed 广告、广告素材和 `getAdInfo`，并定向拒绝 `mobads.baidu.com`、`afd.baidu.com` 两个广告主机；不修改帖子、评论、图片和同步。
 
 ## 内存观察与回滚
 
-- `v1.0.1` 暂停在日常 Lite 中加载 Core 的 5,059 条通用 DNS 广告域名规则，以观察 Stash 的内存警告是否改善。
+- `v1.0.1` 起暂停在日常 Lite 中加载 Core 的 5,059 条通用 DNS 广告域名规则，以观察 Stash 的内存警告是否改善。
 - App 精准规则、脚本和 MITM 范围不变；主代理订阅中的分流规则不受影响。
 - `overrides/modules/core.stoverride` 和 `rules/adblockmihomolite.yaml` 均继续保留。需要回滚时，将 Core 重新加入 Lite 生成器的默认模块列表并重新生成即可。
 

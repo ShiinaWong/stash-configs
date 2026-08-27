@@ -3,14 +3,14 @@
 #!homepage=https://github.com/ShiinaWong/stash-configs
 #!author=ShiinaWong
 name: 🛡️ Shiina AdBlock Lite
-desc: '[v1.0.1] 内存观察版；精选开屏 + B站 + 菜鸟 + 贴吧，暂停加载 Core 通用 DNS 广告规则和 Legacy Ultra。'
+desc: '[v1.0.2] 内存观察版；精选开屏 + B站 + 菜鸟 + 贴吧专用广告域名，暂停加载 Core 通用 DNS 广告规则和 Legacy Ultra。'
 openUrl: https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-lite.md
 author: ShiinaWong; upstream rules by their respective authors
 homepage: https://github.com/ShiinaWong/stash-configs
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 🛡️ AdBlock
-date: '2026-08-26'
-version: 1.0.1
+date: '2026-08-27'
+version: 1.0.2
 http:
   mitm:
   - advertise.zhiduodev.com
@@ -121,3 +121,6 @@ script-providers:
   💬 Tieba.Splash.Clean.v1.2.2:
     url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/tieba-splash-clean.js?v=1.2.2
     interval: 86400
+rules:
+- DOMAIN,mobads.baidu.com,REJECT
+- DOMAIN,afd.baidu.com,REJECT
