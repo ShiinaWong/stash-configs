@@ -9,8 +9,8 @@ from pathlib import Path
 import yaml
 
 
-VERSION = "1.0.1"
-DATE = "2026-08-26"
+VERSION = "1.0.2"
+DATE = "2026-08-27"
 DEFAULT_MODULES = (
     Path("overrides/modules/startup-ads.stoverride"),
     Path("overrides/bilibili-adblock-lite.stoverride"),
@@ -64,7 +64,7 @@ def build(module_paths: tuple[Path, ...]) -> dict:
     result = {
         "name": "🛡️ Shiina AdBlock Lite",
         "desc": (
-            f"[v{VERSION}] 内存观察版；精选开屏 + B站 + 菜鸟 + 贴吧，"
+            f"[v{VERSION}] 内存观察版；精选开屏 + B站 + 菜鸟 + 贴吧专用广告域名，"
             "暂停加载 Core 通用 DNS 广告规则和 Legacy Ultra。"
         ),
         "openUrl": "https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-lite.md",
