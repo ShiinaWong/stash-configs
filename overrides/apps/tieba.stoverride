@@ -1,10 +1,14 @@
 name: "💬 Tieba AdBlock Conservative"
-desc: "[v1.0.0] 百度贴吧保守去广告；不接管帖子、评论、看图和同步接口"
+desc: "[v1.0.1] 百度贴吧保守去广告；补充专用广告域名，不接管帖子、评论、看图和同步接口"
 author: "ShiinaWong"
 homepage: "https://github.com/ShiinaWong/stash-configs"
 category: "🛡️ AdBlock"
-date: "2026-08-25"
-version: "1.0.0"
+date: "2026-08-27"
+version: "1.0.1"
+
+rules:
+  - DOMAIN,mobads.baidu.com,REJECT
+  - DOMAIN,afd.baidu.com,REJECT
 
 http:
   mitm:
