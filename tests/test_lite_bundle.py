@@ -18,10 +18,13 @@ generated = yaml.safe_load(
     (ROOT / "overrides/shiina-adblock-lite.stoverride").read_text(encoding="utf-8")
 )
 
-assert config["version"] == "1.0.1"
+assert config["version"] == "1.0.2"
 assert generated == config
 assert "rule-providers" not in config
-assert "rules" not in config
+assert config["rules"] == [
+    "DOMAIN,mobads.baidu.com,REJECT",
+    "DOMAIN,afd.baidu.com,REJECT",
+]
 assert len(http["mitm"]) <= 35
 assert len(http["script"]) == 7
 assert len(http["url-rewrite"]) <= 30
@@ -38,6 +41,8 @@ for token in (
     "tieba.baidu.com",
     "Cainiao.Splash.Clean",
     "Tieba.Splash.Clean",
+    "mobads.baidu.com",
+    "afd.baidu.com",
 ):
     assert token in serialized
 
@@ -56,7 +61,11 @@ core = ROOT / "overrides/modules/core.stoverride"
 assert core not in tuple(ROOT / path for path in DEFAULT_MODULES)
 with_core = build((core, *(ROOT / path for path in DEFAULT_MODULES)))
 assert "🛡️ AdBlock.DNS.Lite" in with_core["rule-providers"]
-assert with_core["rules"] == ["RULE-SET,🛡️ AdBlock.DNS.Lite,REJECT"]
+assert with_core["rules"] == [
+    "RULE-SET,🛡️ AdBlock.DNS.Lite,REJECT",
+    "DOMAIN,mobads.baidu.com,REJECT",
+    "DOMAIN,afd.baidu.com,REJECT",
+]
 
 print(
     "lite bundle: "
