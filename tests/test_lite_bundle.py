@@ -18,7 +18,7 @@ generated = yaml.safe_load(
     (ROOT / "overrides/shiina-adblock-lite.stoverride").read_text(encoding="utf-8")
 )
 
-assert config["version"] == "1.0.3"
+assert config["version"] == "1.0.4"
 assert generated == config
 assert "rule-providers" not in config
 assert config["rules"] == [
@@ -27,12 +27,12 @@ assert config["rules"] == [
 ]
 assert len(http["mitm"]) <= 35
 assert len(http["script"]) == 8
-assert len(http["url-rewrite"]) <= 30
+assert len(http["url-rewrite"]) <= 32
 assert len(config["script-providers"]) == 6
 assert len(http["mitm"]) == len(set(http["mitm"]))
 assert len(http["url-rewrite"]) == len(set(http["url-rewrite"]))
 assert len(http["mitm"]) == 32
-assert len(http["url-rewrite"]) == 26
+assert len(http["url-rewrite"]) == 28
 provider_urls = [provider["url"] for provider in config["script-providers"].values()]
 assert len(provider_urls) == len(set(provider_urls))
 
@@ -48,6 +48,8 @@ for token in (
     "api.zhihu.com",
     "real_time_launch_v2",
     "Zhihu.Feed.Clean",
+    "questions",
+    "featured-comment-ad",
 ):
     assert token in serialized
 
@@ -58,7 +60,6 @@ for unsafe in (
     "view/detail",
     "grpc",
     "bankcomm",
-    "comment_v5",
 ):
     assert unsafe not in serialized
 
