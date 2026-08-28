@@ -1,0 +1,25 @@
+name: "💬 WeChat Official Accounts AdBlock"
+desc: |-
+  [v1.0.0] 微信公众号文章广告独立净化
+  仅处理 mp.weixin.qq.com/mp/getappmsgad，不屏蔽微信通用域名
+openUrl: "https://github.com/ShiinaWong/stash-configs/blob/main/docs/wechat-official-accounts-adblock.md"
+author: "ShiinaWong"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-28"
+version: "1.0.0"
+
+http:
+  mitm:
+    - mp.weixin.qq.com
+  script:
+    - match: ^https?:\/\/mp\.weixin\.qq\.com\/mp\/getappmsgad(?:\?.*)?$
+      name: 💬 WeChat.Official.Accounts.Ads.Clean.v1.0.0
+      type: response
+      require-body: true
+      timeout: 10
+
+script-providers:
+  💬 WeChat.Official.Accounts.Ads.Clean.v1.0.0:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/wechat-official-ads-clean.js?v=1.0.0
+    interval: 86400

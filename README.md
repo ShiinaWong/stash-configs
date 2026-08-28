@@ -26,6 +26,20 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina
 
 不要同时启用 Lite、Ultra 或已被 Lite 包含的独立 App 覆写。
 
+### WeChat Official Accounts AdBlock（独立可选）
+
+微信公众号文章广告的独立覆写。仅 MITM `mp.weixin.qq.com`，并只处理 `/mp/getappmsgad` 广告响应；不加入 Lite，方便单独观察文章兼容性和内存变化。
+
+- 配置文件：[`overrides/wechat-official-accounts-adblock.stoverride`](overrides/wechat-official-accounts-adblock.stoverride)
+- 使用说明：[`docs/wechat-official-accounts-adblock.md`](docs/wechat-official-accounts-adblock.md)
+- Stash 订阅链接：
+
+```text
+https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/wechat-official-accounts-adblock.stoverride
+```
+
+它可以和 Shiina AdBlock Lite 同时启用，但不保证处理微信原生小程序或第三方小程序广告。
+
 ### Shiina AdBlock Ultra（Legacy 全量版）
 
 广覆盖规则库和兼容订阅。基于公开 Ultra 规则进行脚本源去重、失效修复，并整合本仓库的 BiliBili ADBlock Lite。它继续保留作为后续抽取 App 规则的来源，不再作为日常首选。
