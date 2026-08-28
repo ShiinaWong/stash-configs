@@ -18,7 +18,7 @@ generated = yaml.safe_load(
     (ROOT / "overrides/shiina-adblock-lite.stoverride").read_text(encoding="utf-8")
 )
 
-assert config["version"] == "1.0.2"
+assert config["version"] == "1.0.3"
 assert generated == config
 assert "rule-providers" not in config
 assert config["rules"] == [
@@ -26,11 +26,13 @@ assert config["rules"] == [
     "DOMAIN,afd.baidu.com,REJECT",
 ]
 assert len(http["mitm"]) <= 35
-assert len(http["script"]) == 7
+assert len(http["script"]) == 8
 assert len(http["url-rewrite"]) <= 30
-assert len(config["script-providers"]) == 5
+assert len(config["script-providers"]) == 6
 assert len(http["mitm"]) == len(set(http["mitm"]))
 assert len(http["url-rewrite"]) == len(set(http["url-rewrite"]))
+assert len(http["mitm"]) == 32
+assert len(http["url-rewrite"]) == 26
 provider_urls = [provider["url"] for provider in config["script-providers"].values()]
 assert len(provider_urls) == len(set(provider_urls))
 
@@ -43,6 +45,9 @@ for token in (
     "Tieba.Splash.Clean",
     "mobads.baidu.com",
     "afd.baidu.com",
+    "api.zhihu.com",
+    "real_time_launch_v2",
+    "Zhihu.Feed.Clean",
 ):
     assert token in serialized
 
@@ -53,6 +58,7 @@ for unsafe in (
     "view/detail",
     "grpc",
     "bankcomm",
+    "comment_v5",
 ):
     assert unsafe not in serialized
 

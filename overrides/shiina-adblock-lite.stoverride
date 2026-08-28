@@ -3,14 +3,14 @@
 #!homepage=https://github.com/ShiinaWong/stash-configs
 #!author=ShiinaWong
 name: 🛡️ Shiina AdBlock Lite
-desc: '[v1.0.2] 内存观察版；精选开屏 + B站 + 菜鸟 + 贴吧专用广告域名，暂停加载 Core 通用 DNS 广告规则和 Legacy Ultra。'
+desc: '[v1.0.3] 内存观察版；精选开屏 + B站 + 菜鸟 + 贴吧 + 知乎精准广告规则，暂停加载 Core 通用 DNS 广告规则和 Legacy Ultra。'
 openUrl: https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-lite.md
 author: ShiinaWong; upstream rules by their respective authors
 homepage: https://github.com/ShiinaWong/stash-configs
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 🛡️ AdBlock
-date: '2026-08-27'
-version: 1.0.2
+date: '2026-08-28'
+version: 1.0.3
 http:
   mitm:
   - advertise.zhiduodev.com
@@ -44,6 +44,7 @@ http:
   - c.tieba.baidu.com
   - tb1.bdstatic.com
   - tb2.bdstatic.com
+  - api.zhihu.com
   script:
   - match: ^https?:\/\/app\.bilibili\.com\/x\/(resource\/(show\/tab|top\/activity)|v2\/(account\/(mine|myinfo\?)|feed\/index\?))
     name: 📺 BiliBili.UI.Clean.v0.4.0.response.json
@@ -79,6 +80,11 @@ http:
     type: response
     require-body: true
     timeout: 10
+  - match: ^https:\/\/api\.zhihu\.com\/topstory\/recommend(?:_v2)?(?:\?.*)?$
+    name: 💡 Zhihu.Feed.Clean.v1.0.0
+    type: response
+    require-body: true
+    timeout: 10
   url-rewrite:
   - ^https?:\/\/api-tx\.dsocial\.xyz\/api\/.*\/ad_ - reject-200
   - ^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.fliggy\.crm\.screen\.(allresource|availablesplashstrategies) - reject-200
@@ -105,6 +111,7 @@ http:
   - ^https?:\/\/tb2\.bdstatic\.com\/tb\/mobile\/spb\/widget\/jump - reject-img
   - ^https?:\/\/tb1\.bdstatic\.com\/tb\/cms\/ngmis\/adsense\/*.jpg - reject
   - ^https?:\/\/c\.tieba\.baidu\.com\/c\/f\/forum\/getAdInfo - reject
+  - ^https:\/\/api\.zhihu\.com\/commercial_api\/(?:launch_v2|real_time_launch_v2)(?:\?.*)?$ - reject-dict
 script-providers:
   📺 BiliBili.UI.Clean.v0.4.0.response.json:
     url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/bilibili-ui-clean.js?v=0.4.0
@@ -120,6 +127,9 @@ script-providers:
     interval: 86400
   💬 Tieba.Splash.Clean.v1.2.2:
     url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/tieba-splash-clean.js?v=1.2.2
+    interval: 86400
+  💡 Zhihu.Feed.Clean.v1.0.0:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/zhihu-feed-clean.js?v=1.0.0
     interval: 86400
 rules:
 - DOMAIN,mobads.baidu.com,REJECT
