@@ -14,7 +14,7 @@
 
 ### Shiina AdBlock Lite（日常推荐）
 
-按模块生成的日常稳定版，当前包含精选开屏广告、B 站、菜鸟裹裹和百度贴吧。不加载 Ultra 中数百个未选 App 的 MITM、脚本和重写。为观察 Stash 内存压力，`v1.0.1` 暂停默认加载 Core 的 5,059 条通用 DNS 广告规则；Core 模块及规则文件仍保留，可随时恢复。
+按模块生成的日常稳定版，当前包含精选开屏广告、B 站、菜鸟裹裹、百度贴吧，以及知乎开屏和推荐列表显式广告净化。不加载 Ultra 中数百个未选 App 的 MITM、脚本和重写。为观察 Stash 内存压力，`v1.0.1` 暂停默认加载 Core 的 5,059 条通用 DNS 广告规则；Core 模块及规则文件仍保留，可随时恢复。
 
 - 配置文件：[`overrides/shiina-adblock-lite.stoverride`](overrides/shiina-adblock-lite.stoverride)
 - 使用与模块说明：[`docs/shiina-adblock-lite.md`](docs/shiina-adblock-lite.md)

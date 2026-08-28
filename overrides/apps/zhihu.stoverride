@@ -1,0 +1,24 @@
+name: "💡 Zhihu AdBlock Conservative"
+desc: "[v1.0.0] 知乎开屏与推荐列表显式广告净化；不处理回答、评论或会员页面"
+author: "ShiinaWong"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-28"
+version: "1.0.0"
+
+http:
+  mitm:
+    - api.zhihu.com
+  script:
+    - match: ^https:\/\/api\.zhihu\.com\/topstory\/recommend(?:_v2)?(?:\?.*)?$
+      name: 💡 Zhihu.Feed.Clean.v1.0.0
+      type: response
+      require-body: true
+      timeout: 10
+  url-rewrite:
+    - ^https:\/\/api\.zhihu\.com\/commercial_api\/(?:launch_v2|real_time_launch_v2)(?:\?.*)?$ - reject-dict
+
+script-providers:
+  💡 Zhihu.Feed.Clean.v1.0.0:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/zhihu-feed-clean.js?v=1.0.0
+    interval: 86400
