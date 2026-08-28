@@ -1,24 +1,26 @@
-name: "💡 Zhihu AdBlock Conservative"
-desc: "[v1.0.0] 知乎开屏与推荐列表显式广告净化；不处理回答、评论或会员页面"
+name: "💡 Zhihu AdBlock"
+desc: "[v1.1.0] 知乎开屏、推荐、问题/话题回答流、关注、热榜与详情页广告净化"
 author: "ShiinaWong"
 homepage: "https://github.com/ShiinaWong/stash-configs"
 category: "🛡️ AdBlock"
 date: "2026-08-28"
-version: "1.0.0"
+version: "1.1.0"
 
 http:
   mitm:
     - api.zhihu.com
   script:
-    - match: ^https:\/\/api\.zhihu\.com\/topstory\/recommend(?:_v2)?(?:\?.*)?$
-      name: 💡 Zhihu.Feed.Clean.v1.0.0
+    - match: ^https:\/\/api\.zhihu\.com\/(?:topstory\/(?:recommend(?:_v2)?|hot-lists\/(?:total|everyone-seeing))|v2\/topstory\/hot-lists\/everyone-seeing|moments_v3|(?:v4\/)?questions\/\d+(?:\/(?:feeds|answers))?|next-(?:bff|data|render)|(?:answers|articles)\/v2\/\d+)(?:[\/?].*)?$
+      name: 💡 Zhihu.Feed.Clean.v1.1.0
       type: response
       require-body: true
       timeout: 10
   url-rewrite:
-    - ^https:\/\/api\.zhihu\.com\/commercial_api\/(?:launch_v2|real_time_launch_v2)(?:\?.*)?$ - reject-dict
+    - ^https:\/\/api\.zhihu\.com\/commercial_api\/(?:app_float_layer|answer\/\d+\/bottom-v2|article\/\d+\/bottom-v2|banners_v3\/app_topstory_banner|launch_v2|real_time_launch_v2)(?:\?.*)?$ - reject-dict
+    - ^https:\/\/api\.zhihu\.com\/(?:ad(?:\/[^?]*)?|ad-style-service\/request|fringe\/ad|distribute\/rhea\/qa_ad_card\/h5\/recommendation|appview\/api\/v\d+\/answers\/\d+\/recommendations|\w+\/\d+\/comments\/featured-comment-ad)(?:\?.*)?$ - reject-dict
+    - ^https:\/\/api\.zhihu\.com\/(?:root\/window|content-distribution-core\/bubble\/common\/settings|comment_v5\/(?:articles|answers)\/\d+\/list-headers)(?:\?.*)?$ - reject-dict
 
 script-providers:
-  💡 Zhihu.Feed.Clean.v1.0.0:
-    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/zhihu-feed-clean.js?v=1.0.0
+  💡 Zhihu.Feed.Clean.v1.1.0:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/zhihu-feed-clean.js?v=1.1.0
     interval: 86400

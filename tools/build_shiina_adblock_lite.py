@@ -9,7 +9,7 @@ from pathlib import Path
 import yaml
 
 
-VERSION = "1.0.3"
+VERSION = "1.0.4"
 DATE = "2026-08-28"
 DEFAULT_MODULES = (
     Path("overrides/modules/startup-ads.stoverride"),
