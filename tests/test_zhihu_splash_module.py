@@ -11,7 +11,7 @@ config = yaml.safe_load(path.read_text(encoding="utf-8"))
 http = config["http"]
 
 assert http["mitm"] == ["api.zhihu.com"]
-assert len(http["url-rewrite"]) == 3
+assert len(http["url-rewrite"]) == 1
 assert len(http["script"]) == 1
 
 rewrites = "\n".join(http["url-rewrite"])

@@ -9,7 +9,13 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 
-from build_shiina_adblock_lite import DEFAULT_MODULES, build  # noqa: E402
+from build_shiina_adblock_lite import (  # noqa: E402
+    APP_MODULES,
+    DEFAULT_APPS,
+    DEFAULT_MODULES,
+    OPTIONAL_MODULES,
+    build,
+)
 
 
 config = build(tuple(ROOT / path for path in DEFAULT_MODULES))
@@ -18,21 +24,21 @@ generated = yaml.safe_load(
     (ROOT / "overrides/shiina-adblock-lite.stoverride").read_text(encoding="utf-8")
 )
 
-assert config["version"] == "1.0.4"
+assert config["version"] == "1.1.0"
 assert generated == config
 assert "rule-providers" not in config
 assert config["rules"] == [
     "DOMAIN,mobads.baidu.com,REJECT",
     "DOMAIN,afd.baidu.com,REJECT",
 ]
-assert len(http["mitm"]) <= 35
+assert len(http["mitm"]) <= 20
 assert len(http["script"]) == 8
-assert len(http["url-rewrite"]) <= 32
+assert len(http["url-rewrite"]) <= 10
 assert len(config["script-providers"]) == 6
 assert len(http["mitm"]) == len(set(http["mitm"]))
 assert len(http["url-rewrite"]) == len(set(http["url-rewrite"]))
-assert len(http["mitm"]) == 32
-assert len(http["url-rewrite"]) == 28
+assert len(http["mitm"]) == 15
+assert len(http["url-rewrite"]) == 7
 provider_urls = [provider["url"] for provider in config["script-providers"].values()]
 assert len(provider_urls) == len(set(provider_urls))
 
@@ -60,11 +66,19 @@ for unsafe in (
     "view/detail",
     "grpc",
     "bankcomm",
+    "api-tx.dsocial.xyz",
+    "startup.umetrip.com",
+    "rfs-fitness.rfsvr.net",
 ):
     assert unsafe not in serialized
 
+# App selection is explicit; unrelated optional bundles never enter daily Lite.
+assert DEFAULT_MODULES == tuple(APP_MODULES[name] for name in DEFAULT_APPS)
+assert OPTIONAL_MODULES["startup-ads"] not in DEFAULT_MODULES
+assert APP_MODULES["wechat-official"] not in DEFAULT_MODULES
+
 # Keep Core available as an explicit rollback module, but never load it by default.
-core = ROOT / "overrides/modules/core.stoverride"
+core = ROOT / OPTIONAL_MODULES["core-dns"]
 assert core not in tuple(ROOT / path for path in DEFAULT_MODULES)
 with_core = build((core, *(ROOT / path for path in DEFAULT_MODULES)))
 assert "🛡️ AdBlock.DNS.Lite" in with_core["rule-providers"]
