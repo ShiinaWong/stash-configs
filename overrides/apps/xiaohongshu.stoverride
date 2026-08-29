@@ -1,0 +1,27 @@
+name: "📕 Xiaohongshu AdBlock"
+desc: "[v1.0.0] 小红书纯去广告；开屏、首页/关注/搜索信息流、详情组件与营销弹窗"
+author: "ShiinaWong; endpoints cross-checked from fmz200, Moli-X and Legacy Ultra"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-29"
+version: "1.0.0"
+
+http:
+  mitm:
+    - edith.xiaohongshu.com
+    - rec.xiaohongshu.com
+    - so.xiaohongshu.com
+    - www.xiaohongshu.com
+  script:
+    - match: ^https:\/\/(?:edith|rec|so|www)\.xiaohongshu\.com\/api\/sns\/(?:v\d+\/(?:system_service\/(?:splash_config|config)|search\/notes|note\/(?:widgets|feed|videofeed)|(?:followfeed|homefeed))|v\d+\/note\/(?:feed|videofeed))(?:[\/?].*)?$
+      name: 📕 Xiaohongshu.Ad.Clean.v1.0.0
+      type: response
+      require-body: true
+      timeout: 10
+  url-rewrite:
+    - ^https:\/\/(?:edith\.xiaohongshu\.com\/api\/sns\/v\d+\/(?:surprisebox\/(?:get_style|open|submit_action)|(?:tag\/)?ads)|www\.xiaohongshu\.com\/api\/(?:sns\/v\d+\/(?:ads\/resource|(?:tag\/)?ads)|marketing\/box\/trigger))(?:[\/?].*)?$ - reject-dict
+
+script-providers:
+  📕 Xiaohongshu.Ad.Clean.v1.0.0:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/xiaohongshu-ad-clean.js?v=1.0.0
+    interval: 86400

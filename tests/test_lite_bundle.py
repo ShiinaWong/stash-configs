@@ -24,21 +24,22 @@ generated = yaml.safe_load(
     (ROOT / "overrides/shiina-adblock-lite.stoverride").read_text(encoding="utf-8")
 )
 
-assert config["version"] == "1.2.0"
+assert config["version"] == "1.3.0"
 assert generated == config
 assert "rule-providers" not in config
 assert config["rules"] == [
     "DOMAIN,mobads.baidu.com,REJECT",
     "DOMAIN,afd.baidu.com,REJECT",
+    "DOMAIN,ma-adx.ctrip.com,REJECT",
 ]
-assert len(http["mitm"]) <= 20
-assert len(http["script"]) == 10
-assert len(http["url-rewrite"]) <= 10
-assert len(config["script-providers"]) == 7
+assert len(http["mitm"]) <= 35
+assert len(http["script"]) == 13
+assert len(http["url-rewrite"]) <= 15
+assert len(config["script-providers"]) == 10
 assert len(http["mitm"]) == len(set(http["mitm"]))
 assert len(http["url-rewrite"]) == len(set(http["url-rewrite"]))
-assert len(http["mitm"]) == 19
-assert len(http["url-rewrite"]) == 9
+assert len(http["mitm"]) == 33
+assert len(http["url-rewrite"]) == 13
 provider_urls = [provider["url"] for provider in config["script-providers"].values()]
 assert len(provider_urls) == len(set(provider_urls))
 
@@ -63,6 +64,15 @@ for token in (
     "cappuccino",
     "t-dsp.pinduoduo.com",
     "Ecommerce.Splash.Clean",
+    "acs.m.goofish.com",
+    "idlecommerce",
+    "Xianyu.Feed.Clean",
+    "edith.xiaohongshu.com",
+    "Xiaohongshu.Ad.Clean",
+    "homepage-api.smzdm.com",
+    "SMZDM.Ad.Clean",
+    "m.ctrip.com",
+    "tripAds",
 ):
     assert token in serialized
 
@@ -76,6 +86,11 @@ for unsafe in (
     "api-tx.dsocial.xyz",
     "startup.umetrip.com",
     "rfs-fitness.rfsvr.net",
+    "optimus-ads.amap.com",
+    "card-service-route-plan",
+    "getTimeZoneServerIpList",
+    "watermark",
+    "video/save",
 ):
     assert unsafe not in serialized
 
@@ -83,6 +98,7 @@ for unsafe in (
 assert DEFAULT_MODULES == tuple(APP_MODULES[name] for name in DEFAULT_APPS)
 assert OPTIONAL_MODULES["startup-ads"] not in DEFAULT_MODULES
 assert APP_MODULES["wechat-official"] not in DEFAULT_MODULES
+assert APP_MODULES["amap"] not in DEFAULT_MODULES
 
 # Keep Core available as an explicit rollback module, but never load it by default.
 core = ROOT / OPTIONAL_MODULES["core-dns"]
@@ -93,6 +109,7 @@ assert with_core["rules"] == [
     "RULE-SET,🛡️ AdBlock.DNS.Lite,REJECT",
     "DOMAIN,mobads.baidu.com,REJECT",
     "DOMAIN,afd.baidu.com,REJECT",
+    "DOMAIN,ma-adx.ctrip.com,REJECT",
 ]
 
 print(

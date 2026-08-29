@@ -1,0 +1,16 @@
+name: "🧳 Ctrip AdBlock Conservative"
+desc: "[v1.0.0] 携程保守去广告；仅拦截专用广告主机和 tripAds 接口"
+author: "ShiinaWong; endpoints cross-checked from yfamilys, fmz200 and Legacy Ultra"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-29"
+version: "1.0.0"
+
+rules:
+  - DOMAIN,ma-adx.ctrip.com,REJECT
+
+http:
+  mitm:
+    - m.ctrip.com
+  url-rewrite:
+    - ^https:\/\/m\.ctrip\.com\/restapi\/soa2\/(?:\d+\/)?(?:sc)?json\/tripAds(?:[\/?].*)?$ - reject-dict

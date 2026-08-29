@@ -1,0 +1,30 @@
+name: "💰 SMZDM AdBlock"
+desc: "[v1.0.0] 什么值得买开屏、首页、好价、百科、搜索及详情广告净化"
+author: "ShiinaWong; endpoints cross-checked from ddgksf2013, blackmatrix7 and Legacy Ultra"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-29"
+version: "1.0.0"
+
+http:
+  mitm:
+    - app-api.smzdm.com
+    - '*.zdmimg.com'
+    - homepage-api.smzdm.com
+    - haojia-api.smzdm.com
+    - haojia.m.smzdm.com
+    - baike-api.smzdm.com
+    - s-api.smzdm.com
+  script:
+    - match: ^https:\/\/(?:app-api\.smzdm\.com\/util\/loading|[^\/]+\.zdmimg\.com\/cpm\/api\/v\d+\/advert_distribution\/get_all_advertise|homepage-api\.smzdm\.com\/v3\/home|haojia-api\.smzdm\.com\/home\/list|haojia\.m\.smzdm\.com\/detail_modul\/article_releated_modul|baike-api\.smzdm\.com\/home_v3\/list|s-api\.smzdm\.com\/sou\/(?:list_v10|filter\/tags\/hot_tags))(?:[\/?].*)?$
+      name: 💰 SMZDM.Ad.Clean.v1.0.0
+      type: response
+      require-body: true
+      timeout: 10
+  url-rewrite:
+    - ^https:\/\/haojia\.m\.smzdm\.com\/detail_modul\/(?:other_modul|user_related_modul)(?:[\/?].*)?$ - reject-200
+
+script-providers:
+  💰 SMZDM.Ad.Clean.v1.0.0:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/smzdm-ad-clean.js?v=1.0.0
+    interval: 86400

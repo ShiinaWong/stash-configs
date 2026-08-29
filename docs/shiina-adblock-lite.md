@@ -8,7 +8,7 @@
 https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina-adblock-lite.stoverride
 ```
 
-## v1.2.0 已包含
+## v1.3.0 已包含
 
 - BiliBili Lite：开屏、首页、搜索、直播间、导航与 1080P 账户能力；不接管评论、详情和播放。
 - 菜鸟裹裹：仅处理明确的开屏与 `flyad` 广告接口。
@@ -17,8 +17,18 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina
 - 淘宝：清空图片和视频开屏广告字段，保留启动响应中的其他数据。
 - 京东：清空 `start` 响应中的开屏图片，并拒绝两个语义明确的启动广告接口；不处理商品、订单和支付。
 - 拼多多：拒绝 `cappuccino/splash` 开屏接口及 `t-dsp.pinduoduo.com` 专用广告请求；不处理首页商品流。
+- 闲鱼：拒绝明确的开屏/广告上报接口；在首页、同城、搜索及商品推荐响应中只删除带广告标记的卡片，不修改交易、消息、账号与发布功能。
+- 小红书：清理开屏配置、信息流明确广告卡片、详情广告组件和营销弹窗；不启用上游脚本中的去水印、强制下载、画质增强与关注页改造。
+- 什么值得买：处理开屏、首页、好价、百科、搜索和详情页广告字段；不修改会员状态，也不删除普通 Wiki/相关文章。
+- 携程：拒绝专用广告主机 `ma-adx.ctrip.com` 和 `tripAds` 接口；不采用旧规则中的时区服务器拦截和百度通用广告接口。
 
-同一 App 内返回类型相同的 Rewrite 已尽量用正则合并；不同返回类型、请求/响应阶段或脚本 provider 不强行拼接。淘宝和京东共用一个本地开屏清理脚本 provider；淘宝主机已和菜鸟模块复用。当前合计为 19 个 MITM 主机、10 条脚本、9 条 Rewrite 和 7 个脚本 provider。
+同一 App 内返回类型相同的 Rewrite 已尽量用正则合并；不同返回类型、请求/响应阶段或脚本 provider 不强行拼接。淘宝和京东共用一个本地开屏清理脚本 provider；淘宝主机已和菜鸟模块复用。当前合计为 33 个 MITM 主机、13 条脚本、13 条 Rewrite 和 10 个脚本 provider。
+
+高德地图保守模块已经提供，但不进入默认 Lite。它只处理开屏、首页推荐、搜索推广和专用广告图片域名，不处理路线规划、天气、附近、打车、订单、定位，也不加载上游混淆脚本：
+
+```text
+https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/apps/amap.stoverride
+```
 
 ## 按 App 使用
 
