@@ -14,10 +14,11 @@
 
 ### Shiina AdBlock Lite（日常推荐）
 
-按模块生成的日常稳定版，当前包含精选开屏广告、B 站、菜鸟裹裹、百度贴吧，以及知乎开屏与主要内容流广告净化。不加载 Ultra 中数百个未选 App 的 MITM、脚本和重写。为观察 Stash 内存压力，`v1.0.1` 暂停默认加载 Core 的 5,059 条通用 DNS 广告规则；Core 模块及规则文件仍保留，可随时恢复。
+按 App 模块生成的日常稳定版，当前只包含 B 站、菜鸟裹裹、百度贴吧和知乎。`v1.1.0` 起不再默认加载跨 App 的精选开屏合集，MITM 主机由 32 个降至 15 个，Rewrite 由 28 条合并、收敛至 7 条。Ultra、Core DNS 和杂项开屏仍保留为可选规则库。
 
 - 配置文件：[`overrides/shiina-adblock-lite.stoverride`](overrides/shiina-adblock-lite.stoverride)
 - 使用与模块说明：[`docs/shiina-adblock-lite.md`](docs/shiina-adblock-lite.md)
+- 独立 App 订阅目录：[`docs/app-adblock-modules.md`](docs/app-adblock-modules.md)
 - Stash 订阅链接：
 
 ```text
@@ -25,6 +26,16 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina
 ```
 
 不要同时启用 Lite、Ultra 或已被 Lite 包含的独立 App 覆写。
+
+如果希望完全按需配置，可以关闭 Lite，只安装独立 App 模块；同一个 App 的 MITM、脚本和 Rewrite 都保留在一个覆写中。
+
+### Misc Startup Ads（独立可选）
+
+原 Lite 中的 17 条跨 App 精选开屏规则继续保留为一个可选合集，不再默认启用，也不会为了每条规则拆成大量单规则文件。
+
+```text
+https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/modules/startup-ads.stoverride
+```
 
 ### WeChat Official Accounts AdBlock（独立可选）
 

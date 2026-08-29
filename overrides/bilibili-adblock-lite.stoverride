@@ -22,10 +22,8 @@ http:
   url-rewrite:
     # 去除搜索中的默认关键词
     - ^https?:\/\/app\.bilibili\.com\/bilibili\.app\.interface\.v1\.Search\/DefaultWords$ - reject
-    # 去除搜索中的“大家都在搜”
-    - ^https?:\/\/api\.vc\.bilibili\.com\/search_svr\/v\d\/Search\/recommend_words - reject-dict
-    # 去除直播间购物信息
-    - ^https?:\/\/api\.live\.bilibili\.com\/xlive\/e-commerce-interface\/v1\/ecommerce-user\/get_shopping_info\? - reject-dict
+    # 去除搜索中的“大家都在搜”和直播间购物信息；相同返回类型合并
+    - ^https?:\/\/(?:api\.vc\.bilibili\.com\/search_svr\/v\d\/Search\/recommend_words|api\.live\.bilibili\.com\/xlive\/e-commerce-interface\/v1\/ecommerce-user\/get_shopping_info\?) - reject-dict
   script:
     # 首页信息流、首页 Tab、“我的”页面和顶部活动入口净化
     - match: ^https?:\/\/app\.bilibili\.com\/x\/(resource\/(show\/tab|top\/activity)|v2\/(account\/(mine|myinfo\?)|feed\/index\?))

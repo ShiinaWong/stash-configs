@@ -3,34 +3,16 @@
 #!homepage=https://github.com/ShiinaWong/stash-configs
 #!author=ShiinaWong
 name: 🛡️ Shiina AdBlock Lite
-desc: '[v1.0.4] 内存观察版；精选开屏 + B站 + 菜鸟 + 贴吧 + 知乎精准广告规则，暂停加载 Core 通用 DNS 广告规则和 Legacy Ultra。'
+desc: '[v1.1.0] App 按需版；B站 + 菜鸟 + 贴吧 + 知乎精准广告规则。默认包不加载杂项开屏、Core 通用 DNS 广告规则和 Legacy Ultra。'
 openUrl: https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-lite.md
 author: ShiinaWong; upstream rules by their respective authors
 homepage: https://github.com/ShiinaWong/stash-configs
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 🛡️ AdBlock
-date: '2026-08-28'
-version: 1.0.4
+date: '2026-08-29'
+version: 1.1.0
 http:
   mitm:
-  - advertise.zhiduodev.com
-  - api-tx.dsocial.xyz
-  - api.qeeniao.com
-  - api.ssp.xcultur.com
-  - api.szy.cn
-  - app.yuebuy.cn
-  - appapi.lvcchong.com
-  - lens.leoao.com
-  - list-app-m.i4.cn
-  - marki.markiapp.com
-  - misc.eol.cn
-  - ossx-link.ztehome.com.cn
-  - rfs-fitness.rfsvr.net
-  - www.biguotk.com
-  - yuudnn.lz-qs.com
-  - acs.m.taobao.com
-  - startup.umetrip.com
-  - discardrp.umetrip.com
   - api.live.bilibili.com
   - api.vc.bilibili.com
   - app.bilibili.com
@@ -40,6 +22,7 @@ http:
   - guide-acs4miniapp-inner.m.taobao.com
   - acs4miniapp-inner.m.taobao.com
   - guide-acs.m.taobao.com
+  - acs.m.taobao.com
   - tiebac.baidu.com
   - c.tieba.baidu.com
   - tb1.bdstatic.com
@@ -86,34 +69,13 @@ http:
     require-body: true
     timeout: 10
   url-rewrite:
-  - ^https?:\/\/api-tx\.dsocial\.xyz\/api\/.*\/ad_ - reject-200
-  - ^https:\/\/acs\.m\.taobao\.com\/gw\/mtop\.fliggy\.crm\.screen\.(allresource|availablesplashstrategies) - reject-200
-  - ^https?:\/\/(discardrp|startup)\.umetrip\.com\/gateway\/api\/umetrip\/native - reject-200
-  - ^https?:\/\/list-app-m\.i4\.cn.*adinfo\.xhtml - reject-200
-  - ^https?:\/\/api\.qeeniao\.com\/nap\/ad - reject-200
-  - ^https?:\/\/yuudnn\.lz-qs\.com.*\/mrtb\/getAdSlotList - reject-200
-  - ^https?:\/\/lens\.leoao\.com\/lens\/.*(Advert|Advertising|queryAppBanners|popup) - reject-200
-  - ^https?:\/\/appapi\.lvcchong\.com\/appBaseApi\/.*vertisement - reject-200
-  - ^https?:\/\/marki\.markiapp\.com\/mkg\/Advertising - reject-200
-  - ^https?:\/\/app\.yuebuy\.cn\/api\/Portal\/startUp - reject-200
-  - ^https?:\/\/rfs-fitness\.rfsvr\.net\/indoor\/v\d\/app\/adverts - reject-200
-  - ^https?:\/\/api\.ssp\.xcultur\.com\/api\/v\d\/ad - reject-200
-  - ^https?:\/\/advertise\.zhiduodev\.com\/adv\/app\/getAdvSpaceInfo - reject-200
-  - ^https?:\/\/api\.szy\.cn\/appOpenServer\/ad - reject-200
-  - ^https?:\/\/ossx-link\.ztehome\.com\.cn.*\/get-ad-position-info - reject-200
-  - ^https?:\/\/www\.biguotk\.com\/api\/advertising - reject-200
-  - ^https?:\/\/misc\.eol\.cn\/js\/target\/move\/zskyApp\/Appqdkp\/.*json - reject-200
   - ^https?:\/\/app\.bilibili\.com\/bilibili\.app\.interface\.v1\.Search\/DefaultWords$ - reject
-  - ^https?:\/\/api\.vc\.bilibili\.com\/search_svr\/v\d\/Search\/recommend_words - reject-dict
-  - ^https?:\/\/api\.live\.bilibili\.com\/xlive\/e-commerce-interface\/v1\/ecommerce-user\/get_shopping_info\? - reject-dict
+  - ^https?:\/\/(?:api\.vc\.bilibili\.com\/search_svr\/v\d\/Search\/recommend_words|api\.live\.bilibili\.com\/xlive\/e-commerce-interface\/v1\/ecommerce-user\/get_shopping_info\?) - reject-dict
   - ^https?:\/\/(?:guide-acs|acs)\.m\.taobao\.com\/gw\/mtop\.cainiao\.adx\.flyad\.getad - reject-dict
   - ^https?:\/\/tiebac\.baidu\.com\/c\/f\/ad\/getFeedAd - reject-200
   - ^https?:\/\/tb2\.bdstatic\.com\/tb\/mobile\/spb\/widget\/jump - reject-img
-  - ^https?:\/\/tb1\.bdstatic\.com\/tb\/cms\/ngmis\/adsense\/*.jpg - reject
-  - ^https?:\/\/c\.tieba\.baidu\.com\/c\/f\/forum\/getAdInfo - reject
-  - ^https:\/\/api\.zhihu\.com\/commercial_api\/(?:app_float_layer|answer\/\d+\/bottom-v2|article\/\d+\/bottom-v2|banners_v3\/app_topstory_banner|launch_v2|real_time_launch_v2)(?:\?.*)?$ - reject-dict
-  - ^https:\/\/api\.zhihu\.com\/(?:ad(?:\/[^?]*)?|ad-style-service\/request|fringe\/ad|distribute\/rhea\/qa_ad_card\/h5\/recommendation|appview\/api\/v\d+\/answers\/\d+\/recommendations|\w+\/\d+\/comments\/featured-comment-ad)(?:\?.*)?$ - reject-dict
-  - ^https:\/\/api\.zhihu\.com\/(?:root\/window|content-distribution-core\/bubble\/common\/settings|comment_v5\/(?:articles|answers)\/\d+\/list-headers)(?:\?.*)?$ - reject-dict
+  - ^https?:\/\/(?:tb1\.bdstatic\.com\/tb\/cms\/ngmis\/adsense\/*.jpg|c\.tieba\.baidu\.com\/c\/f\/forum\/getAdInfo) - reject
+  - ^https:\/\/api\.zhihu\.com\/(?:commercial_api\/(?:app_float_layer|answer\/\d+\/bottom-v2|article\/\d+\/bottom-v2|banners_v3\/app_topstory_banner|launch_v2|real_time_launch_v2)|ad(?:\/[^?]*)?|ad-style-service\/request|fringe\/ad|distribute\/rhea\/qa_ad_card\/h5\/recommendation|appview\/api\/v\d+\/answers\/\d+\/recommendations|\w+\/\d+\/comments\/featured-comment-ad|root\/window|content-distribution-core\/bubble\/common\/settings|comment_v5\/(?:articles|answers)\/\d+\/list-headers)(?:\?.*)?$ - reject-dict
 script-providers:
   📺 BiliBili.UI.Clean.v0.4.0.response.json:
     url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/bilibili-ui-clean.js?v=0.4.0

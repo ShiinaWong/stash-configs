@@ -25,8 +25,7 @@ http:
   url-rewrite:
     - ^https?:\/\/tiebac\.baidu\.com\/c\/f\/ad\/getFeedAd - reject-200
     - ^https?:\/\/tb2\.bdstatic\.com\/tb\/mobile\/spb\/widget\/jump - reject-img
-    - ^https?:\/\/tb1\.bdstatic\.com\/tb\/cms\/ngmis\/adsense\/*.jpg - reject
-    - ^https?:\/\/c\.tieba\.baidu\.com\/c\/f\/forum\/getAdInfo - reject
+    - ^https?:\/\/(?:tb1\.bdstatic\.com\/tb\/cms\/ngmis\/adsense\/*.jpg|c\.tieba\.baidu\.com\/c\/f\/forum\/getAdInfo) - reject
 
 script-providers:
   💬 Tieba.Splash.Clean.v1.2.2:

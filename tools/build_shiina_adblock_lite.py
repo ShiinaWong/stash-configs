@@ -9,15 +9,28 @@ from pathlib import Path
 import yaml
 
 
-VERSION = "1.0.4"
-DATE = "2026-08-28"
-DEFAULT_MODULES = (
-    Path("overrides/modules/startup-ads.stoverride"),
-    Path("overrides/bilibili-adblock-lite.stoverride"),
-    Path("overrides/apps/cainiao.stoverride"),
-    Path("overrides/apps/tieba.stoverride"),
-    Path("overrides/apps/zhihu.stoverride"),
-)
+VERSION = "1.1.0"
+DATE = "2026-08-29"
+APP_MODULES = {
+    "bilibili": Path("overrides/bilibili-adblock-lite.stoverride"),
+    "cainiao": Path("overrides/apps/cainiao.stoverride"),
+    "tieba": Path("overrides/apps/tieba.stoverride"),
+    "zhihu": Path("overrides/apps/zhihu.stoverride"),
+    "wechat-official": Path("overrides/wechat-official-accounts-adblock.stoverride"),
+}
+APP_LABELS = {
+    "bilibili": "B站",
+    "cainiao": "菜鸟",
+    "tieba": "贴吧",
+    "zhihu": "知乎",
+    "wechat-official": "微信公众号",
+}
+DEFAULT_APPS = ("bilibili", "cainiao", "tieba", "zhihu")
+DEFAULT_MODULES = tuple(APP_MODULES[name] for name in DEFAULT_APPS)
+OPTIONAL_MODULES = {
+    "startup-ads": Path("overrides/modules/startup-ads.stoverride"),
+    "core-dns": Path("overrides/modules/core.stoverride"),
+}
 
 
 def load(path: Path) -> dict:
@@ -36,6 +49,23 @@ def merge_mapping(target: dict, source: dict, module: Path, section: str) -> Non
         if name in target and target[name] != settings:
             raise ValueError(f"{module}: conflicting {section} entry: {name}")
         target[name] = settings
+
+
+def app_scope(module_paths: tuple[Path, ...]) -> str:
+    selected = []
+    for path in module_paths:
+        normalized = path.as_posix()
+        match = next(
+            (
+                name for name, module in APP_MODULES.items()
+                if normalized.endswith(module.as_posix())
+            ),
+            None,
+        )
+        if match is None:
+            return "自定义模块"
+        selected.append(APP_LABELS[match])
+    return " + ".join(selected)
 
 
 def build(module_paths: tuple[Path, ...]) -> dict:
@@ -62,11 +92,12 @@ def build(module_paths: tuple[Path, ...]) -> dict:
     if missing:
         raise ValueError(f"missing script providers: {', '.join(sorted(missing))}")
 
+    scope = app_scope(module_paths)
     result = {
         "name": "🛡️ Shiina AdBlock Lite",
         "desc": (
-            f"[v{VERSION}] 内存观察版；精选开屏 + B站 + 菜鸟 + 贴吧 + 知乎精准广告规则，"
-            "暂停加载 Core 通用 DNS 广告规则和 Legacy Ultra。"
+            f"[v{VERSION}] App 按需版；{scope}精准广告规则。"
+            "默认包不加载杂项开屏、Core 通用 DNS 广告规则和 Legacy Ultra。"
         ),
         "openUrl": "https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-lite.md",
         "author": "ShiinaWong; upstream rules by their respective authors",
@@ -96,9 +127,21 @@ def main() -> None:
         type=Path,
         default=Path("overrides/shiina-adblock-lite.stoverride"),
     )
+    parser.add_argument(
+        "--apps",
+        nargs="+",
+        choices=tuple(APP_MODULES),
+        help="build a custom bundle from audited App modules",
+    )
     parser.add_argument("modules", nargs="*", type=Path)
     args = parser.parse_args()
-    module_paths = tuple(args.modules) or DEFAULT_MODULES
+    if args.apps and args.modules:
+        parser.error("use either --apps or explicit module paths, not both")
+    module_paths = (
+        tuple(APP_MODULES[name] for name in args.apps)
+        if args.apps
+        else (tuple(args.modules) or DEFAULT_MODULES)
+    )
     result = build(module_paths)
     rendered = yaml.safe_dump(
         result,
