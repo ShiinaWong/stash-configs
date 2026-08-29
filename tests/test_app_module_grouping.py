@@ -24,6 +24,9 @@ expected = {
     "cainiao": (7, 2, 1),
     "tieba": (4, 1, 3),
     "zhihu": (1, 1, 1),
+    "taobao": (1, 1, 0),
+    "jd": (1, 1, 1),
+    "pinduoduo": (3, 0, 1),
     "wechat-official": (1, 1, 0),
 }
 

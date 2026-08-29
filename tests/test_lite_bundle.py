@@ -24,7 +24,7 @@ generated = yaml.safe_load(
     (ROOT / "overrides/shiina-adblock-lite.stoverride").read_text(encoding="utf-8")
 )
 
-assert config["version"] == "1.1.0"
+assert config["version"] == "1.2.0"
 assert generated == config
 assert "rule-providers" not in config
 assert config["rules"] == [
@@ -32,13 +32,13 @@ assert config["rules"] == [
     "DOMAIN,afd.baidu.com,REJECT",
 ]
 assert len(http["mitm"]) <= 20
-assert len(http["script"]) == 8
+assert len(http["script"]) == 10
 assert len(http["url-rewrite"]) <= 10
-assert len(config["script-providers"]) == 6
+assert len(config["script-providers"]) == 7
 assert len(http["mitm"]) == len(set(http["mitm"]))
 assert len(http["url-rewrite"]) == len(set(http["url-rewrite"]))
-assert len(http["mitm"]) == 15
-assert len(http["url-rewrite"]) == 7
+assert len(http["mitm"]) == 19
+assert len(http["url-rewrite"]) == 9
 provider_urls = [provider["url"] for provider in config["script-providers"].values()]
 assert len(provider_urls) == len(set(provider_urls))
 
@@ -56,6 +56,13 @@ for token in (
     "Zhihu.Feed.Clean",
     "questions",
     "featured-comment-ad",
+    "guide-acs.m.taobao.com",
+    "api.m.jd.com",
+    "functionId=start",
+    "api.pinduoduo.com",
+    "cappuccino",
+    "t-dsp.pinduoduo.com",
+    "Ecommerce.Splash.Clean",
 ):
     assert token in serialized
 
