@@ -1,0 +1,24 @@
+name: "🔴 JD Splash AdBlock"
+desc: "[v1.0.0] 京东开屏广告净化"
+author: "ShiinaWong; endpoints cross-checked from yfamilys and fmz200"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-29"
+version: "1.0.0"
+
+http:
+  mitm:
+    - api.m.jd.com
+  script:
+    - match: ^https:\/\/api\.m\.jd\.com\/client\.action\?[^#]*\bfunctionId=start(?:&|$)
+      name: 🛒 Ecommerce.Splash.Clean.v1.0.0
+      type: response
+      require-body: true
+      timeout: 10
+  url-rewrite:
+    - ^https:\/\/api\.m\.jd\.com\/client\.action\?[^#]*\bfunctionId=(?:home_launchConfig|queryMaterialAdverts)(?:&|$) - reject-200
+
+script-providers:
+  🛒 Ecommerce.Splash.Clean.v1.0.0:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/ecommerce-splash-clean.js?v=1.0.0
+    interval: 86400

@@ -1,0 +1,15 @@
+name: "🟡 Pinduoduo Splash AdBlock"
+desc: "[v1.0.0] 拼多多开屏与专用广告请求拦截"
+author: "ShiinaWong; endpoints cross-checked from yfamilys and fmz200"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-29"
+version: "1.0.0"
+
+http:
+  mitm:
+    - api.pinduoduo.com
+    - api.yangkeduo.com
+    - t-dsp.pinduoduo.com
+  url-rewrite:
+    - ^https?:\/\/(?:(?:api\.(?:pinduoduo|yangkeduo)\.com\/api\/cappuccino\/splash)|(?:t-dsp\.pinduoduo\.com(?:\/|$))) - reject-200

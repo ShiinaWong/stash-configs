@@ -8,18 +8,21 @@
 https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/shiina-adblock-lite.stoverride
 ```
 
-## v1.1.0 已包含
+## v1.2.0 已包含
 
 - BiliBili Lite：开屏、首页、搜索、直播间、导航与 1080P 账户能力；不接管评论、详情和播放。
 - 菜鸟裹裹：仅处理明确的开屏与 `flyad` 广告接口。
 - 百度贴吧：保留开屏、Feed 广告、广告素材和 `getAdInfo`，并定向拒绝 `mobads.baidu.com`、`afd.baidu.com` 两个广告主机；不修改帖子、评论、图片和同步。
 - 知乎：拦截开屏、悬浮层、顶部横幅、回答/文章底部卡片、评论顶部及明确广告接口；在首页推荐、问题/话题回答流、关注流、热榜和详情页后续内容中，仅删除带 `feed_advert`、`adjson`、`promotion_extra`、`ad_info` 或明确“广告/合作推广”标签的卡片。普通回答、文章、评论、盐选和会员内容保持不变。
+- 淘宝：清空图片和视频开屏广告字段，保留启动响应中的其他数据。
+- 京东：清空 `start` 响应中的开屏图片，并拒绝两个语义明确的启动广告接口；不处理商品、订单和支付。
+- 拼多多：拒绝 `cappuccino/splash` 开屏接口及 `t-dsp.pinduoduo.com` 专用广告请求；不处理首页商品流。
 
-同一 App 内返回类型相同的 Rewrite 已尽量用正则合并；不同返回类型、请求/响应阶段或脚本 provider 不强行拼接。当前合计为 15 个 MITM 主机、8 条脚本、7 条 Rewrite 和 6 个脚本 provider。
+同一 App 内返回类型相同的 Rewrite 已尽量用正则合并；不同返回类型、请求/响应阶段或脚本 provider 不强行拼接。淘宝和京东共用一个本地开屏清理脚本 provider；淘宝主机已和菜鸟模块复用。当前合计为 19 个 MITM 主机、10 条脚本、9 条 Rewrite 和 7 个脚本 provider。
 
 ## 按 App 使用
 
-- 省事模式：只启用本 Lite，获得上述四个 App 的合并配置。
+- 省事模式：只启用本 Lite，获得上述七个 App 的合并配置。
 - 严格按需模式：关闭 Lite，按 [`App 独立订阅目录`](app-adblock-modules.md) 只安装实际使用的 App。
 - 不要同时启用 Lite 和 Lite 已包含的独立 App 模块，否则同一响应可能被重复处理。
 - 微信公众号和杂项开屏不属于 Lite，可作为独立模块按需叠加。

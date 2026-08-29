@@ -3,14 +3,14 @@
 #!homepage=https://github.com/ShiinaWong/stash-configs
 #!author=ShiinaWong
 name: 🛡️ Shiina AdBlock Lite
-desc: '[v1.1.0] App 按需版；B站 + 菜鸟 + 贴吧 + 知乎精准广告规则。默认包不加载杂项开屏、Core 通用 DNS 广告规则和 Legacy Ultra。'
+desc: '[v1.2.0] App 按需版；B站 + 菜鸟 + 贴吧 + 知乎 + 淘宝 + 京东 + 拼多多精准广告规则。默认包不加载杂项开屏、Core 通用 DNS 广告规则和 Legacy Ultra。'
 openUrl: https://github.com/ShiinaWong/stash-configs/blob/main/docs/shiina-adblock-lite.md
 author: ShiinaWong; upstream rules by their respective authors
 homepage: https://github.com/ShiinaWong/stash-configs
 icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Advertising.png
 category: 🛡️ AdBlock
 date: '2026-08-29'
-version: 1.1.0
+version: 1.2.0
 http:
   mitm:
   - api.live.bilibili.com
@@ -28,6 +28,10 @@ http:
   - tb1.bdstatic.com
   - tb2.bdstatic.com
   - api.zhihu.com
+  - api.m.jd.com
+  - api.pinduoduo.com
+  - api.yangkeduo.com
+  - t-dsp.pinduoduo.com
   script:
   - match: ^https?:\/\/app\.bilibili\.com\/x\/(resource\/(show\/tab|top\/activity)|v2\/(account\/(mine|myinfo\?)|feed\/index\?))
     name: 📺 BiliBili.UI.Clean.v0.4.0.response.json
@@ -68,6 +72,16 @@ http:
     type: response
     require-body: true
     timeout: 10
+  - match: ^https:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.taobao\.(?:cloudvideo\.video\.query|wireless\.home\.splash\.awesome\.get)(?:[\/?].*)?$
+    name: 🛒 Ecommerce.Splash.Clean.v1.0.0
+    type: response
+    require-body: true
+    timeout: 10
+  - match: ^https:\/\/api\.m\.jd\.com\/client\.action\?[^#]*\bfunctionId=start(?:&|$)
+    name: 🛒 Ecommerce.Splash.Clean.v1.0.0
+    type: response
+    require-body: true
+    timeout: 10
   url-rewrite:
   - ^https?:\/\/app\.bilibili\.com\/bilibili\.app\.interface\.v1\.Search\/DefaultWords$ - reject
   - ^https?:\/\/(?:api\.vc\.bilibili\.com\/search_svr\/v\d\/Search\/recommend_words|api\.live\.bilibili\.com\/xlive\/e-commerce-interface\/v1\/ecommerce-user\/get_shopping_info\?) - reject-dict
@@ -76,6 +90,8 @@ http:
   - ^https?:\/\/tb2\.bdstatic\.com\/tb\/mobile\/spb\/widget\/jump - reject-img
   - ^https?:\/\/(?:tb1\.bdstatic\.com\/tb\/cms\/ngmis\/adsense\/*.jpg|c\.tieba\.baidu\.com\/c\/f\/forum\/getAdInfo) - reject
   - ^https:\/\/api\.zhihu\.com\/(?:commercial_api\/(?:app_float_layer|answer\/\d+\/bottom-v2|article\/\d+\/bottom-v2|banners_v3\/app_topstory_banner|launch_v2|real_time_launch_v2)|ad(?:\/[^?]*)?|ad-style-service\/request|fringe\/ad|distribute\/rhea\/qa_ad_card\/h5\/recommendation|appview\/api\/v\d+\/answers\/\d+\/recommendations|\w+\/\d+\/comments\/featured-comment-ad|root\/window|content-distribution-core\/bubble\/common\/settings|comment_v5\/(?:articles|answers)\/\d+\/list-headers)(?:\?.*)?$ - reject-dict
+  - ^https:\/\/api\.m\.jd\.com\/client\.action\?[^#]*\bfunctionId=(?:home_launchConfig|queryMaterialAdverts)(?:&|$) - reject-200
+  - ^https?:\/\/(?:(?:api\.(?:pinduoduo|yangkeduo)\.com\/api\/cappuccino\/splash)|(?:t-dsp\.pinduoduo\.com(?:\/|$))) - reject-200
 script-providers:
   📺 BiliBili.UI.Clean.v0.4.0.response.json:
     url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/bilibili-ui-clean.js?v=0.4.0
@@ -94,6 +110,9 @@ script-providers:
     interval: 86400
   💡 Zhihu.Feed.Clean.v1.1.0:
     url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/zhihu-feed-clean.js?v=1.1.0
+    interval: 86400
+  🛒 Ecommerce.Splash.Clean.v1.0.0:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/ecommerce-splash-clean.js?v=1.0.0
     interval: 86400
 rules:
 - DOMAIN,mobads.baidu.com,REJECT

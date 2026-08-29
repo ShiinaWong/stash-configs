@@ -48,3 +48,15 @@ GPL-3.0 全文见 `licenses/217heidai-adblockfilters-LICENSE`。
 - Project: ddgksf2013/Rewrite
 - Source: https://github.com/ddgksf2013/Rewrite/blob/master/AdBlock/StartUpAds.conf
 - Author: ddgksf2013
+
+## fmz200/wool_scripts
+
+`scripts/ecommerce-splash-clean.js` 是本仓库针对淘宝和京东开屏响应的精简实现。接口和响应字段行为参考了 fmz200 的当前 Quantumult X 规则与脚本，并与 yfamilys Ultra+ 当前聚合规则交叉核对；本仓库没有引入会员、签到、首页深度净化或账户修改逻辑。
+
+- Project: https://github.com/fmz200/wool_scripts
+- Rule source: https://github.com/fmz200/wool_scripts/blob/main/QuantumultX/rewrite/rewrite.snippet
+- Script sources: https://github.com/fmz200/wool_scripts/blob/main/Scripts/myBlockAds.js and https://github.com/fmz200/wool_scripts/blob/main/Scripts/jingdong/jingdong.js
+- Cross-check: https://yfamilys.com/rewrite/adultraplus.conf
+- License: GNU General Public License v3.0
+
+`scripts/ecommerce-splash-clean.js` 按 GPL-3.0-only 分发。GPL-3.0 全文见 `licenses/217heidai-adblockfilters-LICENSE`。

@@ -6,6 +6,9 @@
 - 菜鸟裹裹：`cainiao.stoverride`
 - 百度贴吧：`tieba.stoverride`
 - 知乎：`zhihu.stoverride`
+- 淘宝：`taobao.stoverride`
+- 京东：`jd.stoverride`
+- 拼多多：`pinduoduo.stoverride`
 - 微信公众号：`../wechat-official-accounts-adblock.stoverride`（独立可选，不进默认 Lite）
 
 跨 App 的精选开屏合集位于 `../modules/startup-ads.stoverride`，它作为一个整体可选，不再默认加入 Lite。Core DNS 和 Legacy Ultra 也不属于 App 模块。

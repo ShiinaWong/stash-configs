@@ -1,0 +1,22 @@
+name: "🟠 Taobao Splash AdBlock"
+desc: "[v1.0.0] 淘宝图片与视频开屏广告净化"
+author: "ShiinaWong; endpoints cross-checked from yfamilys and fmz200"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-29"
+version: "1.0.0"
+
+http:
+  mitm:
+    - guide-acs.m.taobao.com
+  script:
+    - match: ^https:\/\/guide-acs\.m\.taobao\.com\/gw\/mtop\.taobao\.(?:cloudvideo\.video\.query|wireless\.home\.splash\.awesome\.get)(?:[\/?].*)?$
+      name: 🛒 Ecommerce.Splash.Clean.v1.0.0
+      type: response
+      require-body: true
+      timeout: 10
+
+script-providers:
+  🛒 Ecommerce.Splash.Clean.v1.0.0:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/ecommerce-splash-clean.js?v=1.0.0
+    interval: 86400
