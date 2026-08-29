@@ -11,6 +11,11 @@
 | 淘宝 | 1 | 1 | 0 | `https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/apps/taobao.stoverride` |
 | 京东 | 1 | 1 | 1 | `https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/apps/jd.stoverride` |
 | 拼多多 | 3 | 0 | 1 | `https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/apps/pinduoduo.stoverride` |
+| 闲鱼 | 2 | 1 | 1 | `https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/apps/xianyu.stoverride` |
+| 小红书 | 4 | 1 | 1 | `https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/apps/xiaohongshu.stoverride` |
+| 什么值得买 | 7 | 1 | 1 | `https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/apps/smzdm.stoverride` |
+| 携程 | 1 | 0 | 1 | `https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/apps/ctrip.stoverride` |
+| 高德地图（保守版） | 4 | 0 | 2 | `https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/apps/amap.stoverride` |
 | 微信公众号文章 | 1 | 1 | 0 | `https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/wechat-official-accounts-adblock.stoverride` |
 
 ## 可选合集
@@ -34,7 +39,8 @@ Legacy Ultra 仅作为规则仓库，不建议和上述模块同时启用。
 
 ## 使用组合
 
-- 当前七个常用 App：直接使用 Lite。
+- 当前十一个常用 App：直接使用 Lite。
 - 只用部分 App：关闭 Lite，安装对应独立模块。
+- 高德地图：先单独安装保守版观察，不与 Lite 捆绑；确认当前版本路线和定位正常后再决定是否加入默认包。
 - 需要微信公众号文章净化：可单独安装微信公众号模块。
 - 需要尝试陌生 App 的开屏拦截：再额外启用 Misc Startup Ads；遇到异常先关闭它验证。

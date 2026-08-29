@@ -27,10 +27,15 @@ expected = {
     "taobao": (1, 1, 0),
     "jd": (1, 1, 1),
     "pinduoduo": (3, 0, 1),
+    "xianyu": (2, 1, 1),
+    "xiaohongshu": (4, 1, 1),
+    "smzdm": (7, 1, 1),
+    "ctrip": (1, 0, 1),
+    "amap": (4, 0, 2),
     "wechat-official": (1, 1, 0),
 }
 
-assert tuple(APP_MODULES) == (*DEFAULT_APPS, "wechat-official")
+assert tuple(APP_MODULES) == (*DEFAULT_APPS, "amap", "wechat-official")
 assert DEFAULT_MODULES == tuple(APP_MODULES[name] for name in DEFAULT_APPS)
 
 for name, relative_path in APP_MODULES.items():
@@ -58,5 +63,6 @@ startup = yaml.safe_load(
 assert len(startup["http"]["mitm"]) == 18
 assert len(startup["http"]["url-rewrite"]) == 17
 assert OPTIONAL_MODULES["startup-ads"] not in DEFAULT_MODULES
+assert APP_MODULES["amap"] not in DEFAULT_MODULES
 
 print("app modules: independent scopes and merged rewrite actions verified")

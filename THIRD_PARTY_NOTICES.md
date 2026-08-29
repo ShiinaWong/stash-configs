@@ -60,3 +60,15 @@ GPL-3.0 全文见 `licenses/217heidai-adblockfilters-LICENSE`。
 - License: GNU General Public License v3.0
 
 `scripts/ecommerce-splash-clean.js` 按 GPL-3.0-only 分发。GPL-3.0 全文见 `licenses/217heidai-adblockfilters-LICENSE`。
+
+## App 专用广告模块交叉核对来源
+
+闲鱼、小红书、什么值得买、携程和高德地图模块的广告接口范围，与以下公开规则进行了交叉核对：
+
+- https://github.com/ddgksf2013/Rewrite
+- https://github.com/fmz200/wool_scripts
+- https://github.com/Moli-X/Resources
+- https://github.com/RuCu6/QuanX
+- https://yfamilys.com/rewrite/adultraplus.conf
+
+本仓库针对 Stash 独立实现了精简响应过滤，没有镜像上游的小红书去水印/下载解锁、什么值得买会员修改、高德页面深度改造或混淆脚本。模块内保留来源署名；具体上游许可仍以各项目声明为准。

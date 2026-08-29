@@ -1,0 +1,20 @@
+name: "🗺️ Amap AdBlock Conservative"
+desc: "[v1.0.0] 高德地图保守去广告；开屏、首页推荐和搜索推广，不处理路线、天气、附近、打车及订单"
+author: "ShiinaWong; endpoints cross-checked from ddgksf2013, RuCu6 and Legacy Ultra"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-29"
+version: "1.0.0"
+
+rules:
+  - DOMAIN,optimus-ads.amap.com,REJECT
+
+http:
+  mitm:
+    - m5.amap.com
+    - m5-zb.amap.com
+    - amap-aos-info-nogw.amap.com
+    - ai.amap.com
+  url-rewrite:
+    - ^https:\/\/(?:[^\/]+\.)?amap\.com\/(?:ws\/(?:aos|valueadded)\/alimama\/splash_screen(?:_rt)?|ws\/asa\/ads_attribution)(?:[\/?].*)?$ - reject-200
+    - ^https:\/\/(?:[^\/]+\.)?amap\.com\/(?:v\d+\/ai_rec|ws\/shield\/(?:scene\/recommend|search\/new_hotword))(?:[\/?].*)?$ - reject-dict

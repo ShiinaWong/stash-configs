@@ -1,0 +1,25 @@
+name: "🐟 Xianyu AdBlock"
+desc: "[v1.0.0] 闲鱼开屏、首页/同城/搜索信息流与商品推荐广告净化"
+author: "ShiinaWong; endpoints cross-checked from ddgksf2013, fmz200 and Legacy Ultra"
+homepage: "https://github.com/ShiinaWong/stash-configs"
+category: "🛡️ AdBlock"
+date: "2026-08-29"
+version: "1.0.0"
+
+http:
+  mitm:
+    - acs.m.goofish.com
+    - g-acs.m.goofish.com
+  script:
+    - match: ^https:\/\/(?:g-)?acs\.m\.goofish\.com\/gw\/mtop\.(?:taobao\.(?:idlehome\.home\.nextfresh|idle\.local\.home|idlemtopsearch\.search|idle\.item\.recommend(?:\.list)?)|idle\.item\.recommend)(?:[\/?].*)?$
+      name: 🐟 Xianyu.Feed.Clean.v1.0.0
+      type: response
+      require-body: true
+      timeout: 10
+  url-rewrite:
+    - ^https:\/\/(?:g-)?acs\.m\.goofish\.com\/gw\/mtop\.(?:taobao\.idlecommerce\.splash\.ads|idle\.ad\.expose)(?:[\/?].*)?$ - reject-dict
+
+script-providers:
+  🐟 Xianyu.Feed.Clean.v1.0.0:
+    url: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/scripts/xianyu-feed-clean.js?v=1.0.0
+    interval: 86400

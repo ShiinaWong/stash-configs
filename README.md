@@ -14,7 +14,7 @@
 
 ### Shiina AdBlock Lite（日常推荐）
 
-按 App 模块生成的日常稳定版，当前包含 B 站、菜鸟裹裹、百度贴吧、知乎、淘宝、京东和拼多多。`v1.2.0` 新增三个电商 App 的精准开屏规则；淘宝和京东共用一个小型本地清理脚本，拼多多使用专用广告接口 Rewrite。当前为 19 个 MITM 主机、10 条脚本、9 条 Rewrite 和 7 个脚本 provider。Ultra、Core DNS 和杂项开屏仍保留为可选规则库。
+按 App 模块生成的日常稳定版，当前包含 B 站、菜鸟裹裹、百度贴吧、知乎、淘宝、京东、拼多多、闲鱼、小红书、什么值得买和携程。`v1.3.0` 新增四个按需 App 模块：只做纯广告处理，不引入小红书去水印、什么值得买会员修改或携程非广告接口。当前为 33 个 MITM 主机、13 条脚本、13 条 Rewrite 和 10 个脚本 provider。高德地图保守版、Ultra、Core DNS 和杂项开屏仍保留为可选规则库。
 
 - 配置文件：[`overrides/shiina-adblock-lite.stoverride`](overrides/shiina-adblock-lite.stoverride)
 - 使用与模块说明：[`docs/shiina-adblock-lite.md`](docs/shiina-adblock-lite.md)

@@ -9,7 +9,7 @@ from pathlib import Path
 import yaml
 
 
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 DATE = "2026-08-29"
 APP_MODULES = {
     "bilibili": Path("overrides/bilibili-adblock-lite.stoverride"),
@@ -19,6 +19,11 @@ APP_MODULES = {
     "taobao": Path("overrides/apps/taobao.stoverride"),
     "jd": Path("overrides/apps/jd.stoverride"),
     "pinduoduo": Path("overrides/apps/pinduoduo.stoverride"),
+    "xianyu": Path("overrides/apps/xianyu.stoverride"),
+    "xiaohongshu": Path("overrides/apps/xiaohongshu.stoverride"),
+    "smzdm": Path("overrides/apps/smzdm.stoverride"),
+    "ctrip": Path("overrides/apps/ctrip.stoverride"),
+    "amap": Path("overrides/apps/amap.stoverride"),
     "wechat-official": Path("overrides/wechat-official-accounts-adblock.stoverride"),
 }
 APP_LABELS = {
@@ -29,6 +34,11 @@ APP_LABELS = {
     "taobao": "淘宝",
     "jd": "京东",
     "pinduoduo": "拼多多",
+    "xianyu": "闲鱼",
+    "xiaohongshu": "小红书",
+    "smzdm": "什么值得买",
+    "ctrip": "携程",
+    "amap": "高德地图",
     "wechat-official": "微信公众号",
 }
 DEFAULT_APPS = (
@@ -39,6 +49,10 @@ DEFAULT_APPS = (
     "taobao",
     "jd",
     "pinduoduo",
+    "xianyu",
+    "xiaohongshu",
+    "smzdm",
+    "ctrip",
 )
 DEFAULT_MODULES = tuple(APP_MODULES[name] for name in DEFAULT_APPS)
 OPTIONAL_MODULES = {
