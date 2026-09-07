@@ -22,7 +22,9 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/quantumult/rules
 https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/quantumult/rules/Ai-Extended.yaml#via=0, tag=Shiina-AI-Extended, force-policy=Mars-ISP, update-interval=86400, opt-parser=true, enabled=true
 ```
 
-`#via=0` 与 `force-policy=Mars-ISP` 作用不同：前者让规则订阅文件本身直连下载，后者才让命中规则的 AI 请求走 Mars。
+`#via=0` 是 KOP-XIAO 资源解析器参数：为解析后的分流规则添加 `via-interface=%TUN%`，用于代理链，并非指定订阅文件直连下载。`force-policy=Mars-ISP` 则将命中规则的策略指定为 Mars 落地节点；本地仍需保留 Mars 服务器地址指向前置代理的规则。
+
+参数依据：https://github.com/KOP-XIAO/QuantumultX/blob/master/Scripts/resource-parser.js
 
 ## 与原墨鱼订阅的关系
 
