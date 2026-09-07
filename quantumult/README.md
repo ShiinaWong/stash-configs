@@ -49,7 +49,7 @@ https://ddgksf2013.top/rewrite/BiliBiliAdsLite.conf
 
 ## Shiina AI Extended
 
-在墨鱼 `Ai.yaml` 的完整规则上补充 ChatGPT Sites、Sora、Claude、Gemini、GitHub Copilot、Apple Intelligence 及其他常见 AI 服务的专属域名，并由 GitHub Actions 自动跟随上游更新。
+在墨鱼 `Ai.yaml` 基础上排除六个共享云后缀，补充 ChatGPT Sites、Sora、Claude、Gemini 和 GitHub Copilot 域名，并由 GitHub Actions 自动跟随上游更新。
 
 ```text
 https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/quantumult/rules/Ai-Extended.yaml

@@ -2,7 +2,7 @@
 
 ## ddgksf2013 AI Rules
 
-`quantumult/rules/Ai-Extended.yaml` 在公开的墨鱼 AI 分流规则基础上生成：保留上游规则，去重后追加本仓库维护的 AI 服务专属域名。
+`quantumult/rules/Ai-Extended.yaml` 在公开的墨鱼 AI 分流规则基础上生成：排除六个共享云后缀，去重后追加本仓库维护的 AI 服务专属域名。
 
 - Source: https://ddgksf2013.top/filter/Ai.yaml
 - Author: ddgksf2013

@@ -3,7 +3,8 @@
 # UPSTREAM-UPDATED: 2026-08-18
 # SUPPLEMENT: quantumult/ai-supplement.list
 # FORMAT: Clash classical rule-provider (Quantumult X via resource parser)
-# RULES: 147 (91 upstream + 56 unique supplements)
+# RULES: 103; upstream rules before exclusions: 91
+# Shared cloud suffix exclusions: amazonaws.com, azureedge.net, cloudflare.com, googleapis.com, googleusercontent.com, imgix.net
 
 payload:
   - DOMAIN,api.statsig.com
@@ -11,7 +12,6 @@ payload:
   - DOMAIN,static.cloudflareinsights.com
   - DOMAIN-SUFFIX,algolia.net
   - DOMAIN-SUFFIX,auth0.com
-  - DOMAIN-SUFFIX,cloudflare.com
   - DOMAIN-SUFFIX,arkoselabs.com
   - DOMAIN-SUFFIX,statsigapi.net
   - DOMAIN-SUFFIX,featuregates.org
@@ -20,7 +20,6 @@ payload:
   - DOMAIN-SUFFIX,intercomcdn.com
   - DOMAIN-SUFFIX,launchdarkly.com
   - DOMAIN-SUFFIX,segment.io
-  - DOMAIN-SUFFIX,amazonaws.com
   - DOMAIN-SUFFIX,wp.com
   - DOMAIN-SUFFIX,sentry.io
   - DOMAIN-SUFFIX,stripe.com
@@ -47,8 +46,6 @@ payload:
   - DOMAIN-SUFFIX,colab.google.com
   - DOMAIN-SUFFIX,colab.research.google.com
   - DOMAIN-SUFFIX,developerprofiles.google.com
-  - DOMAIN-SUFFIX,googleusercontent.com
-  - DOMAIN-SUFFIX,googleapis.com
   - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com
   - DOMAIN-SUFFIX,grazie.ai
   - DOMAIN-SUFFIX,meta.ai
@@ -81,8 +78,6 @@ payload:
   - DOMAIN-SUFFIX,oaistatic.com
   - DOMAIN-SUFFIX,oaiusercontent.com
   - DOMAIN-SUFFIX,openai.com
-  - DOMAIN-SUFFIX,azureedge.net
-  - DOMAIN-SUFFIX,imgix.net
   - DOMAIN,pplx-res.cloudinary.com
   - DOMAIN-SUFFIX,perplexity.ai
   - DOMAIN-SUFFIX,pplx.ai
@@ -99,7 +94,6 @@ payload:
   - DOMAIN-SUFFIX,manuscdn.com
   - DOMAIN-SUFFIX,chat.com
   - DOMAIN-SUFFIX,chatgpt.site
-  - DOMAIN-SUFFIX,crixet.com
   - DOMAIN-SUFFIX,oaistatsig.com
   - DOMAIN-SUFFIX,sora.com
   - DOMAIN,openaiassets.blob.core.windows.net
@@ -114,42 +108,5 @@ payload:
   - DOMAIN,copilot-proxy.githubusercontent.com
   - DOMAIN,copilot-telemetry.githubusercontent.com
   - DOMAIN,origin-tracker.githubusercontent.com
-  - DOMAIN,apple-relay.apple.com
-  - DOMAIN,apple-relay.cloudflare.com
-  - DOMAIN,apple-relay.fastly-edge.com
-  - DOMAIN,cp4.cloudflare.com
-  - DOMAIN,gateway.icloud.com
-  - DOMAIN,guzzoni.apple.com
-  - DOMAIN-SUFFIX,blackforestlabs.ai
-  - DOMAIN-SUFFIX,cohere.com
-  - DOMAIN-SUFFIX,deepseek.com
-  - DOMAIN-SUFFIX,fireworks.ai
-  - DOMAIN-SUFFIX,groq.com
-  - DOMAIN-SUFFIX,openrouter.ai
-  - DOMAIN-SUFFIX,replicate.com
-  - DOMAIN-SUFFIX,replicate.delivery
-  - DOMAIN-SUFFIX,stability.ai
-  - DOMAIN-SUFFIX,stabilityai.com
-  - DOMAIN-SUFFIX,together.ai
-  - DOMAIN-SUFFIX,together.xyz
-  - DOMAIN-SUFFIX,character.ai
-  - DOMAIN-SUFFIX,civitai.com
-  - DOMAIN-SUFFIX,elevenlabs.io
-  - DOMAIN-SUFFIX,gamma.app
-  - DOMAIN-SUFFIX,ideogram.ai
-  - DOMAIN-SUFFIX,klingai.com
-  - DOMAIN-SUFFIX,leonardo.ai
-  - DOMAIN-SUFFIX,luma.ai
-  - DOMAIN-SUFFIX,pika.art
-  - DOMAIN-SUFFIX,recraft.ai
-  - DOMAIN-SUFFIX,runwayml.com
-  - DOMAIN-SUFFIX,suno.ai
-  - DOMAIN-SUFFIX,suno.com
-  - DOMAIN-SUFFIX,bolt.new
-  - DOMAIN-SUFFIX,codeium.com
-  - DOMAIN-SUFFIX,codeiumdata.com
-  - DOMAIN-SUFFIX,lovable.dev
-  - DOMAIN-SUFFIX,phind.com
-  - DOMAIN-SUFFIX,v0.dev
-  - DOMAIN-SUFFIX,windsurf.com
-  - DOMAIN-SUFFIX,you.com
+  - DOMAIN,aisandbox-pa.googleapis.com
+  - DOMAIN,notebooklm-pa.googleapis.com

@@ -98,7 +98,7 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/bilibi
 
 ### Quantumult X AI + Mars ISP
 
-`Shiina AI Extended` 保留墨鱼 `Ai.yaml` 的全部规则，并补充其暂未覆盖的 AI 服务专属域名。订阅与设置说明见 [`docs/quantumult-ai-mars.md`](docs/quantumult-ai-mars.md)。
+`Shiina AI Extended` 基于墨鱼 `Ai.yaml`，排除六个共享云后缀，并补充其暂未覆盖的 AI 服务专属域名。订阅与设置说明见 [`docs/quantumult-ai-mars.md`](docs/quantumult-ai-mars.md)。
 
 ```text
 https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/quantumult/rules/Ai-Extended.yaml

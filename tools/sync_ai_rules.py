@@ -16,9 +16,15 @@ SUPPLEMENT = ROOT / "quantumult/ai-supplement.list"
 TARGET = ROOT / "quantumult/rules/Ai-Extended.yaml"
 RULE_RE = re.compile(
     r"^\s*-?\s*(DOMAIN(?:-SUFFIX|-KEYWORD|-WILDCARD)?|IP-CIDR6?|IP-ASN),\s*([^,\s]+)"
-    r"(?:\s*,.*)?$",
+    r"\s*$",
     re.IGNORECASE,
 )
+
+# Shared infrastructure: deliberately do not route entire providers through AI.
+EXCLUDED_SUFFIXES = {
+    'amazonaws.com', 'cloudflare.com', 'googleapis.com',
+    'googleusercontent.com', 'azureedge.net', 'imgix.net',
+}
 
 
 def download(url: str) -> str:
@@ -54,6 +60,8 @@ def render(upstream_text: str, supplement_text: str) -> str:
     combined: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     for rule in upstream + supplement:
+        if rule[0] == 'DOMAIN-SUFFIX' and rule[1] in EXCLUDED_SUFFIXES:
+            continue
         if rule not in seen:
             combined.append(rule)
             seen.add(rule)
@@ -75,7 +83,8 @@ def render(upstream_text: str, supplement_text: str) -> str:
         f"# UPSTREAM-UPDATED: {upstream_updated(upstream_text)}",
         "# SUPPLEMENT: quantumult/ai-supplement.list",
         "# FORMAT: Clash classical rule-provider (Quantumult X via resource parser)",
-        f"# RULES: {len(combined)} ({len(upstream)} upstream + {len(combined) - len(upstream)} unique supplements)",
+        f"# RULES: {len(combined)}; upstream rules before exclusions: {len(upstream)}",
+        "# Shared cloud suffix exclusions: " + ', '.join(sorted(EXCLUDED_SUFFIXES)),
         "",
         "payload:",
     ]
@@ -93,7 +102,13 @@ def main() -> None:
         if not TARGET.exists():
             raise SystemExit(f"missing generated file: {TARGET.relative_to(ROOT)}")
         generated = TARGET.read_text(encoding="utf-8")
-        parse_rules(generated, str(TARGET.relative_to(ROOT)))
+        rules = parse_rules(generated, str(TARGET.relative_to(ROOT)))
+        if len(rules) != len(set(rules)):
+            raise SystemExit('duplicate rules in output')
+        if any(('DOMAIN-SUFFIX', host) in rules for host in EXCLUDED_SUFFIXES):
+            raise SystemExit('excluded shared cloud suffix in output')
+        if not set(parse_rules(supplement_text, 'supplements')).issubset(set(rules)):
+            raise SystemExit('supplement rules missing from output')
         for required in ("chatgpt.site", "gemini.google", "githubcopilot.com"):
             if required not in generated:
                 raise SystemExit(f"generated file is missing {required}")

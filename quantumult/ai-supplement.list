@@ -4,7 +4,6 @@
 # OpenAI / ChatGPT / Sora
 DOMAIN-SUFFIX,chat.com
 DOMAIN-SUFFIX,chatgpt.site
-DOMAIN-SUFFIX,crixet.com
 DOMAIN-SUFFIX,oaistatsig.com
 DOMAIN-SUFFIX,sora.com
 DOMAIN,openaiassets.blob.core.windows.net
@@ -26,49 +25,6 @@ DOMAIN,copilot-proxy.githubusercontent.com
 DOMAIN,copilot-telemetry.githubusercontent.com
 DOMAIN,origin-tracker.githubusercontent.com
 
-# Apple Intelligence / Private Cloud Compute relay
-DOMAIN,apple-relay.apple.com
-DOMAIN,apple-relay.cloudflare.com
-DOMAIN,apple-relay.fastly-edge.com
-DOMAIN,cp4.cloudflare.com
-DOMAIN,gateway.icloud.com
-DOMAIN,guzzoni.apple.com
-
-# AI model and API platforms
-DOMAIN-SUFFIX,blackforestlabs.ai
-DOMAIN-SUFFIX,cohere.com
-DOMAIN-SUFFIX,deepseek.com
-DOMAIN-SUFFIX,fireworks.ai
-DOMAIN-SUFFIX,groq.com
-DOMAIN-SUFFIX,openrouter.ai
-DOMAIN-SUFFIX,replicate.com
-DOMAIN-SUFFIX,replicate.delivery
-DOMAIN-SUFFIX,stability.ai
-DOMAIN-SUFFIX,stabilityai.com
-DOMAIN-SUFFIX,together.ai
-DOMAIN-SUFFIX,together.xyz
-
-# AI creation services
-DOMAIN-SUFFIX,character.ai
-DOMAIN-SUFFIX,civitai.com
-DOMAIN-SUFFIX,elevenlabs.io
-DOMAIN-SUFFIX,gamma.app
-DOMAIN-SUFFIX,ideogram.ai
-DOMAIN-SUFFIX,klingai.com
-DOMAIN-SUFFIX,leonardo.ai
-DOMAIN-SUFFIX,luma.ai
-DOMAIN-SUFFIX,pika.art
-DOMAIN-SUFFIX,recraft.ai
-DOMAIN-SUFFIX,runwayml.com
-DOMAIN-SUFFIX,suno.ai
-DOMAIN-SUFFIX,suno.com
-
-# AI coding and search services
-DOMAIN-SUFFIX,bolt.new
-DOMAIN-SUFFIX,codeium.com
-DOMAIN-SUFFIX,codeiumdata.com
-DOMAIN-SUFFIX,lovable.dev
-DOMAIN-SUFFIX,phind.com
-DOMAIN-SUFFIX,v0.dev
-DOMAIN-SUFFIX,windsurf.com
-DOMAIN-SUFFIX,you.com
+# Specific Google AI API hosts (shared googleapis.com excluded)
+DOMAIN,aisandbox-pa.googleapis.com
+DOMAIN,notebooklm-pa.googleapis.com
