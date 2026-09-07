@@ -3,3 +3,4 @@
 https://yfamilys.com/rewrite/adultraplus.conf
 https://ddgksf2013.top/rewrite/StartUpAds.conf
 https://ddgksf2013.top/rewrite/BiliBiliAdsLite.conf
+https://ddgksf2013.top/filter/Ai.yaml

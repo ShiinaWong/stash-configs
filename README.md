@@ -9,6 +9,7 @@
 - `rules/`：规则与规则集
 - `docs/`：使用说明与测试记录
 - `quantumult/`：原 Quantumult X 去广告上游归档，供后续比对与同步
+- `quantumult/rules/Ai-Extended.yaml`：墨鱼 AI 分流的自动同步扩充版，可供 Quantumult X 订阅
 
 ## 当前配置
 
@@ -94,5 +95,13 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/overrides/bilibi
 ```
 
 ## 上游与许可
+
+### Quantumult X AI + Mars ISP
+
+`Shiina AI Extended` 保留墨鱼 `Ai.yaml` 的全部规则，并补充其暂未覆盖的 AI 服务专属域名。订阅与设置说明见 [`docs/quantumult-ai-mars.md`](docs/quantumult-ai-mars.md)。
+
+```text
+https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/quantumult/rules/Ai-Extended.yaml
+```
 
 本仓库中的 BiliBili ADBlock Lite 基于 [BiliUniverse/ADBlock](https://github.com/BiliUniverse/ADBlock)，统一订阅中的轻量广告域名规则来自 [217heidai/adblockfilters](https://github.com/217heidai/adblockfilters)。详见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)、[`licenses/BiliUniverse-ADBlock-LICENSE`](licenses/BiliUniverse-ADBlock-LICENSE) 和 [`licenses/217heidai-adblockfilters-LICENSE`](licenses/217heidai-adblockfilters-LICENSE)。
