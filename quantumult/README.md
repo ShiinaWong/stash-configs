@@ -1,6 +1,6 @@
 # Quantumult X 上游归档
 
-这里归档原 Quantumult X 配置中与当前 Shiina AdBlock Ultra 维护直接相关的三个公开上游地址，便于后续检查更新、比较差异并选择性移植到 Stash。
+这里归档 Quantumult X 公开上游，并维护可直接订阅的扩充规则。
 
 > 本目录只保存公开上游索引，不保存本地导出配置、代理订阅、MITM 证书或其他私密信息。以下地址是 Quantumult X 格式，不能直接作为 Stash 覆写订阅。
 
@@ -46,3 +46,13 @@ https://ddgksf2013.top/rewrite/BiliBiliAdsLite.conf
 4. 转换为 Stash 格式后是否通过本仓库测试。
 
 机器可读的原始地址列表见 [`upstreams.txt`](upstreams.txt)。
+
+## Shiina AI Extended
+
+在墨鱼 `Ai.yaml` 的完整规则上补充 ChatGPT Sites、Sora、Claude、Gemini、GitHub Copilot、Apple Intelligence 及其他常见 AI 服务的专属域名，并由 GitHub Actions 自动跟随上游更新。
+
+```text
+https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/quantumult/rules/Ai-Extended.yaml
+```
+
+Quantumult X + Mars ISP 的导入与策略设置见 [`docs/quantumult-ai-mars.md`](../docs/quantumult-ai-mars.md)。

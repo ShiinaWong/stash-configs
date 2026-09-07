@@ -1,5 +1,15 @@
 # Third-party notices
 
+## ddgksf2013 AI Rules
+
+`quantumult/rules/Ai-Extended.yaml` 在公开的墨鱼 AI 分流规则基础上生成：保留上游规则，去重后追加本仓库维护的 AI 服务专属域名。
+
+- Source: https://ddgksf2013.top/filter/Ai.yaml
+- Author: ddgksf2013
+- Upstream project: https://github.com/ddgksf2013/Filter
+
+上游未声明许可证；本仓库保留来源说明，不对上游内容重新授权。人工补充项记录在 `quantumult/ai-supplement.list`。
+
 ## APP 启动页去广告 Ultra+
 
 `overrides/shiina-adblock-ultra.stoverride` 以公开的 Ultra+ 聚合覆写为功能基线，对脚本提供器进行了去重，并替换或移除了失效依赖。
