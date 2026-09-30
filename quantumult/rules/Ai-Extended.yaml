@@ -1,9 +1,9 @@
 # NAME: Shiina AI Extended Rules
 # UPSTREAM: https://ddgksf2013.top/filter/Ai.yaml
-# UPSTREAM-UPDATED: 2026-08-18
+# UPSTREAM-UPDATED: 2026-09-30
 # SUPPLEMENT: quantumult/ai-supplement.list
 # FORMAT: Clash classical rule-provider (Quantumult X via resource parser)
-# RULES: 103; upstream rules before exclusions: 91
+# RULES: 113; upstream rules before exclusions: 101
 # Shared cloud suffix exclusions: amazonaws.com, azureedge.net, cloudflare.com, googleapis.com, googleusercontent.com, imgix.net
 
 payload:
@@ -50,6 +50,16 @@ payload:
   - DOMAIN-SUFFIX,grazie.ai
   - DOMAIN-SUFFIX,meta.ai
   - DOMAIN-SUFFIX,meta.com
+  - DOMAIN-SUFFIX,atmeta.com
+  - DOMAIN-SUFFIX,llamameta.net
+  - DOMAIN-SUFFIX,llama.com
+  - DOMAIN-SUFFIX,muse.ai
+  - DOMAIN,production.museai.com
+  - DOMAIN,connect.facebook.net
+  - DOMAIN,meta-ohttp-config-prod.fastly-edge.com
+  - DOMAIN,meta-ohttp-relay-prod.fastly-edge.com
+  - DOMAIN-SUFFIX,facebook.com
+  - DOMAIN-SUFFIX,fbcdn.net
   - DOMAIN-SUFFIX,notebooklm.google.com
   - DOMAIN-SUFFIX,notebooklm.google
   - DOMAIN,api.msn.com
