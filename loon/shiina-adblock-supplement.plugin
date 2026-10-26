@@ -1,6 +1,6 @@
 #!name = Shiina 去广告补充（V2）
-#!desc = v0.2.0｜补充微博国际版开屏广告、广告配置和信息流广告开关。已完成本地样本回放，实际去广告效果待真机验证。
-#!author = ShiinaWong
+#!desc = v0.3.0｜微博改用 Quantumult 配置同源的墨鱼脚本，补齐开屏、广告配置、SDK 与信息流。已完成本地回放，手机效果待验证。
+#!author = ShiinaWong；微博规则与脚本：ddgksf2013、zmqcherish
 #!homepage = https://github.com/ShiinaWong/stash-configs/tree/main/loon
 #!raw-url = https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-adblock-supplement.plugin
 #!system = iOS,iPadOS
@@ -9,29 +9,39 @@
 #!tag = 去广告,补充,Shiina
 #!type = normal
 
-# 奶思大合集的独立补充，固定订阅地址保持不变。
-# 本版只处理本次抓包确认的 3 个接口；2 个精确 MitM 主机。
-# 不修改登录、会员、普通微博正文、评论、视频和代理配置。
-# 信息流只调整已观察到的广告配置开关，尚无时间线卡片过滤。
-# 禁止将原始抓包、Cookie、Token 或节点凭据提交至公开仓库。
+# 参考 ddgksf2013/Rewrite/AdBlock/WeiboAds.conf V2.0.114。
+# 直接引用 ddgksf2013/Scripts/weibo_json.js V2.0.142；固定提交以便复核。
+# 不复制原脚本，不引入个人主页、会员皮肤、搜索页整体改造等入口。
+# 相同接口不要同时启用另一份微博专用插件；响应脚本不是串行叠加。
+# 原始抓包、Cookie、Token、个人配置及节点凭据不得提交至公开仓库。
 
 [Argument]
-weibo_intl = switch,true,tag=微博国际版补充,desc=开屏广告列表与广告配置；关闭后停止本插件的微博脚本
-weibo_intl_feed = switch,true,tag=微博国际版信息流广告开关,desc=仅调整配置中的五个广告开关；客户端效果待验证
+weibo_intl = switch,true,tag=微博净化脚本与复写,desc=控制本插件微博 Script 和 Rewrite；完整停用（含分流与 MitM）请关闭整个插件
+weibo_intl_feed = switch,true,tag=微博信息流与详情广告,desc=启用墨鱼时间线和卡片过滤及 open_app 详情横幅处理；不再猜测五个广告开关
 
 [Rule]
-# 不封锁共享业务域名。
+# 与 Quantumult 微博配置保持一致：SDK 返回交给脚本处理。
+DOMAIN,sdkapp.uve.weibo.com,DIRECT
+DOMAIN,adstrategy.biz.weibo.com,REJECT
+DOMAIN-SUFFIX,api.touch-moblie.com,REJECT
 
 [Rewrite]
-# 本版以结构检查后的响应脚本处理 JSON。
+# 实时开屏、专用广告接口与 SDK 配置；预加载由下方脚本处理。
+request if ${weibo_intl} == true && ${url} ~= /^https?:\/\/(?:bootpreload\.uve|bootrealtime\.uve|boot\.biz)\.weibo\.com\/v\d+\/ad\/realtime(?:\?|$)/ then reject(200)
+request if ${weibo_intl} == true && ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/ad\/(?:preload|weibointl)(?:\?|$)/ then reject_dict(200)
+request if ${weibo_intl} == true && ${url} ~= /^https?:\/\/sdkapp\.uve\.weibo\.com\/interface\/sdk\/sdkconfig\.php(?:\?|$)/ then reject(404)
 
 [Script]
-# 微博国际版：开屏预加载。仅清空成功响应的 ads 数组。
-response if ${url} ~= /^https:\/\/bootpreload\.uve\.weibo\.com\/v1\/ad\/preload(?:\?|$)/ && ${request.method} == "POST" && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/weibo-intl-ad-clean.js") with enable=${weibo_intl}, requires_body=true, timeout=5, tag="Shiina-微博国际版-开屏"
-# 微博国际版：补充当前实际主机；查询参数可以换序。
-response if ${url} ~= /^https:\/\/weibointl\.api\.weibo\.cn\/portal\.php\?(?:[^&#]*&)*a=get_coopen_ads(?:&|$)/ && ${request.method} == "GET" && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/weibo-intl-ad-clean.js") with enable=${weibo_intl}, requires_body=true, timeout=5, tag="Shiina-微博国际版-广告配置"
-# 微博国际版：配置层补充，不过滤时间线正文；可独立关闭。
-response if ${url} ~= /^https:\/\/weibointl\.api\.weibo\.cn\/portal\.php\?(?:[^&#]*&)*a=open_app(?:&|$)/ && ${request.method} == "GET" && ${response.status} == 200 && ${weibo_intl_feed} == true then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/weibo-intl-ad-clean.js") with enable=${weibo_intl}, requires_body=true, timeout=5, tag="Shiina-微博国际版-信息流配置"
+# 开屏保留广告 ID，调整展示日期、时长与次数；get_coopen_ads 返回 data={display_ad:1}。
+# SDK PHP 保留原脚本的 OK 后缀；open_app 的 a 参数需位于首位，与当前抓包一致。
+# 时间线、卡片沿用上游广告与推荐元素过滤；不再使用 v0.2.0 的五个字段推测。
+response if ${url} ~= /^https?:\/\/(?:bootpreload\.uve|bootrealtime\.uve|boot\.biz)\.weibo\.com\/v\d+\/ad\/preload(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼开屏"
+response if ${url} ~= /^https?:\/\/weibointl\.api\.weibo\.c(?:n|om)\/portal\.php\?(?:[^&#]*&)*a=get_coopen_ads(?:&|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼广告配置"
+response if ${url} ~= /^https?:\/\/(?:sdkapp\.uve\.weibo\.com\/interface\/sdk\/sdkad\.php|wbapp\.uve\.weibo\.com\/wbapplua\/wbpullad\.lua)(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼SDK"
+response if ${url} ~= /^https?:\/\/weibointl\.api\.weibo\.cn\/portal\.php\?a=open_app(?:&|$)/ && ${response.status} == 200 && ${weibo_intl_feed} == true then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼详情横幅"
+response if ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/(?:statuses\/(?:friends\/timeline|friends_timeline|unread_friends_timeline|unread_hot_timeline)|groups\/timeline)(?:\?|$)/ && ${response.status} == 200 && ${weibo_intl_feed} == true then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼时间线"
+response if ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/cardlist(?:\?|$)/ && ${response.status} == 200 && ${weibo_intl_feed} == true then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼卡片"
+response if ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/statuses\/(?:container_timeline|container_timeline_topic|video_mixtimeline)(?:\?|$)/ && ${response.status} == 200 && ${weibo_intl_feed} == true then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼新版信息流"
 
 [Mitm]
-hostname = bootpreload.uve.weibo.com, weibointl.api.weibo.cn
+hostname = bootpreload.uve.weibo.com, bootrealtime.uve.weibo.com, boot.biz.weibo.com, weibointl.api.weibo.cn, weibointl.api.weibo.com, sdkapp.uve.weibo.com, wbapp.uve.weibo.com, api.weibo.cn, api.weibo.com, mapi.weibo.cn, mapi.weibo.com
