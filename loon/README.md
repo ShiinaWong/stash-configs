@@ -4,9 +4,11 @@
 
 ## 当前状态
 
-- 版本：v0.1.0（2026-10-26）。
-- 生效规则、脚本、额外 MitM 主机均为 **0**。
-- 已建立固定订阅入口。当前没有任何 App 的新增去广告效果，也没有宣称已完成手机端导入测试。
+- 版本：v0.2.0（2026-10-26）。
+- 首个补充模块：微博国际版开屏列表、广告配置及信息流广告开关。
+- 当前包含 3 条响应 Script v2、1 个共用脚本、2 个精确 MitM 主机；不增加域名拦截规则。
+- 本地 10 项测试通过；私有抓包 101 条记录回放中只改动 4 个目标响应，其余 97 条不改动。
+- 手机端导入、开屏效果及信息流效果均待实测。信息流没有时间线卡片样本，本版只做广告配置层调整。
 - 要求 Loon 3.5.1（983）或以上；这是新版 Script 语法的最低版本。
 - 奶思主插件继续独立订阅，补充插件仅维护确认需要的差异。
 
@@ -20,7 +22,7 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-adbl
 
 [一键导入 Loon](https://www.nsloon.com/openloon/import?plugin=https%3A%2F%2Fraw.githubusercontent.com%2FShiinaWong%2Fstash-configs%2Fmain%2Floon%2Fshiina-adblock-supplement.plugin)
 
-作为插件添加并启用；不要作为完整配置或节点订阅导入。后续更新这个插件资源即可获取变更，不必重复安装。当前版本没有规则，插件排列顺序不影响效果；以后如有顺序要求，会随对应规则明确说明。
+作为插件添加并启用；不要作为完整配置或节点订阅导入。后续更新这个插件资源即可获取变更，不必重复安装。本版目标接口不与已比对的奶思 blockAdsV2.plugin 重叠，配合该大合集无需为本模块调整排序。奶思独立 weibo.plugin 或其他微博专用插件可能重叠，若已启用应先排查，不要叠加后仅凭顺序猜测生效结果。
 
 ## 后续如何添加规则
 
@@ -48,7 +50,17 @@ Loon 官方文档指出：同一响应最多选择一条 Response Script，并�
 
 ## 已发布规则
 
-暂无。收到新的抓包并完成分析后再添加。
+| 模块 | 范围 | 状态 |
+| --- | --- | --- |
+| [微博国际版](docs/weibo-intl.md) | 开屏预加载、get_coopen_ads、open_app 中的广告开关 | 本地样本回放通过，待真机验证 |
+
+插件参数默认启用「微博国际版补充」和「微博国际版信息流广告开关」。第二个开关仅控制 open_app 的五个广告字段。若需彻底回退连同新增 MitM 主机一起停用，请关闭整个补充插件。
+
+测试命令（仓库根目录）：
+
+```sh
+node --test loon/tests/weibo-intl-ad-clean.test.cjs
+```
 
 ## 参考
 
@@ -57,3 +69,4 @@ Loon 官方文档指出：同一响应最多选择一条 Response Script，并�
 - [Loon Script v2](https://nsloon.app/docs/Script/script_v2/)
 - [奶思项目](https://github.com/fmz200/wool_scripts)
 - [变更记录](CHANGELOG.md)
+
