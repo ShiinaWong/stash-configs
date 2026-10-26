@@ -23,7 +23,7 @@ before(async () => {
   source = bytes.toString("utf8");
 });
 function entries(prefix) {
-  return plugin.split("\n").filter(line => line.startsWith(prefix)).map(line => {
+  return plugin.split("\n").filter(line => line.startsWith(prefix) && line.includes("weibo_intl")).map(line => {
     const start = line.indexOf("~= /") + 4;
     const end = line.indexOf("/ ", start);
     assert.ok(start >= 4 && end > start);
@@ -64,7 +64,7 @@ test("all seven response entries use the same reviewed upstream script", () => {
   assert.ok(!plugin.includes("weibo-intl-ad-clean.js"));
   assert.ok(!plugin.includes("new.vip.weibo.cn"));
   const hosts = plugin.match(/^hostname = (.+)$/m)[1].split(", ");
-  assert.equal(hosts.length, 11);
+  assert.equal(hosts.filter(host => host.endsWith("weibo.cn") || host.endsWith("weibo.com")).length, 11);
   assert.ok(hosts.every(host => !host.includes("*")));
 });
 test("known splash, SDK, feed and card endpoints match exactly one script", () => {

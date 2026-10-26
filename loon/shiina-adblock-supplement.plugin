@@ -1,6 +1,6 @@
 #!name = Shiina 去广告补充（V2）
-#!desc = v0.3.0｜微博改用 Quantumult 配置同源的墨鱼脚本，补齐开屏、广告配置、SDK 与信息流。已完成本地回放，手机效果待验证。
-#!author = ShiinaWong；微博规则与脚本：ddgksf2013、zmqcherish
+#!desc = v0.4.0｜新增高德、彩云、百度网盘补充；保留微博墨鱼方案。每个应用可独立关闭；已做离线测试，手机效果待验证。
+#!author = ShiinaWong；QX 规则参考及高德脚本：ddgksf2013；微博：ddgksf2013、zmqcherish
 #!homepage = https://github.com/ShiinaWong/stash-configs/tree/main/loon
 #!raw-url = https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-adblock-supplement.plugin
 #!system = iOS,iPadOS
@@ -19,6 +19,10 @@
 weibo_intl = switch,true,tag=微博净化脚本与复写,desc=控制本插件微博 Script 和 Rewrite；完整停用（含分流与 MitM）请关闭整个插件
 weibo_intl_feed = switch,true,tag=微博信息流与详情广告,desc=启用墨鱼时间线和卡片过滤及 open_app 详情横幅处理；不再猜测五个广告开关
 
+amap_clean = switch,true,tag=高德页面净化,desc=清理推广与部分推荐和 AI 入口；保留实际路线计算和地图业务接口
+caiyun_clean = switch,true,tag=彩云页面净化,desc=清理首页推广和发现页推荐；保留天气预报及会员信息
+netdisk_clean = switch,true,tag=网盘页面净化,desc=清理广告配置与任务推广；首页精简为文件功能和最近记录
+
 [Rule]
 # 与 Quantumult 微博配置保持一致：SDK 返回交给脚本处理。
 DOMAIN,sdkapp.uve.weibo.com,DIRECT
@@ -30,6 +34,16 @@ DOMAIN-SUFFIX,api.touch-moblie.com,REJECT
 request if ${weibo_intl} == true && ${url} ~= /^https?:\/\/(?:bootpreload\.uve|bootrealtime\.uve|boot\.biz)\.weibo\.com\/v\d+\/ad\/realtime(?:\?|$)/ then reject(200)
 request if ${weibo_intl} == true && ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/ad\/(?:preload|weibointl)(?:\?|$)/ then reject_dict(200)
 request if ${weibo_intl} == true && ${url} ~= /^https?:\/\/sdkapp\.uve\.weibo\.com\/interface\/sdk\/sdkconfig\.php(?:\?|$)/ then reject(404)
+
+# 高德：仅补充奶思未处理的推广接口；不接管其 valueadded 开屏拦截。
+request if ${amap_clean} == true && ${url} ~= /^https?:\/\/(?:m5|m5-zb|center|amap-aos-info-nogw|ai)\.amap\.com\/v\d+\/ai_rec\// then reject_dict(200)
+request if ${amap_clean} == true && ${url} ~= /^https?:\/\/(?:m5|m5-zb|center|amap-aos-info-nogw|ai)\.amap\.com\/ws\/(?:faas\/amap-navigation\/card-service-route-plan|shield\/scene\/recommend)\/?(?:\?|$)/ then reject_dict(200)
+request if ${amap_clean} == true && ${url} ~= /^https?:\/\/(?:m5|m5-zb|center|amap-aos-info-nogw|ai)\.amap\.com\/ws\/(?:boss\/order_web\/\w{8}_information|asa\/ads_attribution)\/?(?:\?|$)/ then reject(200)
+# 彩云：活动接口仍由奶思处理，此处仅拦截独立广告服务。
+request if ${caiyun_clean} == true && ${url} ~= /^https?:\/\/ad\.cyapi\.cn\/v\d+(?:\/|\?|$)/ then reject(200)
+# 网盘：只补专用推荐入口；不整段拦截 getconfig、账号或会员接口。
+request if ${netdisk_clean} == true && ${url} ~= /^https?:\/\/pan\.baidu\.com\/(?:feed\/hotlist|queryintent\/queryhint|coins\/center\/notice)\/?(?:\?|$)/ then reject(200)
+request if ${netdisk_clean} == true && ${url} ~= /^https?:\/\/pan\.baidu\.com\/recommend\/shortseries\/list\/?(?:\?|$)/ then reject_dict(200)
 
 [Script]
 # 开屏保留广告 ID，调整展示日期、时长与次数；get_coopen_ads 返回 data={display_ad:1}。
@@ -43,5 +57,11 @@ response if ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/(?:statuses\/(?
 response if ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/cardlist(?:\?|$)/ && ${response.status} == 200 && ${weibo_intl_feed} == true then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼卡片"
 response if ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/statuses\/(?:container_timeline|container_timeline_topic|video_mixtimeline)(?:\?|$)/ && ${response.status} == 200 && ${weibo_intl_feed} == true then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼新版信息流"
 
+# 高德仅使用已审阅的 QX 同源脚本；主机范围与原 QX MitM 列表一致。
+response if ${url} ~= /^https?:\/\/(?:m5|m5-zb|center|amap-aos-info-nogw|ai)\.amap\.com\/ws\/(?:message\/notice\/list|shield\/frogserver\/aocs\/updatable|shield\/search\/nearbyrec_smart|promotion-web\/resource|faas\/amap-navigation\/main-page|msgbox\/pull|shield\/dsp\/profile\/index\/nodefaas|shield\/search\/new_hotword)\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/amap.js") with enable=${amap_clean}, requires_body=true, timeout=10, tag="Shiina-高德-墨鱼页面净化"
+# 彩云和网盘参考 QX 广告处理；保留响应封装，不使用原脚本会员修改或固定推广内容。
+response if ${url} ~= /^https?:\/\/starplucker\.cyapi\.cn\/v\d+\/(?:operation\/(?:homefeatures|banners|features|feeds)|notification\/message_center|config\/cypage|campaigns)\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/qx-extra-clean-v0.4.0.js") with enable=${caiyun_clean}, requires_body=true, timeout=10, tag="Shiina-彩云-页面推广"
+response if ${url} ~= /^https?:\/\/pan\.baidu\.com\/(?:api\/getsyscfg|feed\/cardinfos|api\/taskscore\/tasklist)\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/qx-extra-clean-v0.4.0.js") with enable=${netdisk_clean}, requires_body=true, timeout=10, tag="Shiina-网盘-页面推广"
+
 [Mitm]
-hostname = bootpreload.uve.weibo.com, bootrealtime.uve.weibo.com, boot.biz.weibo.com, weibointl.api.weibo.cn, weibointl.api.weibo.com, sdkapp.uve.weibo.com, wbapp.uve.weibo.com, api.weibo.cn, api.weibo.com, mapi.weibo.cn, mapi.weibo.com
+hostname = bootpreload.uve.weibo.com, bootrealtime.uve.weibo.com, boot.biz.weibo.com, weibointl.api.weibo.cn, weibointl.api.weibo.com, sdkapp.uve.weibo.com, wbapp.uve.weibo.com, api.weibo.cn, api.weibo.com, mapi.weibo.cn, mapi.weibo.com, m5.amap.com, m5-zb.amap.com, center.amap.com, amap-aos-info-nogw.amap.com, ai.amap.com, starplucker.cyapi.cn, ad.cyapi.cn, pan.baidu.com
