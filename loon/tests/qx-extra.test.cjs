@@ -28,10 +28,10 @@ before(async () => {
   ]);
 });
 function urlRegex(line) {
-  const match = line.match(/\$\{url\} ~= \/(.*?)\/([ims]*)(?=\s*(?:then|&&|\|\||\)))/);
+  const match = line.match(/\$\{url\} ~= \/((?:\\.|[^\\])*?)\/([ims]*)(?=\s*(?:then|&&|\|\||\)))/);
   return match ? new RegExp(match[1], match[2]) : null;
 }
-const newLines = plugin.split("\n").filter(line => /^(request|response) if/.test(line) && !line.includes("weibo_intl"));
+const newLines = plugin.split("\n").filter(line => /^(request|response) if/.test(line) && /\$\{(?:amap_clean|caiyun_clean|netdisk_clean)\}/.test(line));
 const responseLines = newLines.filter(line => line.startsWith("response"));
 function hits(url, options = {}) {
   return newLines.filter(line => {
@@ -74,7 +74,7 @@ test("every declared URL guard compiles, options bind to declared switches, MitM
   assert.ok(responseLines.find(l => l.includes(amapURL)));
   const hosts = plugin.match(/^hostname = (.+)$/m)[1].split(", ");
   assert.equal(new Set(hosts).size, hosts.length);
-  assert.equal(hosts.length, 19);
+  assert.equal(hosts.filter(h => /weibo\.(?:cn|com)$|amap\.com$|cyapi\.cn$|^pan\.baidu\.com$/.test(h)).length, 19);
   assert.ok(hosts.every(h => /^[a-z0-9.-]+$/.test(h)));
   assert.ok(!hosts.some(h => /openai|chatgpt|anthropic/.test(h)));
 });

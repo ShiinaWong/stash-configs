@@ -1,11 +1,11 @@
 #!name = Shiina 去广告补充（V2）
-#!desc = v0.4.0｜新增高德、彩云、百度网盘补充；保留微博墨鱼方案。每个应用可独立关闭；已做离线测试，手机效果待验证。
-#!author = ShiinaWong；QX 规则参考及高德脚本：ddgksf2013；微博：ddgksf2013、zmqcherish
+#!desc = v0.5.0｜奶思为主，参考墨鱼补充闲鱼、网易邮箱大师、汽水音乐、腾讯文档、淘票票、iDaily；保留微博、高德、彩云、网盘。各组可独立关闭，手机效果待验证。
+#!author = ShiinaWong；规则及字段参考：ddgksf2013；微博：ddgksf2013、zmqcherish
 #!homepage = https://github.com/ShiinaWong/stash-configs/tree/main/loon
 #!raw-url = https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-adblock-supplement.plugin
 #!system = iOS,iPadOS
 #!loon_version = 3.5.1(983)
-#!date = 2026-10-26
+#!date = 2026-10-27
 #!tag = 去广告,补充,Shiina
 #!type = normal
 
@@ -22,6 +22,12 @@ weibo_intl_feed = switch,true,tag=微博信息流与详情广告,desc=启用墨�
 amap_clean = switch,true,tag=高德页面净化,desc=清理推广与部分推荐和 AI 入口；保留实际路线计算和地图业务接口
 caiyun_clean = switch,true,tag=彩云页面净化,desc=清理首页推广和发现页推荐；保留天气预报及会员信息
 netdisk_clean = switch,true,tag=网盘页面净化,desc=清理广告配置与任务推广；首页精简为文件功能和最近记录
+goofish_clean = switch,true,tag=闲鱼广告补充,desc=补 g-acs 开屏和搜索推广及商品推荐广告；奶思已有的信息流继续由奶思处理
+mailmaster_clean = switch,true,tag=网易邮箱大师推广,desc=清理页面运营推广和任务悬浮入口；保留登录引导及账号信息
+qishui_clean = switch,true,tag=汽水音乐推广,desc=清理广告请求和奖励横幅及热门搜索活动；保留歌曲流与付费接口
+tencentdocs_clean = switch,true,tag=腾讯文档广告,desc=拦截文档服务下的专用广告路径；不修改文档内容
+taopiaopiao_clean = switch,true,tag=淘票票推广,desc=清理广告预加载和横幅及启动弹窗；保留电影推荐和购票功能
+idaily_clean = switch,true,tag=iDaily 系列推广,desc=清理 iDaily 和 iDays 开屏及同系应用交叉推广
 
 [Rule]
 # 与 Quantumult 微博配置保持一致：SDK 返回交给脚本处理。
@@ -45,6 +51,24 @@ request if ${caiyun_clean} == true && ${url} ~= /^https?:\/\/ad\.cyapi\.cn\/v\d+
 request if ${netdisk_clean} == true && ${url} ~= /^https?:\/\/pan\.baidu\.com\/(?:feed\/hotlist|queryintent\/queryhint|coins\/center\/notice)\/?(?:\?|$)/ then reject(200)
 request if ${netdisk_clean} == true && ${url} ~= /^https?:\/\/pan\.baidu\.com\/recommend\/shortseries\/list\/?(?:\?|$)/ then reject_dict(200)
 
+# v0.5.0：对照奶思 V2，只补缺少的主机/接口。各项来源与取舍见 docs/moyu-third-batch.md。
+# 闲鱼：acs 的 splash 已由奶思拦截；不增加 AMDC/HTTPDNS 处理。
+request if ${goofish_clean} == true && ${url} ~= /^https?:\/\/g-acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idlecommerce\.splash\.ads(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ then reject(200)
+request if ${goofish_clean} == true && ${url} ~= /^https?:\/\/(?:g-)?acs\.m\.goofish\.com\/gw\/mtop\.idle\.ad\.expose(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ then reject(200)
+# 邮箱：仅任务推广/悬浮图标，登录配置与 user/info 保持原状。
+request if ${mailmaster_clean} == true && ${url} ~= /^https?:\/\/dashi\.163\.com\/task-center-api\/fapi\/task(?:\/|\?|$)/ then reject_dict(200)
+request if ${mailmaster_clean} == true && ${url} ~= /^https?:\/\/appconf\.mail\.163\.com\/mailmaster\/api\/config\/function\.do(?:\?|$)/ then reject_dict(200)
+# 汽水：使用两个明确的业务主机；不拦截 commerce、位置服务或 TNC。
+request if ${qishui_clean} == true && ${url} ~= /^https?:\/\/(?:beta-luna\.douyin\.com|api\.qishui\.com)\/luna\/(?:media_ads|ads)(?:\/|\?|$)/ then reject(200)
+# 腾讯文档：限定 URL 路径，查询参数里出现 /ad/ 不应误伤正常文档。
+request if ${tencentdocs_clean} == true && ${url} ~= /^https?:\/\/docs\.qq\.com\/(?:(?:[^\/?#]+\/)+ad\/|api\/advertise\/)/ then reject(404)
+# iDaily 系列：保留正文接口，仅采用作者列出的广告路径。
+request if ${idaily_clean} == true && ${url} ~= /^https?:\/\/idaily-cdn\.idailycdn\.com\/api\/intro(?:\/|\?|$)/ then reject(200)
+request if ${idaily_clean} == true && ${url} ~= /^https?:\/\/icity-pres\.2q10\.com\/api\/v\d+\/idly\/common\/launching\/?(?:\?|$)/ then reject(200)
+request if ${idaily_clean} == true && ${url} ~= /^https?:\/\/idaily-cdn\.idailycdn\.com\/app\/idaily_portable\/honored\/?(?:\?|$)/ then reject(200)
+request if ${idaily_clean} == true && ${url} ~= /^https?:\/\/app-cdn\.2q10\.com\/app\/idays\/popups\/?(?:\?|$)/ then reject(200)
+request if ${idaily_clean} == true && ${url} ~= /^https?:\/\/idays-cdn\.2q10\.com\/app\/idays\/app_ad\/?(?:\?|$)/ then reject(200)
+
 [Script]
 # 开屏保留广告 ID，调整展示日期、时长与次数；get_coopen_ads 返回 data={display_ad:1}。
 # SDK PHP 保留原脚本的 OK 后缀；open_app 的 a 参数需位于首位，与当前抓包一致。
@@ -63,5 +87,15 @@ response if ${url} ~= /^https?:\/\/(?:m5|m5-zb|center|amap-aos-info-nogw|ai)\.am
 response if ${url} ~= /^https?:\/\/starplucker\.cyapi\.cn\/v\d+\/(?:operation\/(?:homefeatures|banners|features|feeds)|notification\/message_center|config\/cypage|campaigns)\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/qx-extra-clean-v0.4.0.js") with enable=${caiyun_clean}, requires_body=true, timeout=10, tag="Shiina-彩云-页面推广"
 response if ${url} ~= /^https?:\/\/pan\.baidu\.com\/(?:api\/getsyscfg|feed\/cardinfos|api\/taskscore\/tasklist)\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/qx-extra-clean-v0.4.0.js") with enable=${netdisk_clean}, requires_body=true, timeout=10, tag="Shiina-网盘-页面推广"
 
+# 闲鱼缺口：只补 g-acs 上奶思没有处理的四类接口；recommend.list 留给奶思。
+response if ${url} ~= /^https?:\/\/g-acs\.m\.goofish\.com\/gw\/mtop\.taobao\.(?:idle\.user\.strategy\.list|idlemtopsearch\.(?:search\.(?:shade|discover)|item\.search\.activate))(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${goofish_clean}, requires_body=true, timeout=10, tag="Shiina-闲鱼-搜索与悬浮推广"
+response if ${url} ~= /^https?:\/\/(?:g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idle\.item\.recommend(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${goofish_clean}, requires_body=true, timeout=10, tag="Shiina-闲鱼-商品推荐广告"
+# 邮箱保留登录引导和扩展配置；汽水不按 track 白名单清空其他音乐内容。
+response if ${url} ~= /^https?:\/\/appconf\.mail\.163\.com\/mailmaster\/api\/page\/[^?#]*conf\.do(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${mailmaster_clean}, requires_body=true, timeout=10, tag="Shiina-邮箱大师-页面推广"
+response if ${url} ~= /^https?:\/\/(?:beta-luna\.douyin\.com|api\.qishui\.com)\/luna\/(?:me|search-block|activities)\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${qishui_clean}, requires_body=true, timeout=10, tag="Shiina-汽水音乐-页面推广"
+# 淘票票不重复处理奶思的 queryloadingbanner；保留首页猜你喜欢和搜索配置。
+response if ${url} ~= /^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.film\.(?:independentadvertiseapi\.querypreloadadvertise|mtop(?:independent|item)advertiseapi\.queryadvertise|life\.(?:aristotle|popup)\.get)(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${taopiaopiao_clean}, requires_body=true, timeout=10, tag="Shiina-淘票票-推广补充"
+response if ${url} ~= /^https?:\/\/app-cdn\.2q10\.com\/app\/\w+\/honored\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${idaily_clean}, requires_body=true, timeout=10, tag="Shiina-iDaily-交叉推广"
+
 [Mitm]
-hostname = bootpreload.uve.weibo.com, bootrealtime.uve.weibo.com, boot.biz.weibo.com, weibointl.api.weibo.cn, weibointl.api.weibo.com, sdkapp.uve.weibo.com, wbapp.uve.weibo.com, api.weibo.cn, api.weibo.com, mapi.weibo.cn, mapi.weibo.com, m5.amap.com, m5-zb.amap.com, center.amap.com, amap-aos-info-nogw.amap.com, ai.amap.com, starplucker.cyapi.cn, ad.cyapi.cn, pan.baidu.com
+hostname = bootpreload.uve.weibo.com, bootrealtime.uve.weibo.com, boot.biz.weibo.com, weibointl.api.weibo.cn, weibointl.api.weibo.com, sdkapp.uve.weibo.com, wbapp.uve.weibo.com, api.weibo.cn, api.weibo.com, mapi.weibo.cn, mapi.weibo.com, m5.amap.com, m5-zb.amap.com, center.amap.com, amap-aos-info-nogw.amap.com, ai.amap.com, starplucker.cyapi.cn, ad.cyapi.cn, pan.baidu.com, acs.m.goofish.com, g-acs.m.goofish.com, dashi.163.com, appconf.mail.163.com, beta-luna.douyin.com, api.qishui.com, docs.qq.com, acs.m.taobao.com, app-cdn.2q10.com, idaily-cdn.idailycdn.com, icity-pres.2q10.com, idays-cdn.2q10.com
