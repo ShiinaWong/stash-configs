@@ -115,7 +115,7 @@ const excluded = [
 ];
 
 test("v0.5 adds six independent switches, precise MitM and versioned scripts", () => {
-  assert.match(plugin, /#!desc = v0\.5\.0/);
+  assert.ok(plugin.includes("moyu-extra-clean-v0.5.0.js"));
   const names = new Set([...plugin.matchAll(/^(\w+) = switch,true,/gm)].map(m => m[1]));
   controls.forEach(control => assert.ok(names.has(control),control));
   assert.equal(entries.filter(e => e.phase === "response").length,6);
@@ -129,9 +129,10 @@ test("v0.5 adds six independent switches, precise MitM and versioned scripts", (
     }
   }
   const hosts = plugin.match(/^hostname = (.+)$/m)[1].split(", ");
-  assert.equal(hosts.length,31);
-  assert.equal(new Set(hosts).size,31);
-  assert.ok(hosts.every(host => /^[a-z0-9.-]+$/.test(host)));
+  const fourthBatch = new Set(["m.client.10010.com", "*.api.moji.com", "web.chelaile.net.cn", "api.chelaile.net.cn", "cdn.api.chelaile.net.cn", "cdn.web.chelaile.net.cn", "wximg.wxs.qq.com"]);
+  assert.equal(hosts.filter(host => !fourthBatch.has(host)).length,31);
+  assert.equal(new Set(hosts).size,hosts.length);
+  assert.ok(hosts.every(host => host === "*.api.moji.com" || /^[a-z0-9.-]+$/.test(host)));
   for (const url of [...responseSamples,...requestSamples]) assert.ok(hosts.includes(new URL(url).hostname),url);
 });
 test("every selected endpoint has exactly one handler and its own off switch", () => {

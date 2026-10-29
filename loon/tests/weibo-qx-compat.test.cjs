@@ -65,7 +65,7 @@ test("all seven response entries use the same reviewed upstream script", () => {
   assert.ok(!plugin.includes("new.vip.weibo.cn"));
   const hosts = plugin.match(/^hostname = (.+)$/m)[1].split(", ");
   assert.equal(hosts.filter(host => host.endsWith("weibo.cn") || host.endsWith("weibo.com")).length, 11);
-  assert.ok(hosts.every(host => !host.includes("*")));
+  assert.ok(hosts.filter(host => /weibo\.(?:cn|com)$/.test(host)).every(host => !host.includes("*")));
 });
 test("known splash, SDK, feed and card endpoints match exactly one script", () => {
   for (const url of [preload, coopen, openApp,

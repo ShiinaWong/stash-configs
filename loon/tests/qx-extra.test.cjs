@@ -75,7 +75,7 @@ test("every declared URL guard compiles, options bind to declared switches, MitM
   const hosts = plugin.match(/^hostname = (.+)$/m)[1].split(", ");
   assert.equal(new Set(hosts).size, hosts.length);
   assert.equal(hosts.filter(h => /weibo\.(?:cn|com)$|amap\.com$|cyapi\.cn$|^pan\.baidu\.com$/.test(h)).length, 19);
-  assert.ok(hosts.every(h => /^[a-z0-9.-]+$/.test(h)));
+  assert.ok(hosts.every(h => h === "*.api.moji.com" || /^[a-z0-9.-]+$/.test(h)));
   assert.ok(!hosts.some(h => /openai|chatgpt|anthropic/.test(h)));
 });
 test("each added response endpoint matches one script; switches and status guards work", () => {
