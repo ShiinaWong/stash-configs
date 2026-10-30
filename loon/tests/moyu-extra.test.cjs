@@ -129,7 +129,7 @@ test("v0.5 adds six independent switches, precise MitM and versioned scripts", (
     }
   }
   const hosts = plugin.match(/^hostname = (.+)$/m)[1].split(", ");
-  const fourthBatch = new Set(["m.client.10010.com", "*.api.moji.com", "web.chelaile.net.cn", "api.chelaile.net.cn", "cdn.api.chelaile.net.cn", "cdn.web.chelaile.net.cn", "wximg.wxs.qq.com"]);
+  const fourthBatch = new Set(["m.client.10010.com", "*.api.moji.com", "web.chelaile.net.cn", "api.chelaile.net.cn", "cdn.api.chelaile.net.cn", "cdn.web.chelaile.net.cn", "wximg.wxs.qq.com", "wxsmw.wxs.qq.com"]);
   assert.equal(hosts.filter(host => !fourthBatch.has(host)).length,31);
   assert.equal(new Set(hosts).size,hosts.length);
   assert.ok(hosts.every(host => host === "*.api.moji.com" || /^[a-z0-9.-]+$/.test(host)));

@@ -1,11 +1,11 @@
 #!name = Shiina 去广告补充（V2）
-#!desc = v0.6.0｜奶思为主，补中国联通墨迹天气车来了；新增微信抓包确认的四张度小满广告素材拦截。素材拦截不保证移除卡片占位，各组独立开关。
-#!author = ShiinaWong；规则及字段参考：ddgksf2013；微博：ddgksf2013、zmqcherish
+#!desc = v0.7.0｜奶思为主；微信升级为同类广告图片和视频路径拦截，覆盖换素材与换品牌；仍可能保留文字或占位。保留其他应用处理。
+#!author = ShiinaWong；规则及字段参考：ddgksf2013、rssvcn；微博：ddgksf2013、zmqcherish
 #!homepage = https://github.com/ShiinaWong/stash-configs/tree/main/loon
 #!raw-url = https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-adblock-supplement.plugin
 #!system = iOS,iPadOS
 #!loon_version = 3.5.1(983)
-#!date = 2026-10-29
+#!date = 2026-10-30
 #!tag = 去广告,补充,Shiina
 #!type = normal
 
@@ -32,7 +32,7 @@ unicom_clean = switch,true,tag=中国联通推广,desc=清理热搜和首页营�
 moji_clean = switch,true,tag=墨迹天气推广,desc=补浮窗商品推广和 banner 区；保留天气工具发现页及短视频；仅匹配 api.moji.com 子域名
 chelaile_clean = switch,true,tag=车来了广告补充,desc=补小程序推广位和详情信息流及 CDN 广告接口；保留公交查询路线规划和原有底栏
 
-wechat_dxm_assets = switch,true,tag=微信度小满广告素材,desc=仅拦截抓包确认的四张素材；不能保证移除广告文字和占位；不拦截整个微信图片域名
+wechat_dxm_assets = switch,true,tag=微信通用广告素材,desc=按已知目录拦广告图片及广告视频；可能留文字或占位；普通图片或视频异常时关闭此项对照
 
 [Rule]
 # 与 Quantumult 微博配置保持一致：SDK 返回交给脚本处理。
@@ -87,9 +87,12 @@ request if ${chelaile_clean} == true && ${url} ~= /^https?:\/\/web\.chelaile\.ne
 request if ${chelaile_clean} == true && ${url} ~= /^https?:\/\/api\.chelaile\.net\.cn\/api\/adpub(?:\/|\?|$)/ then reject(200)
 request if ${chelaile_clean} == true && ${url} ~= /^https?:\/\/web\.chelaile\.net\.cn\/api\/operative_position\/infoflow\/?(?:\?|$)/ then reject(200)
 
-# 微信：只拦截本次目视确认的三张度小满广告横幅和一张品牌客服图。
-# 素材 ID 不含登录/追踪参数；未知素材、文章链接和微信通信不处理。
-request if ${wechat_dxm_assets} == true && ${url} ~= /^https?:\/\/wximg\.wxs\.qq\.com\/141\/20204\/snscosdownload\/SZ\/reserved\/(?:6a98f4ff00064c2c2b4bef679a68bc1e0000008d00004eec|6abce3f5000becb30d0176c02668bc1e0000008d00004eec|6ae0150e000b368d0ecef4e1820155150000008d00004eec|6a9a2dd6000a79921bc5dad63b6bae1e0000008d00004eec)(?:\?|$)/ then reject(404)
+# v0.7.0 微信：使用已观察到的素材目录，不再固定度小满素材 ID。
+# 保留 wechat_dxm_assets 参数名以继承已保存的开关；没有整域名拒绝。
+# 图片路径参考公开过滤器并收窄到 wximg；它是路径归纳，无法保证未来同目录无业务资源。
+request if ${wechat_dxm_assets} == true && ${url} ~= /^https?:\/\/wximg\.wxs\.qq\.com\/\d+\/\d+\/snscosdownload\/(?:SH|SZ)\/reserved\/[A-Za-z0-9_-]+(?:\.(?:jpe?g|png|webp|gif|avif))?(?:\?|$)/ then reject_img(200)
+# 视频要求 ads_svp_video__ 文件名前缀；不处理普通视频路径或整段微信通信。
+request if ${wechat_dxm_assets} == true && ${url} ~= /^https?:\/\/wxsmw\.wxs\.qq\.com\/\d+\/\d+\/snssvpdownload\/(?:SH|SZ)\/reserved\/ads_svp_video__[A-Za-z0-9_.-]+\.mp4(?:\?|$)/ then reject_video(200)
 
 [Script]
 # 开屏保留广告 ID，调整展示日期、时长与次数；get_coopen_ads 返回 data={display_ad:1}。
@@ -125,4 +128,4 @@ response if ${url} ~= /^https?:\/\/m\.client\.10010\.com\/(?:search_service\/sea
 response if ${url} ~= /^https?:\/\/(?![^\/?#]*me\.api\.moji\.com)(?!(?:ad|(?:[a-z0-9-]+\.)*fds)\.api\.moji\.com\/)(?:[a-z0-9-]+\.)+api\.moji\.com\/json\/entrance\/list\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.6.0.js") with enable=${moji_clean}, requires_body=true, timeout=10, tag="Shiina-墨迹天气-横幅补充"
 
 [Mitm]
-hostname = bootpreload.uve.weibo.com, bootrealtime.uve.weibo.com, boot.biz.weibo.com, weibointl.api.weibo.cn, weibointl.api.weibo.com, sdkapp.uve.weibo.com, wbapp.uve.weibo.com, api.weibo.cn, api.weibo.com, mapi.weibo.cn, mapi.weibo.com, m5.amap.com, m5-zb.amap.com, center.amap.com, amap-aos-info-nogw.amap.com, ai.amap.com, starplucker.cyapi.cn, ad.cyapi.cn, pan.baidu.com, acs.m.goofish.com, g-acs.m.goofish.com, dashi.163.com, appconf.mail.163.com, beta-luna.douyin.com, api.qishui.com, docs.qq.com, acs.m.taobao.com, app-cdn.2q10.com, idaily-cdn.idailycdn.com, icity-pres.2q10.com, idays-cdn.2q10.com, m.client.10010.com, *.api.moji.com, web.chelaile.net.cn, api.chelaile.net.cn, cdn.api.chelaile.net.cn, cdn.web.chelaile.net.cn, wximg.wxs.qq.com
+hostname = bootpreload.uve.weibo.com, bootrealtime.uve.weibo.com, boot.biz.weibo.com, weibointl.api.weibo.cn, weibointl.api.weibo.com, sdkapp.uve.weibo.com, wbapp.uve.weibo.com, api.weibo.cn, api.weibo.com, mapi.weibo.cn, mapi.weibo.com, m5.amap.com, m5-zb.amap.com, center.amap.com, amap-aos-info-nogw.amap.com, ai.amap.com, starplucker.cyapi.cn, ad.cyapi.cn, pan.baidu.com, acs.m.goofish.com, g-acs.m.goofish.com, dashi.163.com, appconf.mail.163.com, beta-luna.douyin.com, api.qishui.com, docs.qq.com, acs.m.taobao.com, app-cdn.2q10.com, idaily-cdn.idailycdn.com, icity-pres.2q10.com, idays-cdn.2q10.com, m.client.10010.com, *.api.moji.com, web.chelaile.net.cn, api.chelaile.net.cn, cdn.api.chelaile.net.cn, cdn.web.chelaile.net.cn, wximg.wxs.qq.com, wxsmw.wxs.qq.com

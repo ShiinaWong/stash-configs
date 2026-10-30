@@ -80,7 +80,7 @@ const excluded=[
   "https://sample.api.moji.com/json/user?next=/json/advertising_goods"
 ];
 test("fourth batch has three independent controls, two scripts and nine requests",()=>{
-  assert.match(plugin,/#!desc = v0\.6\.0/);
+  assert.ok(plugin.includes("moyu-extra-clean-v0.6.0.js"));
   for(const c of controls) assert.ok(plugin.includes(c+" = switch,true,"));
   assert.equal(entries.filter(e=>e.phase==="request").length,9);
   assert.equal(entries.filter(e=>e.phase==="response").length,2);
@@ -93,7 +93,7 @@ test("fourth batch has three independent controls, two scripts and nine requests
     }
   }
   const hosts=plugin.match(/^hostname = (.+)$/m)[1].split(", ");
-  assert.equal(hosts.length,38);
+  assert.equal(hosts.length,39);
   assert.equal(new Set(hosts).size,hosts.length);
   assert.deepEqual(hosts.filter(h=>/[?*]/.test(h)),["*.api.moji.com"]);
   for(const u of [...responseSamples,...requestSamples]) {
