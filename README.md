@@ -13,6 +13,18 @@
 
 ## 当前配置
 
+### Mars AI 链路快检（Loon）
+
+按现有 `香港手动策略 → Mars-ISP` 链路提供手动网络检查和入口切换。一次添加插件链接，Loon 获取配套 JS；无定时测速。
+
+- [插件与安装说明](loon/docs/mars-ai-check.md)
+- [一键导入 Loon](https://www.nsloon.com/openloon/import?plugin=https%3A%2F%2Fraw.githubusercontent.com%2FShiinaWong%2Fstash-configs%2Fmain%2Floon%2Fmars-ai-check.plugin)
+- 固定订阅地址：
+
+```text
+https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/mars-ai-check.plugin
+```
+
 ### Shiina AdBlock Lite（日常推荐）
 
 按 App 模块生成的日常稳定版，当前包含 B 站、菜鸟裹裹、百度贴吧、知乎、淘宝、京东、拼多多、闲鱼、小红书、什么值得买和携程。`v1.3.0` 新增四个按需 App 模块：只做纯广告处理，不引入小红书去水印、什么值得买会员修改或携程非广告接口。当前为 33 个 MITM 主机、13 条脚本、13 条 Rewrite 和 10 个脚本 provider。高德地图保守版、Ultra、Core DNS 和杂项开屏仍保留为可选规则库。
@@ -105,3 +117,4 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/quantumult/rules
 ```
 
 本仓库中的 BiliBili ADBlock Lite 基于 [BiliUniverse/ADBlock](https://github.com/BiliUniverse/ADBlock)，统一订阅中的轻量广告域名规则来自 [217heidai/adblockfilters](https://github.com/217heidai/adblockfilters)。详见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)、[`licenses/BiliUniverse-ADBlock-LICENSE`](licenses/BiliUniverse-ADBlock-LICENSE) 和 [`licenses/217heidai-adblockfilters-LICENSE`](licenses/217heidai-adblockfilters-LICENSE)。
+

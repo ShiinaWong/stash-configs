@@ -1,0 +1,11 @@
+import { readFile, writeFile } from 'node:fs/promises';
+const root = new URL('./', import.meta.url);
+const main = await readFile(new URL('src/main.js', root), 'utf8');
+const html = await readFile(new URL('src/panel.html', root), 'utf8');
+const version = /var VERSION = '([0-9]+\.[0-9]+\.[0-9]+)'/.exec(main)?.[1];
+if (!version || !main.includes('__MARS_PANEL_HTML__')) throw new Error('Missing version or build placeholder');
+const encoded = JSON.stringify(html).replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+const output = main.replace('__MARS_PANEL_HTML__', () => encoded);
+const target = new URL('../../scripts/mars-ai-check-v' + version + '.js', root);
+await writeFile(target, output);
+console.log('Built ' + target.pathname.split('/').pop() + ' (' + Buffer.byteLength(output) + ' bytes)');

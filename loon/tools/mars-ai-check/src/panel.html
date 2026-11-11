@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101419">
+  <meta name="color-scheme" content="dark">
+  <meta name="mars-token" content="__MARS_CSRF_TOKEN__">
+  <title>Mars · AI 链路快检</title>
+  <style nonce="__MARS_CSRF_TOKEN__">
+    :root{color-scheme:dark;--bg:#101419;--card:#191e25;--card-soft:#141920;--line:#303843;--ink:#f3f5f7;--muted:#a7b0be;--quiet:#798696;--accent:#e8b09a;--accent-dark:#261c19;--mint:#a4d3bd;--blue:#a8c8ee;--amber:#e9c68a;--red:#efa5a1;--radius:20px;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Microsoft YaHei",sans-serif;font-synthesis:none}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-text-size-adjust:100%;overflow-wrap:anywhere}button,select,textarea{font:inherit}button,a,select{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:disabled{cursor:default;opacity:.42}button:focus-visible,a:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:4px}button{touch-action:manipulation}button svg{pointer-events:none}[hidden]{display:none!important}.app{max-width:620px;margin:auto;padding:calc(25px + env(safe-area-inset-top)) 20px calc(28px + env(safe-area-inset-bottom))}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:10px}.mark{width:38px;height:38px;color:var(--accent);flex:none}.brand-name{font-weight:750;font-size:21px;letter-spacing:2px;line-height:1.2}.brand-note{color:var(--quiet);font-size:10px;letter-spacing:1.5px;margin-top:4px}.quiet-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:7px 4px 7px 10px;border:0;color:var(--muted);background:none;font-size:13px;font-weight:550}.icon{width:17px;height:17px;flex:none;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}.intro h1{margin:0 0 5px;font-size:28px;letter-spacing:-.7px;line-height:1.3;font-weight:700}.intro p{margin:0;color:var(--muted);font-size:14px}.section-label{margin:24px 2px 10px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--quiet);font-size:11px;font-weight:650;letter-spacing:1px}.section-label h2{margin:0;font:inherit}.label-right{font-weight:400;letter-spacing:0}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}.chain-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:17px 18px 0}.chain-name{color:var(--muted);font-size:12px}.pill{display:inline-flex;align-items:center;gap:6px;flex:none;border:1px solid #414853;border-radius:999px;padding:4px 9px;font-size:11px;line-height:1.3;letter-spacing:0;color:var(--muted);font-weight:500}.pill i,.live-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}.pill[data-tone="ok"]{color:var(--mint);border-color:#3e554c;background:#1b2c25}.pill[data-tone="warn"]{color:var(--amber);border-color:#5b4c34;background:#2c261d}.chain{padding:16px 18px 13px}.hop{display:flex;align-items:flex-start;gap:12px}.hop-number{display:flex;align-items:center;justify-content:center;width:27px;height:27px;border-radius:8px;border:1px solid #4f4543;color:var(--accent);font-size:11px;flex:none;background:#292321}.hop:last-child .hop-number{border-color:#3f4a58;background:#202832;color:var(--blue)}.hop-label{color:var(--quiet);font-size:11px;line-height:1.4;margin-bottom:4px}.hop-value{font-size:15px;line-height:1.55;font-weight:600}.hop-value.loading{color:var(--quiet);font-weight:400}.connector{height:23px;margin:3px 0 3px 13px;border-left:1px dashed #48505b}.chain-foot{padding:11px 18px;background:var(--card-soft);border-top:1px solid #282f39;display:flex;gap:7px;align-items:flex-start;color:var(--quiet);font-size:11px}.chain-foot .icon{width:14px;height:14px;margin-top:2px}.warning-list{display:grid;gap:8px;margin-top:12px}.warning{font-size:12px;color:var(--amber);border:1px solid #594b34;background:#28231c;border-radius:12px;padding:11px 13px}.notice{margin-top:16px;padding:12px 14px;border-radius:12px;font-size:13px;border:1px solid #4d5b50;background:#1d2a23;color:var(--mint)}.notice[data-tone="error"]{background:#2d2022;border-color:#614145;color:#f1bbb7}.notice[data-tone="warn"]{background:#28231c;border-color:#594b34;color:var(--amber)}.check-area{margin-top:18px}.primary{width:100%;min-height:54px;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid #efc2ae;border-radius:14px;background:var(--accent);color:#271e1b;font-weight:700;font-size:15px;box-shadow:0 4px 15px #00000012}.primary:not(:disabled):active{transform:translateY(1px);background:#efbea9}.primary .icon{width:19px;height:19px}.check-note{display:flex;justify-content:center;align-items:center;gap:5px;margin:10px 0 0;color:var(--quiet);font-size:11px}.check-note .icon{width:12px;height:12px}.spinner{width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .8s linear infinite;flex:none}@keyframes spin{to{transform:rotate(360deg)}}.progress-note{margin:11px 2px 0;padding:12px 14px;background:#20262e;border:1px solid #394250;border-radius:12px;color:var(--muted);font-size:12px}.progress-note strong{color:var(--ink);display:block;margin-bottom:3px;font-weight:600}.switch-card{padding:17px 18px 15px}.field-label{display:block;margin:0 0 8px;color:var(--muted);font-size:12px}.select-wrap{position:relative}.select-wrap select{appearance:none;-webkit-appearance:none;display:block;width:100%;min-height:48px;padding:11px 38px 11px 12px;border:1px solid #424b58;background:#12171d;color:var(--ink);border-radius:11px;font-size:14px;text-overflow:ellipsis}.select-wrap select:disabled{opacity:.5}.select-wrap>.icon{position:absolute;right:13px;top:16px;width:15px;height:15px;pointer-events:none;color:var(--muted)}.switch-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}.selection-note{font-size:11px;line-height:1.5;color:var(--quiet);flex:1}.selection-note.pending{color:var(--amber)}.secondary{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:9px 14px;color:var(--ink);background:#2b333e;border:1px solid #475260;border-radius:11px;font-size:13px;font-weight:600;flex:none}.secondary:not(:disabled):active{background:#364151}.impact-note{font-size:11px;color:var(--quiet);line-height:1.75;margin:14px 0 0;padding-top:12px;border-top:1px solid #303743}.result-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:24px 2px 10px}.result-head h2{font-size:14px;margin:0;font-weight:600}.result-head .quiet-button{min-height:36px;font-size:12px;padding-top:3px;padding-bottom:3px}.empty{border:1px dashed #3b424c;border-radius:16px;padding:23px 18px;text-align:center;color:var(--quiet)}.empty .icon{width:25px;height:25px;color:#788696;margin-bottom:7px}.empty h3{margin:0 0 5px;font-size:13px;font-weight:500;color:var(--muted)}.empty p{margin:0;font-size:11px;line-height:1.7}.summary{padding:17px 18px;border:1px solid #45554d;background:#1a2722;border-radius:16px;margin-bottom:14px}.summary[data-tone="warn"]{background:#28251e;border-color:#5b503a}.summary[data-tone="error"]{background:#2b2022;border-color:#5b3e44}.summary-kicker{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:10px;letter-spacing:.5px;color:var(--mint);margin-bottom:7px}.summary[data-tone="warn"] .summary-kicker{color:var(--amber)}.summary[data-tone="error"] .summary-kicker{color:var(--red)}.summary h3{margin:0 0 5px;font-size:17px;line-height:1.45;font-weight:650}.summary p{margin:0;font-size:12px;color:var(--muted);line-height:1.7}.summary-time{white-space:nowrap;letter-spacing:0;font-variant-numeric:tabular-nums}.results-group{margin:17px 0 0}.group-header{display:flex;align-items:flex-start;gap:9px;margin:0 2px 10px}.group-marker{color:var(--accent);font-size:10px;border:1px solid #514541;background:#292321;border-radius:5px;padding:2px 5px;line-height:1.35;margin-top:1px}.results-group[data-scope="route"] .group-marker{color:var(--blue);border-color:#3d4f64;background:#1c2836}.group-header h3{font-size:12px;margin:0;font-weight:600}.group-header p{font-size:10px;color:var(--quiet);margin:3px 0 0;line-height:1.65}.result-items{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--card)}.result-item{padding:14px 15px;border-top:1px solid var(--line)}.result-item:first-child{border-top:0}.result-topline{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.result-name{font-size:13px;font-weight:600}.result-badge{color:var(--mint);font-size:10px;font-weight:550;border:1px solid #3a5146;background:#1d2b24;border-radius:5px;padding:2px 6px;flex:none;max-width:50%;text-align:center;line-height:1.5}.result-badge[data-tone="info"]{color:var(--blue);background:#1d2835;border-color:#3d506a}.result-badge[data-tone="warn"]{color:var(--amber);background:#2b261e;border-color:#5a4c32}.result-badge[data-tone="error"]{color:var(--red);background:#2c2022;border-color:#5d3d43}.result-detail{font-size:11px;line-height:1.75;color:var(--muted);margin:6px 0 0}.result-title{font-size:12px;line-height:1.6;color:#d7dde6;margin-top:5px}.result-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:8px;color:var(--quiet);font-size:10px;font-variant-numeric:tabular-nums}.result-ip{color:#d4dce7;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;margin:9px 0 0;word-break:break-all}.is-stale .summary{background:#232329;border-color:#59515c}.is-stale .summary-kicker{color:#c7bac7}.is-stale .result-badge{color:#b6afba;background:#28252d;border-color:#514b56}.is-stale .result-title,.is-stale .result-ip{color:#a5a5af}.result-footnote{font-size:10px;line-height:1.8;color:var(--quiet);margin:15px 2px 0}.footer{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#667282;font-size:10px;margin-top:27px;padding-top:16px;border-top:1px solid #29303a}.footer span:first-child{display:inline-flex;align-items:center;gap:6px}.footer .live-dot{background:#6f867a;width:4px;height:4px}.modal-backdrop{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px;background:#080b10c9;backdrop-filter:blur(6px)}.modal{width:100%;max-width:480px;border:1px solid #495463;border-radius:20px;padding:20px;background:#1c222b;box-shadow:0 20px 60px #0006}.modal h2{font-size:18px;margin:0 0 7px}.modal p{font-size:12px;color:var(--muted);margin:0 0 14px}.modal textarea{width:100%;height:240px;max-height:45vh;resize:vertical;border:1px solid #465261;border-radius:10px;background:#11161d;color:var(--ink);font-size:12px;line-height:1.65;padding:12px}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:12px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(min-width:560px){.app{padding-left:30px;padding-right:30px}.intro h1{font-size:32px}.chain{display:flex;align-items:center;gap:15px;padding:20px 18px}.hop{flex:1;min-width:0}.connector{height:0;width:22px;margin:0;border-left:0;border-top:1px dashed #48505b;flex:none}.hop-value{font-size:14px}.top{margin-bottom:32px}}@media(max-width:350px){.app{padding-left:14px;padding-right:14px}.intro h1{font-size:25px}.switch-row{align-items:stretch;flex-direction:column}.secondary{width:100%}.result-badge{max-width:46%}}@media(prefers-reduced-motion:reduce){.spinner{animation:none}*{scroll-behavior:auto!important}}
+    @media(max-width:559px){.select-wrap select,.modal textarea{font-size:16px}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true"><circle cx="20" cy="20" r="11" stroke="currentColor" stroke-width="1.4"/><path d="M31 15c4-1 6-.7 6 1.1 0 3.2-7.5 8-17 10.8S3 29.2 3 26.1c0-1.6 2-3.7 5.4-5.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="16.5" cy="16" r="1.5" fill="currentColor" opacity=".45"/><path d="M23 11.3a9 9 0 0 1 5.3 5.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".55"/></svg>
+        <div><div class="brand-name">MARS</div><div class="brand-note">CONNECTION CHECK</div></div>
+      </div>
+      <button class="quiet-button" id="refresh-button" type="button" aria-label="刷新当前配置状态，不发起外部探测"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.8 9a7 7 0 1 0-1.9 5.9M16.8 3.8V9h-5.2"/></svg><span>刷新状态</span></button>
+    </header>
+
+    <section class="intro" aria-labelledby="page-title"><h1 id="page-title">AI 链路快检</h1><p>看清入口与出口，再决定是否切换。</p></section>
+
+    <div class="section-label"><h2 id="chain-title">预期链路</h2><span class="label-right">配置关系 · 并非逐跳验证</span></div>
+    <section class="card" aria-labelledby="chain-title" id="state-card" aria-busy="true">
+      <div class="chain-head"><span class="chain-name" id="chain-name">Mars-链式</span><span class="pill" id="mode-pill"><i aria-hidden="true"></i><span id="mode-label">读取状态中</span></span></div>
+      <div class="chain">
+        <div class="hop"><span class="hop-number" aria-hidden="true">01</span><div><div class="hop-label" id="entry-label">香港手动策略 · 当前入口</div><div class="hop-value loading" id="current-node">正在读取…</div></div></div>
+        <div class="connector" aria-hidden="true"></div>
+        <div class="hop"><span class="hop-number" aria-hidden="true">02</span><div><div class="hop-label">预期末端出口</div><div class="hop-value" id="exit-node">Mars-ISP</div></div></div>
+      </div>
+      <div class="chain-foot"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v5m0-8v.2"/></svg><span>实际出口取决于当前模式和分流规则，以本轮检查为准。</span></div>
+    </section>
+
+    <div id="state-warnings" class="warning-list" aria-live="polite" hidden></div>
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+    <section class="check-area" aria-label="执行链路检查">
+      <button class="primary" id="check-button" type="button" disabled><svg class="icon" id="check-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 10h3l2-6 4 12 2-6h5"/></svg><span class="spinner" id="check-spinner" aria-hidden="true" hidden></span><span id="check-label">检查当前入口与出口</span></button>
+      <p class="check-note"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m12 2-8 10h6l-2 6 8-10h-6z"/></svg>点击才联网 · 一轮 8 项检查 · 无后台轮询</p>
+      <div id="progress-note" class="progress-note" role="status" aria-live="polite" hidden><strong>正在检查 8 项连接…</strong><span>正在核对入口、实际出口与 AI 接口，完成后一起展示。</span></div>
+    </section>
+
+    <div class="section-label"><h2 id="switch-title">手动切换入口</h2><span class="label-right">保留 Mars 末端出口</span></div>
+    <section class="card switch-card" aria-labelledby="switch-title">
+      <label class="field-label" id="select-label" for="node-select">香港手动策略</label>
+      <div class="select-wrap"><select id="node-select" disabled aria-describedby="selection-note impact-note"><option>正在读取节点…</option></select><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg></div>
+      <div class="switch-row"><span class="selection-note" id="selection-note">读取后可选择其他入口</span><button class="secondary" id="select-button" type="button" disabled><span id="select-label-button">切换入口</span><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h13m-3-3 3 3-3 3M17 14H4m3-3-3 3 3 3"/></svg></button></div>
+      <p class="impact-note" id="impact-note">切换会影响共用“香港手动策略”的其他流量。旧连接可能仍沿用原入口，必要时重开 AI App。</p>
+    </section>
+
+    <section id="results-section" aria-labelledby="results-title" aria-busy="false">
+      <div class="result-head"><h2 id="results-title">检查结果</h2><button class="quiet-button" id="copy-button" type="button" disabled><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="6" width="9" height="11" rx="2"/><path d="M12 6V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>复制摘要</span></button></div>
+      <div class="empty" id="empty-results"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17v3h16v-3M5 12h3l2-7 4 13 2-6h3"/></svg><h3>还没有运行检查</h3><p>打开面板只读取状态。<br>点击上方按钮后，才会检测这条连接。</p></div>
+      <div id="results-content" hidden>
+        <div class="summary" id="summary-card"><div class="summary-kicker"><span id="summary-state">检查已完成</span><time class="summary-time" id="summary-time"></time></div><h3 id="summary-title"></h3><p id="summary-detail"></p></div>
+        <div id="result-groups"></div>
+        <div id="result-warnings" class="warning-list" hidden></div>
+        <p class="result-footnote">HTTP 200 仅表示本次请求有响应，不代表账号、模型或网页功能全部可用。401 通常表示需要鉴权；403、429 会保留各自的限制说明。</p>
+      </div>
+    </section>
+    <footer class="footer"><span><i class="live-dot" aria-hidden="true"></i>只在你操作时工作</span><span id="version">MARS / v1.0.1</span></footer>
+    <div class="sr-only" id="announcement" role="status" aria-live="polite"></div>
+  </main>
+
+  <div class="modal-backdrop" id="copy-modal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="copy-modal-title" aria-describedby="copy-modal-description">
+      <h2 id="copy-modal-title">复制诊断摘要</h2><p id="copy-modal-description">浏览器未能自动复制。选中文本后，使用系统菜单复制。</p>
+      <textarea id="copy-text" readonly spellcheck="false" aria-label="诊断摘要"></textarea>
+      <div class="modal-actions"><button class="secondary" id="copy-close" type="button">关闭</button><button class="secondary" id="copy-select" type="button">选中摘要</button></div>
+    </section>
+  </div>
+
+  <script nonce="__MARS_CSRF_TOKEN__">
+  (function () {
+    'use strict';
+    var el = {};
+    ['refresh-button','state-card','chain-name','mode-pill','mode-label','entry-label','current-node','exit-node','state-warnings','notice','check-button','check-icon','check-spinner','check-label','progress-note','select-label','node-select','selection-note','select-button','select-label-button','impact-note','results-section','copy-button','empty-results','results-content','summary-card','summary-state','summary-time','summary-title','summary-detail','result-groups','result-warnings','version','announcement','copy-modal','copy-text','copy-close','copy-select'].forEach(function (id) { el[id] = document.getElementById(id); });
+    var tokenMeta = document.querySelector('meta[name="mars-token"]');
+    var token = tokenMeta ? tokenMeta.content : '';
+    var state = null;
+    var result = null;
+    var operation = '';
+    var staleReason = '';
+    var resultSignature = '';
+    var lastFocused = null;
+    var outcomeInfo = {
+      ok: ['已响应','ok'], auth: ['可达 · 需鉴权','info'], restricted: ['服务拒绝','warn'],
+      limited: ['限流 / 额度','warn'], server: ['服务异常','warn'], redirect: ['发生跳转','info'],
+      unexpected: ['结果待确认','warn'], network: ['连接未完成','error']
+    };
+
+    function text(value, fallback) { return typeof value === 'string' && value ? value : (fallback || ''); }
+    function strings(values) { return Array.isArray(values) ? values.filter(function (item) { return typeof item === 'string' && item; }) : []; }
+    function signature(value) { return value ? JSON.stringify([value.current,value.mode,value.chainName,value.entryGroup,value.exitNode]) : ''; }
+    function clearNode(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+    function element(tag, className, content) { var node = document.createElement(tag); if (className) node.className = className; if (content !== undefined) node.textContent = content; return node; }
+    function announce(message) { el.announcement.textContent = message; }
+    function showNotice(message, tone) { el.notice.textContent = message; el.notice.dataset.tone = tone || 'ok'; el.notice.hidden = false; }
+    function clearNotice() { el.notice.hidden = true; el.notice.textContent = ''; }
+    function fillWarnings(target, items) {
+      clearNode(target);
+      var seen = {};
+      strings(items).forEach(function (message) { if (!seen[message]) { seen[message] = true; target.appendChild(element('div','warning',message)); } });
+      target.hidden = !target.childNodes.length;
+    }
+    function timeLabel(iso, full) {
+      var date = new Date(iso);
+      if (isNaN(date.getTime())) return '时间未知';
+      try { return full ? date.toLocaleString('zh-CN',{hour12:false}) : date.toLocaleTimeString('zh-CN',{hour12:false,hour:'2-digit',minute:'2-digit'}); }
+      catch (_) { return date.toISOString(); }
+    }
+    function isStale() { return !!(result && (result.stale || staleReason)); }
+    function markStale(reason) { if (result) { staleReason = reason || '当前入口或运行模式已变化，请重新检查。'; renderResults(); } }
+    function setOperation(value) {
+      operation = value;
+      el['state-card'].setAttribute('aria-busy', value === 'refresh' ? 'true' : 'false');
+      el['results-section'].setAttribute('aria-busy', value === 'check' ? 'true' : 'false');
+      el['check-spinner'].hidden = value !== 'check';
+      el['check-icon'].hidden = value === 'check';
+      el['check-label'].textContent = value === 'check' ? '正在检查…' : '检查当前入口与出口';
+      el['select-label-button'].textContent = value === 'select' ? '正在切换…' : '切换入口';
+      el['progress-note'].hidden = value !== 'check';
+      updateControls();
+    }
+    function updateControls() {
+      var localBusy = !!operation;
+      var blocked = localBusy || !state || !!state.busy;
+      el['refresh-button'].disabled = localBusy;
+      el['check-button'].disabled = blocked || !state.current;
+      el['node-select'].disabled = blocked || !state.candidates.length;
+      el['select-button'].disabled = blocked || !el['node-select'].value || el['node-select'].value === state.current || state.candidates.indexOf(el['node-select'].value) < 0;
+      el['copy-button'].disabled = localBusy || !result;
+      var pending = !!(state && el['node-select'].value && el['node-select'].value !== state.current);
+      el['selection-note'].classList.toggle('pending', pending);
+      el['selection-note'].textContent = !state ? '读取后可选择其他入口' : state.busy ? '另一项操作正在运行，完成后请刷新状态' : pending ? '尚未切换；检查仍使用当前入口' : '当前使用此入口';
+    }
+    function applyState(data, resetSelection) {
+      if (!data || data.ok !== true || !Array.isArray(data.candidates)) throw new Error('未获得有效状态，请刷新后重试。');
+      var oldCurrent = state ? state.current : '';
+      var wanted = el['node-select'].value;
+      state = {
+        version:text(data.version,'1.0.1'), chainName:text(data.chainName,'Mars-链式'), entryGroup:text(data.entryGroup,'香港手动策略'),
+        exitNode:text(data.exitNode,'Mars-ISP'), current:text(data.current), candidates:strings(data.candidates),
+        mode:[0,1,2].indexOf(data.mode) >= 0 ? data.mode : null, modeLabel:text(data.modeLabel,'模式未知'),
+        warnings:strings(data.warnings), busy:!!data.busy
+      };
+      if (result && resultSignature && signature(state) !== resultSignature) markStale('当前入口、运行模式或链路配置已变化，请重新检查。');
+      el['chain-name'].textContent = state.chainName;
+      el['entry-label'].textContent = state.entryGroup + ' · 当前入口';
+      el['select-label'].textContent = state.entryGroup;
+      el['current-node'].textContent = state.current || '未读取到当前入口';
+      el['current-node'].classList.remove('loading');
+      el['exit-node'].textContent = state.exitNode;
+      el['mode-label'].textContent = state.modeLabel;
+      el['mode-pill'].dataset.tone = state.mode === 1 ? 'ok' : 'warn';
+      el.version.textContent = 'MARS / v' + state.version;
+      el['impact-note'].textContent = '切换会影响共用“' + state.entryGroup + '”的其他流量。旧连接可能仍沿用原入口，必要时重开 AI App。';
+      clearNode(el['node-select']);
+      if (!state.candidates.length) {
+        var empty = element('option','', '没有可用的入口候选'); empty.value = ''; el['node-select'].appendChild(empty);
+      } else {
+        if (state.current && state.candidates.indexOf(state.current) < 0) { var currentOption = element('option','',state.current + '（当前项）'); currentOption.value = state.current; currentOption.disabled = true; el['node-select'].appendChild(currentOption); }
+        state.candidates.forEach(function (name) { var option = element('option','',name); option.value = name; el['node-select'].appendChild(option); });
+        el['node-select'].value = !resetSelection && oldCurrent === state.current && state.candidates.indexOf(wanted) >= 0 ? wanted : state.current;
+        if (!el['node-select'].value && !state.current) el['node-select'].selectedIndex = 0;
+      }
+      var warnings = state.warnings.slice();
+      if (state.mode === 0) warnings.unshift('当前是全局直连。出口与 AI 检查将反映当前模式，不能据此认定已通过 Mars 链路。');
+      else if (state.mode === 2) warnings.unshift('当前是全局代理。出口与 AI 检查遵循当前全局策略，可能与上方预期链路不同。');
+      else if (state.mode === null) warnings.unshift('暂未识别运行模式，请结合实际出口判断这轮检查。');
+      if (state.busy) warnings.push('已有检查或切换正在运行。完成后点击“刷新状态”即可继续。');
+      fillWarnings(el['state-warnings'], warnings);
+      updateControls();
+    }
+    async function api(path, method, payload) {
+      var controller = typeof AbortController === 'function' ? new AbortController() : null;
+      var timeout = null;
+      var headers = {'X-Mars-Token':token,'Accept':'application/json'};
+      var options = {method:method || 'GET',headers:headers,cache:'no-store',credentials:'omit',redirect:'error'};
+      if (controller) options.signal = controller.signal;
+      if (payload !== undefined) { headers['Content-Type'] = 'application/json'; options.body = JSON.stringify(payload); }
+      async function performRequest() {
+        var response = await fetch(path, options);
+        var data;
+        try { data = await response.json(); } catch (_) { throw new Error('没有收到面板的有效响应。请确认 Loon 已连接，并打开 http://mars.loon.test/。'); }
+        if (!response.ok || !data || data.ok !== true) {
+          var error = new Error(text(data && data.error && data.error.message,'操作未完成，请刷新状态后重试。'));
+          error.code = text(data && data.error && data.error.code);
+          throw error;
+        }
+        return data;
+      }
+      var deadline = new Promise(function (_, reject) {
+        timeout = setTimeout(function () {
+          var error = new Error('等待响应超时。请先刷新状态，确认上一项操作是否已经完成。');
+          error.name = 'AbortError';
+          reject(error);
+          if (controller) controller.abort();
+        }, path === '/api/check' ? 33000 : 15000);
+      });
+      try {
+        return await Promise.race([performRequest(),deadline]);
+      } catch (error) {
+        if (error && error.name === 'AbortError') throw new Error('等待响应超时。请先刷新状态，确认上一项操作是否已经完成。');
+        if (error instanceof TypeError) throw new Error('暂时无法连接面板。请确认 Loon 和本插件已启用，再刷新状态。');
+        throw error;
+      } finally { if (timeout !== null) clearTimeout(timeout); }
+    }
+    async function refreshState(silent, resetSelection) {
+      var data = await api('/api/state');
+      applyState(data, !!resetSelection);
+      if (!silent) { showNotice(isStale() ? '状态已刷新；旧检查结果已过期，请重新检查。' : '状态已刷新，没有发起外部探测。', isStale() ? 'warn' : 'ok'); announce('当前状态已刷新'); }
+      return data;
+    }
+    function normalizeResult(data) {
+      if (!Array.isArray(data.results) || !data.summary) throw new Error('检查返回内容不完整，请重试。');
+      return {
+        startedAt:text(data.startedAt),finishedAt:text(data.finishedAt),current:text(data.current),mode:[0,1,2].indexOf(data.mode) >= 0 ? data.mode : null,stale:!!data.stale,
+        summary:{headline:text(data.summary.headline,'检查已完成'),detail:text(data.summary.detail)},warnings:strings(data.warnings),
+        results:data.results.filter(function (item) { return item && (item.scope === 'entry' || item.scope === 'route'); }).map(function (item) {
+          return {id:text(item.id),label:text(item.label,'连接检查'),scope:item.scope,httpStatus:typeof item.httpStatus === 'number' ? item.httpStatus : null,
+            latencyMs:typeof item.latencyMs === 'number' && isFinite(item.latencyMs) ? item.latencyMs : null,
+            outcome:Object.prototype.hasOwnProperty.call(outcomeInfo,item.outcome) ? item.outcome : 'unexpected',reachable:!!item.reachable,
+            title:text(item.title),detail:text(item.detail),ip:text(item.ip),notRun:text(item.title).indexOf('未运行') === 0};
+        })
+      };
+    }
+    function renderResults() {
+      el['empty-results'].hidden = !!result;
+      el['results-content'].hidden = !result;
+      el['results-section'].classList.toggle('is-stale',isStale());
+      if (!result) return;
+      var stale = isStale();
+      var hasNetwork = result.results.some(function (item) { return item.outcome === 'network' && !item.notRun; });
+      var hasWarning = result.results.some(function (item) { return item.notRun || ['restricted','limited','server','unexpected'].indexOf(item.outcome) >= 0; });
+      el['summary-card'].dataset.tone = stale ? 'warn' : hasNetwork ? 'error' : hasWarning ? 'warn' : 'ok';
+      el['summary-state'].textContent = stale ? '旧结果 · 需要重新检查' : '本轮检查已完成';
+      el['summary-time'].textContent = timeLabel(result.finishedAt,false);
+      el['summary-time'].dateTime = result.finishedAt;
+      el['summary-time'].title = timeLabel(result.finishedAt,true);
+      el['summary-title'].textContent = stale ? '这份结果已过期' : result.summary.headline;
+      el['summary-detail'].textContent = stale ? (staleReason || '检查期间入口或模式发生变化，请重新检查当前连接。') : result.summary.detail;
+      clearNode(el['result-groups']);
+      ['entry','route'].forEach(function (scope) {
+        var items = result.results.filter(function (item) { return item.scope === scope; });
+        if (!items.length) return;
+        var group = element('section','results-group'); group.dataset.scope = scope;
+        var header = element('div','group-header'); header.appendChild(element('span','group-marker',scope === 'entry' ? '01' : '02'));
+        var heading = element('div','');
+        heading.appendChild(element('h3','',scope === 'entry' ? '入口单独检查' : (result.mode === 1 ? '当前分流出口与 AI' : '当前模式出口与 AI')));
+        heading.appendChild(element('p','',scope === 'entry' ? '仅检查所选香港入口；不能代表完整 Mars 链路。' : '按本轮运行模式与规则请求；与上方预期链路分开判断。'));
+        header.appendChild(heading);group.appendChild(header);
+        var list = element('div','result-items');
+        items.forEach(function (item) {
+          var row = element('article','result-item');
+          var topline = element('div','result-topline');topline.appendChild(element('div','result-name',item.label));
+          var info = item.notRun ? ['未运行','warn'] : outcomeInfo[item.outcome];var badge = element('span','result-badge',stale ? '旧结果' : info[0]);badge.dataset.tone = info[1];topline.appendChild(badge);row.appendChild(topline);
+          if (item.title) row.appendChild(element('div','result-title',item.title));
+          if (item.detail) row.appendChild(element('p','result-detail',item.detail));
+          if (item.ip) row.appendChild(element('p','result-ip','IP  ' + item.ip));
+          var meta = element('div','result-meta');
+          meta.appendChild(element('span','',item.notRun ? '未执行请求' : item.httpStatus === null ? '未取得 HTTP 状态' : 'HTTP ' + item.httpStatus));
+          if (!item.notRun && item.latencyMs !== null) meta.appendChild(element('span','',Math.max(0,Math.round(item.latencyMs)) + ' ms'));
+          if (stale) meta.appendChild(element('span','','仅供回看'));
+          row.appendChild(meta);list.appendChild(row);
+        });
+        group.appendChild(list);el['result-groups'].appendChild(group);
+      });
+      fillWarnings(el['result-warnings'],result.warnings);
+      updateControls();
+    }
+    async function recoverState() {
+      try { await refreshState(true,false); } catch (_) { /* Keep the original operation error visible. */ }
+    }
+    async function runCheck() {
+      if (!state || operation || state.busy) return;
+      clearNotice();
+      var expected = state.current;
+      var before = signature(state);
+      setOperation('check');announce('正在检查 8 项连接');
+      try {
+        var data = await api('/api/check','POST',{expectedCurrent:expected});
+        result = normalizeResult(data);resultSignature = before;staleReason = '';
+        if (result.stale || result.current !== expected || result.mode !== state.mode) staleReason = '检查期间入口或运行模式发生变化，这轮结果不再代表当前连接。';
+        renderResults();
+        try { await refreshState(true,false); }
+        catch (_) { markStale('检查已完成，但未能复核当前状态。请刷新状态后重新检查。'); showNotice('未能复核检查后的当前状态，请刷新后重试。','warn'); }
+        announce(isStale() ? '检查已结束，但结果已过期，请重新检查' : '检查完成，结果已更新');
+      } catch (error) { showNotice(error.message || '检查未完成，请重试。','error'); await recoverState(); announce('检查未完成'); }
+      finally { setOperation(''); }
+    }
+    async function selectNode() {
+      if (!state || operation || state.busy) return;
+      var selected = el['node-select'].value;
+      if (!selected || selected === state.current || state.candidates.indexOf(selected) < 0) return;
+      var previous = state.current;
+      clearNotice();setOperation('select');
+      try {
+        var data = await api('/api/select','POST',{node:selected,expectedCurrent:previous});
+        var actual = text(data.current,previous);
+        if (data.changed || actual !== previous) markStale('入口已切换。上次结果属于旧连接，请重新检查当前入口与出口。');
+        state.current = actual;
+        el['current-node'].textContent = actual;
+        el['node-select'].value = actual;
+        var message = data.changed || actual !== previous ? '已切换至“' + actual + '”。请检查新连接；旧长连接可能需要重开 AI App。' : '当前已使用这个入口。';
+        if (text(data.warning)) message += ' ' + data.warning;
+        try { await refreshState(true,true); }
+        catch (_) { message += ' 暂未刷新到完整状态，可点击“刷新状态”确认。'; }
+        showNotice(message,text(data.warning) ? 'warn' : 'ok');announce('入口选择已更新');
+      } catch (error) { showNotice(error.message || '切换未完成，请刷新状态后重试。','error'); await recoverState();announce('切换未完成'); }
+      finally { setOperation(''); }
+    }
+    function safeLine(value, limit) { return String(value === null || value === undefined ? '' : value).replace(/[\r\n\t]+/g,' ').slice(0,limit || 400); }
+    function diagnostics() {
+      var lines = ['Mars AI 链路快检 v' + safeLine(state ? state.version : '1.0.1',30),'复制时间：' + timeLabel(new Date().toISOString(),true)];
+      if (state) { lines.push('当前入口：' + safeLine(state.current),'当前模式：' + safeLine(state.modeLabel,80),'预期链路：' + safeLine(state.entryGroup,100) + ' → ' + safeLine(state.exitNode,100) + '（配置关系，非逐跳验证）'); }
+      if (!result) return lines.join('\n');
+      lines.push('检查完成：' + timeLabel(result.finishedAt,true),'本轮入口：' + safeLine(result.current),'时效：' + (isStale() ? '已过期，不能代表当前连接' : '本轮完成后已复核当前状态'));
+      if (isStale()) lines.push('过期原因：' + safeLine(staleReason || '检查期间状态发生变化'));
+      lines.push('摘要：' + safeLine(result.summary.headline),'说明：' + safeLine(result.summary.detail,700),'');
+      result.results.forEach(function (item) {
+        lines.push('[' + (item.scope === 'entry' ? '入口单独检查' : '当前模式与分流') + '] ' + safeLine(item.label,100));
+        lines.push('  ' + safeLine(item.title || outcomeInfo[item.outcome][0],200) + ' | ' + (item.notRun ? '未执行请求' : item.httpStatus === null ? '未取得 HTTP 状态' : 'HTTP ' + item.httpStatus) + (item.notRun || item.latencyMs === null ? '' : ' | ' + Math.max(0,Math.round(item.latencyMs)) + ' ms'));
+        if (item.ip) lines.push('  IP：' + safeLine(item.ip,100));
+        if (item.detail) lines.push('  ' + safeLine(item.detail,700));
+      });
+      var warnings = (state ? state.warnings : []).concat(result.warnings);
+      if (warnings.length) { lines.push('','提示：');warnings.forEach(function (warning) { lines.push('- ' + safeLine(warning,700)); }); }
+      lines.push('','本摘要仅含状态与检查结果，不含节点密码、证书或订阅配置。','HTTP 可达不等于账号、模型或网页功能全部可用。');
+      return lines.join('\n');
+    }
+    function closeCopyModal() { el['copy-modal'].hidden = true; if (lastFocused && lastFocused.focus) lastFocused.focus(); }
+    function openCopyModal(value) { lastFocused = document.activeElement;el['copy-text'].value = value;el['copy-modal'].hidden = false;el['copy-text'].focus();el['copy-text'].select(); }
+    async function copyDiagnostics() {
+      if (!result || operation) return;
+      var value = diagnostics();
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(value);showNotice('诊断摘要已复制。');return; }
+      } catch (_) { /* HTTP pages may not have Clipboard API access. */ }
+      var area = document.createElement('textarea');area.value = value;area.setAttribute('readonly','');area.setAttribute('aria-hidden','true');area.style.position = 'fixed';area.style.opacity = '0';area.style.pointerEvents = 'none';area.style.top = '0';area.style.left = '0';document.body.appendChild(area);
+      var copied = false;
+      try { area.focus();area.select();area.setSelectionRange(0,area.value.length);copied = document.execCommand('copy'); } catch (_) {}
+      area.remove();
+      if (copied) { el['copy-button'].focus();showNotice('诊断摘要已复制。'); }
+      else openCopyModal(value);
+    }
+    el['refresh-button'].addEventListener('click',async function () {
+      if (operation) return;
+      clearNotice();setOperation('refresh');
+      try { await refreshState(false,false); } catch (error) { showNotice(error.message || '刷新失败，请重试。','error'); }
+      finally { setOperation(''); }
+    });
+    el['check-button'].addEventListener('click',runCheck);
+    el['select-button'].addEventListener('click',selectNode);
+    el['node-select'].addEventListener('change',updateControls);
+    el['copy-button'].addEventListener('click',copyDiagnostics);
+    el['copy-close'].addEventListener('click',closeCopyModal);
+    el['copy-select'].addEventListener('click',function () { el['copy-text'].focus();el['copy-text'].select();el['copy-text'].setSelectionRange(0,el['copy-text'].value.length); });
+    el['copy-modal'].addEventListener('click',function (event) { if (event.target === el['copy-modal']) closeCopyModal(); });
+    document.addEventListener('keydown',function (event) {
+      if (el['copy-modal'].hidden) return;
+      if (event.key === 'Escape') { event.preventDefault();closeCopyModal(); }
+      if (event.key === 'Tab') { var first = el['copy-text'];var last = el['copy-select'];if (event.shiftKey && document.activeElement === first) { event.preventDefault();last.focus(); } else if (!event.shiftKey && document.activeElement === last) { event.preventDefault();first.focus(); } }
+    });
+    (async function () {
+      setOperation('refresh');
+      try { await refreshState(true,true); }
+      catch (error) { el['current-node'].textContent = '尚未读取到状态';el['mode-label'].textContent = '未连接面板';showNotice(error.message || '无法读取状态，请确认插件已启用。','error'); }
+      finally { setOperation(''); }
+    })();
+  })();
+  </script>
+</body>
+</html>
