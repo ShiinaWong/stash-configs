@@ -7,7 +7,7 @@ import vm from 'node:vm';
 const require = createRequire(import.meta.url);
 const { chromium } = require(require.resolve('playwright', { paths:[process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES || process.cwd()] }));
 const root = new URL('../',import.meta.url);
-const code = await readFile(new URL('../../scripts/mars-ai-check-v1.0.1.js',root),'utf8');
+const code = await readFile(new URL('../../scripts/mars-ai-check-v1.0.2.js',root),'utf8');
 const artifactDir = new URL('tests/artifacts/',root);
 await mkdir(artifactDir,{recursive:true});
 const store = new Map();
@@ -79,12 +79,12 @@ try {
  await page.waitForFunction(()=>document.querySelector('#current-node').textContent.includes('HK 02'));
  assert.equal(writes,1);
  assert.equal(requests,8,'Switching must not silently start another probe round');
- assert.match(await page.locator('#summary-state').textContent(),/过期|重新/);
+ assert.match(await page.locator('#summary-state').textContent(),/过期|重新|旧结果/);
  // Force HTTP clipboard fallback; the visible textarea must include a stale marker.
  await page.evaluate(()=>{document.execCommand=()=>false;});
  await page.locator('#copy-button').click();
  await page.waitForFunction(()=>!document.querySelector('#copy-modal').hidden);
- assert.match(await page.locator('#copy-text').inputValue(),/过期/);
+ assert.match(await page.locator('#copy-text').inputValue(),/过期|旧结果/);
  await page.locator('#copy-close').click();
  // A refresh after a native mode change must not present old checks as fresh.
  mode=0;

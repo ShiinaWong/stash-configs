@@ -1,6 +1,13 @@
 # Mars AI 链路快检：GitHub 订阅版
 
-当前版本：**v1.0.1**。提供手机面板、香港入口选择、当前出口与 AI HTTP 探测，按现有配置 `Mars-链式 = 香港手动策略,Mars-ISP` 使用。
+当前版本：**v1.0.2**。提供手机面板、香港入口选择、当前出口与 AI HTTP 探测，按现有配置 `Mars-链式 = 香港手动策略,Mars-ISP` 使用。
+
+## v1.0.2 更新
+
+- 修正候选解析：兼容 Loon 常见的 JSON 对象数组，只提取名称；保留字符串数组及旧 API 名称兼容。
+- IP 响应兼容 UTF-8 字节数组、BOM、纯 IP 文本；异常时记录正文类型、格式、长度和 Content-Type，不导出正文。
+- 结果默认紧凑展示，解释折叠；“复制排障摘要”每项一行，也能在未检查时复制节点读取诊断。
+- 新增独立“GPT 专项检查”，检查 iOS 服务域名、公开认证配置与 Apple App Attest 连接。
 
 ## 1. 一次添加插件链接
 
@@ -16,7 +23,7 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/mars-ai-che
 2. Loon 按插件里的 HTTPS 地址获取配套 JS，**不需要下载 ZIP，也不需要手动安装本地 JS**。
 3. 保留现有 `香港手动策略`、`Mars-ISP`、`Mars-链式`，以及指向 Mars 的 AI 和 `api.ipify.org` 分流规则。
 4. 保持 Loon 运行，在分流模式下打开 **[http://mars.loon.test/](http://mars.loon.test/)**。
-5. 面板页脚应显示 **v1.0.1**；先检查当前入口，再按需切换并重新检查。
+5. 面板页脚应显示 **v1.0.2**；先检查当前入口，再按需切换并重新检查。
 
 如果以前已安装本地版，先停用同名本地插件或 README 中手动添加的面板脚本入口，再启用本订阅版，避免本地旧脚本先命中。无需删除其他插件或替换整份主配置。
 
@@ -24,7 +31,7 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/mars-ai-che
 
 插件订阅地址保持不变。发布新版本时，插件会改为引用新版本号的 JS 文件；在 Loon 更新该插件并确认配套脚本获取成功后，刷新面板核对版本。是否定时更新、具体更新时间由 Loon 的资源更新设置决定；这里不承诺每次打开都会重新下载。
 
-当前脚本：[`mars-ai-check-v1.0.1.js`](../scripts/mars-ai-check-v1.0.1.js)。将脚本与插件放在同一公开仓库，是为了让 Loon 通过普通 HTTPS 资源加载它们。文件中没有节点密码、订阅 Token、证书私钥或完整个人配置。
+当前脚本：[`mars-ai-check-v1.0.2.js`](../scripts/mars-ai-check-v1.0.2.js)。将脚本与插件放在同一公开仓库，是为了让 Loon 通过普通 HTTPS 资源加载它们。文件中没有节点密码、订阅 Token、证书私钥或完整个人配置。
 
 插件仅提供本地域名的 Host 与直连规则，以及面板和 Generic 手动脚本入口；没有新增 AI 分流、MitM 域名或定时探测。面板由 Loon 的请求脚本返回，不需要单独运行 Web 服务器。
 
@@ -33,9 +40,9 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/mars-ai-che
 ## 2. 日常使用
 
 1. 打开面板，核对当前选中的香港入口。
-2. 运行一次检查，等待这一轮完成。每轮最多发起 **8 个固定目标的外部 GET 请求**，最大并发 **3**，每项超时约 **6.5 秒**。
+2. 选择“AI 快检”（8 项）或“GPT 专项检查”（7 项），等待这一轮完成。最大并发 **3**，每项超时约 **6.5 秒**。
 3. 需要更换入口时，在候选下拉列表中选择节点并执行切换；再运行新一轮检查作比较。
-4. 使用摘要复制功能，保存本轮入口、出口、状态与耗时。若浏览器限制自动复制，可手动选择摘要文本复制。
+4. 点击“复制排障摘要”，保存精简文本。每项只保留状态、耗时和必要诊断；未检查时也能复制节点读取情况。若浏览器限制自动复制，使用可见文本框手动复制。
 
 检查只在你手动触发时运行，没有后台轮询。单项失败不会自动变成持续重试，也不会通过生成文本、图片或消息来测试服务。
 
@@ -65,6 +72,22 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/mars-ai-che
 `robots.txt` 只是网站的轻量探测路径，**不是这些服务承诺的健康检查接口**。它的访问策略、重定向和防护可能变化，成功也不代表登录、聊天、上传或流式连接可用。
 
 出口查询使用 [ipify 官方的 IPv4 JSON 接口](https://www.ipify.org/)。它只观察这一次请求的公网 IPv4，不检查 IPv6，也不自动证明出口的地理位置、住宅属性或服务支持情况。
+
+### GPT 专项检查（7 项）
+
+这一轮保留入口 IP、当前分流 IP、OpenAI API 和 ChatGPT 网页资源检查，另外加入：
+
+| 项目 | 固定 GET 地址 | 判定边界 |
+| --- | --- | --- |
+| ChatGPT iOS 域名 | `https://ios.chat.openai.com/` | 只观察 HTTP 响应；根路径 404/405 不能判定 App 业务故障 |
+| ChatGPT 认证服务 | `https://auth.openai.com/.well-known/openid-configuration` | 核对公开 OIDC 元数据的 issuer 和授权端点，不执行登录 |
+| Apple App Attest | `https://register.appattest.apple.com/` | 只观察连接响应，不执行设备证明；沿用当前路由，未强制走 Mars |
+
+OpenAI 官方明确列出 [iOS App 域名与证书固定](https://help.openai.com/en/articles/20001323-corporate-network-controls-in-chatgpt-enterprise)，并在 [网络排障建议](https://help.openai.com/en/articles/9247338-network-recommendations-for-chatgpt-errors-on-web-and-apps) 中给出 App Attest 排查地址。[公开认证配置](https://auth.openai.com/.well-known/openid-configuration) 来自官方 [Sign in with ChatGPT 文档](https://developers.openai.com/siwc/website)。
+
+**OpenAI API 401 不等于 ChatGPT App 可用。**本轮没有验证实际登录、App 的证书固定、设备证明、WebSocket 对话或账号状态。若 API 有响应而 iOS 或认证域名失败，优先对照该域名的 Loon 请求记录；若这些检查都有响应，仍需 App 的完整报错，不能直接归因于 Mars。
+
+复制摘要包含候选返回结构及必要的响应元信息，用于区分“解析不兼容”和“实际没有有效内容”。不复制完整配置、节点对象、响应全文或全部响应头。
 
 ### 为什么叫“当前路由出口”
 
@@ -97,11 +120,11 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/mars-ai-che
 
 ### 提示找不到脚本，或 Generic 也无法运行
 
-先确认 GitHub 原始文件地址可以访问，并查看 Loon 的脚本下载状态。插件应引用 `mars-ai-check-v1.0.1.js`；更新插件后如仍显示旧版本，使用 Loon 的远程脚本更新功能重新获取。无需单独下载、重命名或导入 JS。
+先确认 GitHub 原始文件地址可以访问，并查看 Loon 的脚本下载状态。插件应引用 `mars-ai-check-v1.0.2.js`；更新插件后如仍显示旧版本，使用 Loon 的远程脚本更新功能重新获取。无需单独下载、重命名或导入 JS。
 
 ### 下拉列表没有候选，或切换失败
 
-核对当前主配置中确实存在名字完全一致的 `香港手动策略`，并且它是手动选择组，其候选节点已加载。切换后以重新读取的当前选择为准；没有读到候选时，不应把手工输入的任意名字当成有效节点。
+核对当前主配置中存在名字完全一致的 `香港手动策略`。v1.0.2 已修复对象数组被过滤的问题；仍为空时，请直接复制排障摘要，其中的候选 API、返回结构和数量可以区分超时、格式不识别与真实空列表。切换仍只接受实时返回的候选，并读回确认。
 
 ### 出口不像预期的 Mars 出口
 
@@ -125,23 +148,26 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/mars-ai-che
 
 本说明已核对 Loon 的公开 Script API、模型列表端点及其认证示例。交付包的源码与测试用于检查实现逻辑；**尚未在你的 iPhone、Loon 配置和 Mars 网络链路上实测**。桌面测试或 API 模拟不能替代手机上的首次安装、页面拦截和真实出口验证。
 
-后端已通过 56 项模拟测试，覆盖请求数量与并发上限、401/403/429/5xx/空响应分类、无回调停止调度、节点候选与切换读回、跨站请求拒绝、敏感字段隔离和结果过期。测试不访问实际代理，也不使用你的凭据。
+后端已通过 **119 项模拟测试**，覆盖请求数量与并发上限、401/403/429/5xx/空响应分类、无回调停止调度、节点候选与切换读回、跨站请求拒绝、敏感字段隔离和结果过期。测试不访问实际代理，也不使用你的凭据。
 
-面板已通过脚本语法检查与小型 DOM 模拟，覆盖初始状态读取、忙时按钮锁定、节点名按文本显示、结果过期、无 AbortController 时的超时恢复及手动复制备选。DOM 模拟不代表浏览器排版或 iOS Safari 已经过验证。
+面板已通过脚本语法检查与小型 DOM 模拟，覆盖候选为空时复制诊断、AI/GPT 检查切换、默认折叠结果、摘要长度限制、证据字段白名单、结果过期及手动复制备选。模拟数据的 AI 摘要为 20 行、637 字符，GPT 摘要为 19 行、606 字符；实际长度随节点名称和结果变化。DOM 模拟不代表浏览器排版或 iOS Safari 已经过验证。
 
 开发者复跑（Node.js）：
 
 ```bash
 node loon/tools/mars-ai-check/build.mjs
-node --check loon/scripts/mars-ai-check-v1.0.1.js
+node --check loon/scripts/mars-ai-check-v1.0.2.js
 node --test loon/tools/mars-ai-check/tests/backend.test.cjs
+node loon/tools/mars-ai-check/tests/panel-dom.test.cjs
 ```
 
 `loon/tools/mars-ai-check/tests/frontend.mjs` 是真实 HTML 配合模拟 Loon API 的浏览器测试，需要自行提供 Playwright 与可运行的 Chromium，可用 `MARS_BROWSER_PATH` 指定浏览器路径。当前交付环境限制了浏览器进程创建套接字，该项浏览器测试未能运行完成；不要将其视为已经通过的手机验收。
 
 主要依据：
 
-- [Loon Script 语法与本地脚本路径](https://nsloon.app/docs/Script/script_v2/)
+- [实际 Loon 候选对象数组用例：NobyDa Google_CAPTCHA](https://github.com/NobyDa/Script/blob/master/Surge/JS/Google_CAPTCHA.js)
+
+- [Loon Script 语法与脚本路径](https://nsloon.app/docs/Script/script_v2/)
 - [Loon Script API：策略读写、HTTP 请求、完成响应](https://nsloon.app/docs/Script/script_api/)
 - [Loon 策略处理流程](https://nsloon.app/docs/Policy/)
 - [Loon 通用配置](https://nsloon.app/docs/General/)

@@ -1,5 +1,5 @@
 #!name = Mars AI 链路快检
-#!desc = v1.0.1 · 手动检查香港入口、当前出口与 AI 响应，并切换入口节点。打开 http://mars.loon.test/ 使用。
+#!desc = v1.0.2 · 修复节点列表，提供 AI 快检、GPT 专项检查和精简排障摘要。打开 http://mars.loon.test/ 使用。
 #!author = shiina / ChatGPT
 #!homepage = https://github.com/ShiinaWong/stash-configs/blob/main/loon/docs/mars-ai-check.md
 #!openUrl = http://mars.loon.test/
@@ -18,5 +18,5 @@ mars.loon.test = 127.0.0.1
 DOMAIN,mars.loon.test,DIRECT
 
 [Script]
-request if ${url} ~= /^http:\/\/mars\.loon\.test(?::80)?\//i then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/mars-ai-check-v1.0.1.js") with requires_body=true, timeout=35, tag="Mars AI 控制面板"
-generic then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/mars-ai-check-v1.0.1.js", "action=check") with timeout=35, tag="Mars AI 快检", img_url="network.system"
+request if ${url} ~= /^http:\/\/mars\.loon\.test(?::80)?\//i then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/mars-ai-check-v1.0.2.js") with requires_body=true, timeout=35, tag="Mars AI 控制面板"
+generic then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/mars-ai-check-v1.0.2.js", "action=check") with timeout=35, tag="Mars AI 快检", img_url="network.system"

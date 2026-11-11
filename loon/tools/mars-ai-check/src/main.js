@@ -1,4 +1,4 @@
-/* Mars AI 链路快检 1.0.1
+/* Mars AI 链路快检 1.0.2
  * Built for: Mars-链式 = 香港手动策略,Mars-ISP
  * This file never reads node credentials or changes routing rules.
  * API references: https://nsloon.app/docs/Script/script_api/
@@ -6,7 +6,7 @@
 (function () {
   'use strict';
   var PANEL_HTML = __MARS_PANEL_HTML__;
-  var VERSION = '1.0.1';
+  var VERSION = '1.0.2';
   var ORIGIN = 'http://mars.loon.test';
   var ENTRY = '香港手动策略';
   var EXIT = 'Mars-ISP';
@@ -23,6 +23,11 @@
     {id:'gemini-api', label:'Gemini API', scope:'route', kind:'google', url:'https://generativelanguage.googleapis.com/v1beta/models'},
     {id:'gemini-web', label:'Gemini 网页域名', scope:'route', kind:'robots', url:'https://gemini.google.com/robots.txt'}
   ];
+  var CHATGPT_PROBES = [PROBES[0],PROBES[1],PROBES[2],PROBES[3],
+    {id:'chatgpt-ios',label:'ChatGPT iOS 域名',scope:'route',kind:'host',url:'https://ios.chat.openai.com/'},
+    {id:'chatgpt-auth',label:'ChatGPT 认证服务',scope:'route',kind:'oidc',url:'https://auth.openai.com/.well-known/openid-configuration'},
+    {id:'apple-attest',label:'Apple App Attest',scope:'route',kind:'host',url:'https://register.appattest.apple.com/'}
+  ];
 
   function fault(code, message, status) {
     var e = new Error(message);
@@ -35,19 +40,94 @@
     for (var i=0;i<keys.length;i++) if (keys[i].toLowerCase() === name.toLowerCase()) return String(headers[keys[i]]);
     return '';
   }
-  function normalizeCandidates(text) {
-    var value = typeof text === 'string' ? parseJSON(text) : null;
-    if (!Array.isArray(value)) return [];
-    var seen = Object.create(null);
-    return value.filter(function (x) {
-      if (typeof x !== 'string' || !x.trim() || x.length > 512 || /[\u0000-\u001f]/.test(x) || seen[x]) return false;
-      seen[x] = true; return true;
-    }).slice(0,1000);
+  function candidatePayload(raw) {
+    var value=raw, prefix='';
+    for(var i=0;i<2 && typeof value==='string';i++) { prefix+='json:'; value=parseJSON(value.replace(/^\uFEFF/,'').trim()); }
+    if(value && !Array.isArray(value) && typeof value==='object') {
+      // Defensive wrappers: never infer a candidate from a credential-bearing object.
+      var keys=['policies','subPolicies','sub_policies','nodes'];
+      for(var k=0;k<keys.length;k++) if(Array.isArray(value[keys[k]])) {prefix+=keys[k]+':';value=value[keys[k]];break;}
+    }
+    var shape=prefix+(Array.isArray(value)?'array':value===null?'null':typeof value);
+    if(Array.isArray(value)) {
+      var types=[];
+      value.slice(0,20).forEach(function(item){var t=item===null?'null':Array.isArray(item)?'array':typeof item;if(types.indexOf(t)<0)types.push(t);});
+      shape+='<'+types.sort().join('|')+'>';
+    }
+    return {value:value,shape:shape};
   }
-  function validIP(ip) {
-    // The supplied profile is IPv4-only, and api.ipify.org is the IPv4 endpoint.
-    if (typeof ip !== 'string' || !/^\d{1,3}(?:\.\d{1,3}){3}$/.test(ip)) return false;
-    return ip.split('.').every(function (x) { return Number(x) <= 255; });
+  function normalizeCandidates(raw) {
+    var value=candidatePayload(raw).value;
+    if(!Array.isArray(value))return [];
+    var seen=Object.create(null),names=[];
+    value.slice(0,2000).forEach(function(item){
+      var name=typeof item==='string'?item:item && typeof item==='object' && typeof item.name==='string'?item.name:null;
+      if(!name || !name.trim() || name.length>512 || /[\u0000-\u001f]/.test(name) || seen[name])return;
+      seen[name]=true;names.push(name);
+    });
+    return names.slice(0,1000);
+  }
+  function validIP(value) {
+    if(typeof value!=='string')return false;
+    if(/^\d{1,3}(?:\.\d{1,3}){3}$/.test(value))return value.split('.').every(function(x){return Number(x)<=255;});
+    // Accept a complete IPv6 literal, but never extract an address from an HTML/error page.
+    if(!value.includes(':') || /[^0-9a-f:.]/i.test(value) || /:::/.test(value) || value.split('::').length>2)return false;
+    var ip=value;
+    if(ip.includes('.')) {var last=ip.slice(ip.lastIndexOf(':')+1);if(!/^\d{1,3}(?:\.\d{1,3}){3}$/.test(last) || !validIP(last))return false;ip=ip.slice(0,ip.lastIndexOf(':')+1)+'0:0';}
+    var compressed=ip.includes('::'), parts=ip.split(':').filter(function(x){return x!=='';});
+    if(parts.some(function(x){return !/^[0-9a-f]{1,4}$/i.test(x);}))return false;
+    if(!compressed && (ip[0]===':' || ip[ip.length-1]===':'))return false;
+    return compressed?parts.length<8:parts.length===8;
+  }
+  function utf8Length(text) {
+    var n=0;
+    for(var i=0;i<text.length;i++) {
+      var c=text.charCodeAt(i);
+      if(c<0x80)n++;else if(c<0x800)n+=2;
+      else if(c>=0xd800 && c<=0xdbff && i+1<text.length && text.charCodeAt(i+1)>=0xdc00 && text.charCodeAt(i+1)<=0xdfff){n+=4;i++;}
+      else n+=3;
+    }
+    return n;
+  }
+  function decodeBody(data,response) {
+    var value=data,source='data',text='',json=null,bytes=null,bodyType,format='unknown';
+    if((value===undefined || value===null) && response && response.body!==undefined) {value=response.body;source='response.body';}
+    var tag=Object.prototype.toString.call(value);
+    if(typeof value==='string') {bodyType='string';bytes=utf8Length(value);text=value.slice(0,65536);}
+    else if(tag==='[object Uint8Array]' || tag==='[object ArrayBuffer]' || tag==='[object DataView]' || Array.isArray(value) && value.every(function(x){return Number.isInteger(x)&&x>=0&&x<=255;})) {
+      bodyType=tag==='[object Array]'?'byte-array':tag.slice(8,-1);
+      var list;
+      if(tag==='[object ArrayBuffer]')list=new Uint8Array(value);
+      else if(tag==='[object DataView]')list=new Uint8Array(value.buffer,value.byteOffset,value.byteLength);
+      else list=value;
+      bytes=list.length;
+      if(bytes>1 && list[0]===31 && list[1]===139)format='gzip-bytes';
+      else {
+        var encoded='';
+        for(var i=0;i<Math.min(bytes,65536);i++)encoded+='%'+Number(list[i]).toString(16).padStart(2,'0');
+        try{text=decodeURIComponent(encoded);}catch(_){format='non-utf8-bytes';}
+      }
+    } else if(value && typeof value==='object' && !Array.isArray(value)) {
+      // Not promised by Loon's API; retained as defensive compatibility only.
+      bodyType='object';json=value;format='json-object';
+    } else bodyType=value===null?'null':typeof value;
+    text=text.replace(/^\uFEFF/,'').trim();
+    if(text) {
+      json=parseJSON(text);
+      if(json!==null)format='json';
+      else if(validIP(text))format='plain-ip';
+      else if(/<\s*!doctype\s+html|<\s*html\b|<\s*body\b/i.test(text))format='html';
+      else format='text';
+    } else if(format==='unknown')format=bytes===0?'empty':'unavailable';
+    var ct=header(response && response.headers,'Content-Type').split(';')[0].trim().toLowerCase();
+    var ce=header(response && response.headers,'Content-Encoding').trim().toLowerCase();
+    // Keep only conventional MIME/encoding tokens; no arbitrary header values or bodies.
+    var evidence={bodyType:bodyType,bodyFormat:format,bodyBytes:bytes,contentType:/^[a-z0-9.+-]+\/[a-z0-9.+-]+$/.test(ct)?ct:'',contentEncoding:/^(?:gzip|br|deflate|identity)$/.test(ce)?ce:'',bodySource:source};
+    if(json && typeof json==='object') {
+      evidence.fields=['ip','data','error','models','issuer','authorization_endpoint'].filter(function(k){return Object.prototype.hasOwnProperty.call(json,k);});
+      if(Object.prototype.hasOwnProperty.call(json,'ip'))evidence.ipType=typeof json.ip;
+    }
+    return {text:text,json:json,evidence:evidence};
   }
   function networkMessage(error) {
     var e = String(error || '').toLowerCase();
@@ -58,20 +138,22 @@
     return '未完成 HTTP 请求；可能涉及网络、入口、Mars 或目标服务，单次结果无法定位具体一跳。';
   }
   function classify(probe, error, response, data, latencyMs) {
-    var status = response && Number(response.status);
+    var status = response && Number(response.status===undefined?response.statusCode:response.status);
     var r = {id:probe.id,label:probe.label,scope:probe.scope,url:probe.url,
       httpStatus:status >= 100 && status <= 599 ? status : null,
       latencyMs:Math.max(0,Math.round(latencyMs)),reachable:false,outcome:'network',title:'未完成 HTTP 探测',detail:''};
+    var decoded=decodeBody(data,response);r.evidence=decoded.evidence;
     if (!r.httpStatus) { r.detail = networkMessage(error); return r; }
     r.reachable = true;
     if (error) {
       r.outcome='unexpected'; r.title='已收到 HTTP 状态，传输未完整结束'; r.detail=networkMessage(error); return r;
     }
-    var text = typeof data === 'string' ? data.slice(0,65536) : '';
-    var json = parseJSON(text);
+    var text=decoded.text, json=decoded.json;
     var err = json && json.error && typeof json.error === 'object' ? json.error : {};
     var code = [err.code,err.type,err.status].filter(function (v) { return typeof v==='string'; }).join(' ').toLowerCase();
     var message = typeof err.message === 'string' ? err.message.toLowerCase() : '';
+    var safeCode=typeof err.code==='string'?err.code:typeof err.type==='string'?err.type:typeof err.status==='string'?err.status:'';
+    if(/^[a-zA-Z][a-zA-Z0-9_]{0,63}$/.test(safeCode))r.evidence.errorCode=safeCode;
     var regional = /(?:^|\s)(?:unsupported_country_region_territory|region_not_supported|country_not_supported)(?:$|\s)/.test(code) ||
       /country, region,? or territory not supported|user location is not supported for the api use|your country is not supported/.test(message);
     if (regional) {
@@ -98,9 +180,19 @@
       r.outcome='redirect'; r.title='HTTP 可达 · 返回跳转'; r.detail='为控制请求数量，本次没有继续跟随跳转；最终页面尚未验证。'; return r;
     }
     if (status>=200 && status<300) {
-      if (probe.kind==='ip' && json && validIP(json.ip)) {
-        r.outcome='ok'; r.title='已取得出口 IP'; r.ip=json.ip;
+      var ip=probe.kind==='ip'?(json && typeof json.ip==='string'?json.ip.trim():typeof json==='string'?json.trim():text):'';
+      if (probe.kind==='ip' && validIP(ip)) {
+        r.outcome='ok'; r.title='已取得出口 IP'; r.ip=ip;r.evidence.ipSource=json && typeof json.ip==='string'?'json.ip':'plain-ip';
         r.detail=probe.scope==='entry' ? '强制使用“香港手动策略”单测，仅代表前置入口。' : '沿用当前路由；你的配置预期由 api.ipify.org 规则进入 Mars-链式。'; return r;
+      }
+      if(probe.kind==='host') {
+        if(/cf-chl-|challenge-platform|just a moment|verify you are human/i.test(text)) {
+          r.outcome='restricted';r.title='域名已响应 · 返回风控挑战';r.detail='根路径返回验证页面；不能代替 App 的实际连接和登录结果。';return r;
+        }
+        r.outcome='ok';r.title='域名已响应 · 业务未验证';r.detail='仅检查无登录根路径；不能验证 App 证书固定、设备证明、登录或对话。';return r;
+      }
+      if(probe.kind==='oidc' && json && json.issuer==='https://auth.openai.com' && typeof json.authorization_endpoint==='string' && json.authorization_endpoint.indexOf('https://auth.openai.com/')===0) {
+        r.outcome='ok';r.title='认证服务公开配置有效';r.detail='已核对公开 OIDC 元数据；没有登录，也没有验证你的账号或授权会话。';return r;
       }
       var expected = probe.kind==='robots' ? /(?:^|\n)\s*(?:user-agent|disallow|allow|sitemap)\s*:/i.test(text) && !/<html|cf-chl-|challenge-platform/i.test(text) :
         json && ((probe.kind==='openai' || probe.kind==='anthropic') ? Array.isArray(json.data) : probe.kind==='google' && Array.isArray(json.models));
@@ -109,8 +201,9 @@
         r.detail=probe.kind==='robots' ? '只验证 robots.txt；登录、对话、上传和流式输出尚未验证。' : '模型目录端点有正常响应；没有调用生成接口，也未验证账号权限。'; return r;
       }
       r.outcome='unexpected'; r.title='已响应 · 内容不符合预期';
-      r.detail='HTTP '+status+' 但未得到预期内容；可能是挑战页、空响应、拦截替换或端点变化，不能当作检查通过。'; return r;
+      r.detail='HTTP '+status+'；正文类型 '+r.evidence.bodyType+'，格式 '+r.evidence.bodyFormat+'。可能是解析兼容、空响应或内容被替换，需结合摘要判断。'; return r;
     }
+    if(probe.kind==='host' && (status===404 || status===405)) {r.outcome='unexpected';r.title='域名已响应 · 根路径未提供服务';r.detail='HTTP '+status+' 只说明根路径或请求方法不适用，不代表 App 的真实业务请求失败。';return r;}
     r.outcome='unexpected'; r.title='HTTP 可达 · 需确认服务返回';
     r.detail='收到 HTTP '+status+'；没有完成业务操作，可能需要鉴权、其他方法或不同端点。'; return r;
   }
@@ -130,6 +223,19 @@
     if(reachable>0) return {headline:'部分 AI 已响应，出口查询未确认',detail:'IP 查询失败不等于整条网络中断；结合下方各服务结果和 Loon 请求记录定位。'};
     if(entry && entry.ip) return {headline:'入口单测正常，当前分流请求未完成',detail:'重点检查 Mars-ISP 连通性、链式配置与规则命中；本结果仍不能直接确定故障在哪一跳。'};
     return {headline:'本轮未取得有效出口或 AI 响应',detail:'先检查网络、Loon 运行模式和香港入口；也可能是超时或多个目标服务暂时无响应。'};
+  }
+
+  function chatgptAssessment(results) {
+    function get(id){return results.filter(function(r){return r.id===id;})[0];}
+    var ios=get('chatgpt-ios'), auth=get('chatgpt-auth'), attest=get('apple-attest');
+    if(!ios)return null;
+    if(!ios.reachable)return {headline:'ChatGPT iOS 域名探测未完成',detail:'优先检查 ios.chat.openai.com 的分流命中、TLS 与拦截；OpenAI API 有响应不能替代这一项。'};
+    if(ios.outcome==='server')return {headline:'ChatGPT iOS 域名返回服务异常',detail:'当前服务或中间网关返回错误；请结合 App 报错复查，不能按 API 的鉴权响应判断 App 正常。'};
+    if(auth && (!auth.reachable || auth.outcome!=='ok'))return {headline:'ChatGPT 认证服务需要复查',detail:'未确认公开认证配置有效。检查认证域名的分流、访问限制或响应替换；本轮没有执行登录。'};
+    if(attest && !attest.reachable)return {headline:'Apple App Attest 连接需要复查',detail:'Apple 设备证明域名未完成请求；结合 App 具体报错检查，不把根路径响应当作设备证明结果。'};
+    if(attest && attest.outcome==='server')return {headline:'Apple App Attest 返回服务异常',detail:'设备证明域名返回了服务或网关错误；本轮没有执行实际设备证明。'};
+    if(ios.outcome==='restricted' || ios.outcome==='limited')return {headline:'iOS 域名有响应，但返回了限制',detail:'根路径的限制不能直接代表 App 请求结果；请同时提供 App 完整报错并检查最终分流与解密。'};
+    return {headline:'GPT 基础连接有响应，App 状态仍待核对',detail:'本轮未验证登录、证书固定、设备证明和 WebSocket 对话；请把短摘要与 App 报错一起提供。'};
   }
 
   function createRuntime(api, panelHTML) {
@@ -217,22 +323,36 @@
       return c;
     }
     function candidates() {
-      return new Promise(function(resolve,reject) {
-        var settled=false;
-        function finish(err,value) { if(settled || finished) return; settled=true; if(err) reject(err); else resolve(value); }
-        api.schedule(function(){finish(fault('CANDIDATES_TIMEOUT','读取入口候选超时；请确认策略组名称、Loon 版本和订阅状态。',504));},1800);
-        if(!api.config || typeof api.config.getSubPolicies!=='function') {finish(fault('API_UNAVAILABLE','当前 Loon 不提供候选读取接口。',503));return;}
-        try {api.config.getSubPolicies(ENTRY,function(text){finish(null,normalizeCandidates(text));});}
-        catch(_) {finish(fault('CANDIDATES_FAILED','读取入口候选失败；请检查策略组和 Loon 版本。',503));}
+      var names=['getSubPolicies','getSubPolicys'].filter(function(name,i,all){
+        return api.config && typeof api.config[name]==='function' && !all.slice(0,i).some(function(prev){return api.config[prev]===api.config[name];});
       });
+      if(!names.length)return Promise.reject(fault('API_UNAVAILABLE','Loon 没有提供候选读取接口。',503));
+      function attempt(index) {
+        var name=names[index];
+        return new Promise(function(resolve) {
+          var settled=false;
+          function finish(raw,reason) {
+            if(settled || finished)return;settled=true;
+            var parsed=candidatePayload(raw), list=normalizeCandidates(raw);
+            resolve({names:list,diagnostics:{api:name,shape:parsed.shape,count:list.length,rawCount:Array.isArray(parsed.value)?parsed.value.length:0,reason:reason || (list.length?'ok':Array.isArray(parsed.value)?'empty_or_unrecognized_items':'unrecognized_shape')}});
+          }
+          api.schedule(function(){finish(null,'callback_timeout');},2400);
+          try{api.config[name].call(api.config,ENTRY,function(raw){finish(raw,'');});}
+          catch(_){finish(null,'api_error');}
+        }).then(function(result){return !result.names.length && index+1<names.length?attempt(index+1):result;});
+      }
+      return attempt(0);
+    }
+    async function readCandidates() {
+      try{return await candidates();}
+      catch(e){return {names:[],diagnostics:{api:'none',shape:'unavailable',count:0,rawCount:0,reason:e && e.code || 'api_error'}};}
     }
     async function state() {
-      var c=current(),m=mode(),list=[],warnings=[];
-      try { list=await candidates(); } catch(e) { warnings.push(e.message); }
-      if(!c) warnings.push('未取得香港手动策略的当前选项；请检查主配置中的策略组。');
-      if(!list.length) warnings.push('未取得可选节点；手动切换暂不可用。');
-      if(m!==1) warnings.push('当前为'+modeLabel(m)+'，不能用现有 AI 分流规则验证预期的 Mars 链路。');
-      return {ok:true,version:VERSION,panelUrl:ORIGIN+'/',chainName:CHAIN,entryGroup:ENTRY,exitNode:EXIT,current:c,candidates:list,mode:m,modeLabel:modeLabel(m),warnings:warnings,busy:busy()};
+      var c=current(),m=mode(),candidate=await readCandidates(),warnings=[];
+      if(!c)warnings.push('未取得香港手动策略的当前选项，请检查主配置。');
+      if(!candidate.names.length)warnings.push('候选列表读取未成功（'+candidate.diagnostics.reason+'）。这不等于配置里没有节点，可复制排障摘要确认返回结构。');
+      if(m!==1)warnings.push('当前为'+modeLabel(m)+'，不能验证预期的 Mars 分流。');
+      return {ok:true,version:VERSION,panelUrl:ORIGIN+'/',chainName:CHAIN,entryGroup:ENTRY,exitNode:EXIT,current:c,candidates:candidate.names,candidateDiagnostics:candidate.diagnostics,mode:m,modeLabel:modeLabel(m),warnings:warnings,busy:busy()};
     }
     function probe(spec) {
       return new Promise(function(resolve) {
@@ -251,6 +371,8 @@
                 if(typeof api.utils[pair[0]]==='function') {
                   var v=api.utils[pair[0]](result.ip);
                   if((typeof v==='string' || typeof v==='number') && String(v).length<160) details.push(pair[1]+'：'+v);
+                  if(pair[0]==='geoip' && typeof v==='string' && /^[a-z]{2}$/i.test(v))result.evidence.country=v.toUpperCase();
+                  if(pair[0]==='ipasn' && /^(?:AS)?\d{1,10}$/i.test(String(v)))result.evidence.asn=String(v);
                 }
               } catch(_) {}
             });
@@ -258,29 +380,33 @@
           }
           resolve(result);
         }
-        var opts={url:spec.url,timeout:REQUEST_TIMEOUT,headers:{'Accept':spec.kind==='robots'?'text/plain,*/*;q=0.1':'application/json','Cache-Control':'no-cache','Pragma':'no-cache','Connection':'close'},'auto-redirect':false,'auto-cookie':false,insecure:false};
+        var opts={url:spec.url,timeout:REQUEST_TIMEOUT,headers:{'Accept':spec.kind==='robots'?'text/plain,*/*;q=0.1':'application/json','Cache-Control':'no-cache','Pragma':'no-cache','Connection':'close'},'auto-redirect':false,'auto-cookie':false,'binary-mode':false,insecure:false};
         if(spec.scope==='entry') opts.node=ENTRY;
         if(spec.kind==='anthropic') opts.headers['anthropic-version']='2023-06-01';
         api.schedule(function(){finish('request timeout',null,'',true);},REQUEST_TIMEOUT+500);
         try {api.http.get(opts,finish);} catch(_) {finish('request failed',null,'');}
       });
     }
-    async function check(expected) {
+    async function check(expected,profile) {
+      profile=profile===undefined?'all':profile;
+      if(profile!=='all' && profile!=='chatgpt')throw fault('BAD_PROFILE','检查类型不支持。');
+      var specs=profile==='chatgpt'?CHATGPT_PROBES:PROBES;
       var startCurrent=sameSelection(expected),startMode=mode();
       if(!api.http || typeof api.http.get!=='function') throw fault('HTTP_UNAVAILABLE','Loon HTTP 脚本接口不可用。',503);
       acquire();
       var startedAt=new Date(now()).toISOString();
-      var results=new Array(PROBES.length),next=0,callbackMissing=false;
+      var candidate=await readCandidates();
+      var results=new Array(specs.length),next=0,callbackMissing=false;
       async function worker() {
-        while(next<PROBES.length && !finished && !callbackMissing) {
+        while(next<specs.length && !finished && !callbackMissing) {
           var i=next++;
-          results[i]=await probe(PROBES[i]);
+          results[i]=await probe(specs[i]);
           if(results[i].callbackMissing) { callbackMissing=true; delete results[i].callbackMissing; }
         }
       }
       await Promise.all([worker(),worker(),worker()]);
       if(finished) return null;
-      PROBES.forEach(function(spec,i){
+      specs.forEach(function(spec,i){
         if(!results[i]) {
           results[i]=classify(spec,'request timeout',null,'',0);
           results[i].title='未运行 · 前序请求未结束';
@@ -293,13 +419,17 @@
       if(startMode!==1) warnings.unshift('当前不是分流模式，结果不能用于验证预期的 Mars 分流。');
       if(stale) warnings.unshift('检查过程中入口或运行模式改变，本轮结果已过期。');
       if(results[0].ip && results[1].ip && results[0].ip===results[1].ip) warnings.push('入口与当前分流出口 IP 相同：请核对 Mars 出口和请求记录；相同 IP 本身不能证明代理链被绕过。');
-      return {ok:true,startedAt:startedAt,finishedAt:new Date(now()).toISOString(),current:startCurrent,mode:startMode,stale:stale,summary:summarize(results,startMode,stale),results:results,warnings:warnings};
+      var summary=summarize(results,startMode,stale),gpt=profile==='chatgpt'?chatgptAssessment(results):null;
+      if(gpt) {summary.chatgpt=gpt;if(!stale && startMode===1 && results[1].ip){summary.headline=gpt.headline;summary.detail=gpt.detail;}}
+      if(!candidate.names.length)warnings.unshift('候选读取：'+candidate.diagnostics.reason+'；请保留摘要中的返回结构。');
+      return {ok:true,version:VERSION,profile:profile,probeCount:specs.length,startedAt:startedAt,finishedAt:new Date(now()).toISOString(),current:startCurrent,mode:startMode,stale:stale,candidateDiagnostics:candidate.diagnostics,summary:summary,results:results,warnings:warnings};
     }
     async function select(body) {
       var previous=sameSelection(body.expectedCurrent);
       if(typeof body.node!=='string' || body.node.length>512) throw fault('BAD_NODE','请选择有效的入口节点。');
       acquire();
-      var list=await candidates();
+      var candidate=await candidates(), list=candidate.names;
+      if(candidate.diagnostics.reason==='callback_timeout')throw fault('CANDIDATES_TIMEOUT','候选读取超时，未执行切换。',504);
       if(list.indexOf(body.node)<0) throw fault('NODE_NOT_ALLOWED','目标不在“香港手动策略”的当前候选中；请刷新节点列表。',400);
       sameSelection(previous);
       if(body.node!==previous) {
@@ -335,8 +465,8 @@
       verifyRequest(request);
       if(path==='/api/state') return jsonResponse(200,await state());
       if(path==='/api/check') {
-        var body=bodyJSON(request,['expectedCurrent']);
-        var checked=await check(body.expectedCurrent);
+        var body=bodyJSON(request,['expectedCurrent','profile']);
+        var checked=await check(body.expectedCurrent,body.profile);
         return checked ? jsonResponse(200,checked) : null;
       }
       return jsonResponse(200,await select(bodyJSON(request,['node','expectedCurrent'])));
@@ -358,7 +488,7 @@
   }
 
   if(typeof module!=='undefined' && module.exports) {
-    module.exports={createRuntime:createRuntime,classify:classify,summarize:summarize,normalizeCandidates:normalizeCandidates,probes:PROBES,version:VERSION};
+    module.exports={createRuntime:createRuntime,classify:classify,summarize:summarize,normalizeCandidates:normalizeCandidates,candidatePayload:candidatePayload,decodeBody:decodeBody,chatgptAssessment:chatgptAssessment,probes:PROBES,chatgptProbes:CHATGPT_PROBES,version:VERSION};
     return;
   }
   var api={
