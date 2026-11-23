@@ -7,7 +7,7 @@
 | 本机静态 | YAML、节点引用、相同 Mars 参数、无旁路候选、规则样例 | Egern 官方原生解析 |
 | 桌面辅助 | 等价的两条前置→Mars；主前置失效后备用出口一致；Mars 不可达时请求失败 | Egern 引擎、iPhone 网络拓扑和泄漏证明 |
 | 用户导出 | 已解析 2026-11-23 22:21:40 的当前 Quantumult X 导出；Mars 参数与本机 Egern 配置一致 | 导出资源的当前远端内容及 Egern 实际去广告效果 |
-| iPhone | Pro 2.21.0（798）；出口查询和 OpenAI 请求详情均显示 Upstream-A → Mars-via-A，命中 AI-Mars；用户反馈出口经本机核对符合 Mars | AI 长回答完整结束、主备切换、网络切换、广告效果 |
+| iPhone | Pro 2.21.0（798）；出口查询和 OpenAI 请求详情均显示 Upstream-A → Mars-via-A，命中 AI-Mars；出口符合 Mars；用户实测 Gemini/Grok/ChatGPT 输出正常 | 主备切换、网络切换、长期稳定性、广告效果 |
 
 桌面测试使用独立 mihomo 进程，现有 Mac TUN 保持开启，可能影响外层传输。主链 ChatGPT/Gemini 首页返回 200，但这不是登录和模型调用验证。备用曾出现 TLS 握手失败后恢复，不能认定长期稳定。实际服务器和 IP 不公开。
 
@@ -24,6 +24,8 @@
 
 新增真机证据：`api.ipify.org` 命中 `DOMAIN, api.ipify.org, AI-Mars`；`ios.chat.openai.com` 命中 `DOMAIN-KEYWORD, openai, AI-Mars`。两个请求的策略均明确显示 `Upstream-A → Mars-via-A`。OpenAI 连接显示活跃、握手 479 ms；这证明原生请求链路，不代表一次长回答已经完整返回。
 
-单链的路径与出口项已通过；当前只等待实际 AI 长回答正常结束的确认，再进入双链备用。主备切换、Mars 故障和网络恢复仍待测。原始截图和实际出口 IP 不发布。
+用户随后反馈已实际测试 Gemini、Grok、ChatGPT，输出均正常。结合原生请求链路和出口证据，单链的初始 TCP/HTTPS 基础验收通过；未把短时正常使用扩展为长期稳定性结论。主备切换、Mars 故障和网络恢复仍待测。
+
+用户希望导出日志进一步分析。优先收集短时间段的连接记录、DNS 和运行日志；无需为 AI 开启 HTTPS 正文解密。官方文档确认支持 HTTP 抓包，但批量日志导出入口尚未从实际 2.21.0 UI 核实，不预设导出格式。原始日志、截图、实际出口 IP 和凭据不发布。
 
 继续按 [`CHAIN_FIRST.md`](CHAIN_FIRST.md) 执行；没有真实执行的手机验收项目保持待验证。
