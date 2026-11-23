@@ -1,0 +1,5 @@
+# Public domain rules only; no accounts or connection parameters.
+domain_set:
+- imap.gmail.com
+- smtp.gmail.com
+- pop.gmail.com

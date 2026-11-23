@@ -1,0 +1,25 @@
+# Public domain rules only; no accounts or connection parameters.
+domain_suffix_set:
+- icloud.com
+- icloud.com.cn
+- icloud-content.com
+- icloud.apple.com
+- apple-cloudkit.com
+- apple-livephotoskit.com
+- apzones.com
+- cdn-apple.com
+- gc.apple.com
+- iwork.apple.com
+- apple-dns.net
+- itunes.apple.com
+- apps.apple.com
+- mzstatic.com
+domain_set:
+- account.apple.com
+- idmsa.apple.com
+- gsa.apple.com
+- certs.apple.com
+- crl.apple.com
+- ocsp.apple.com
+- ocsp2.apple.com
+- valid.apple.com

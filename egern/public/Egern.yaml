@@ -1,0 +1,1255 @@
+# PUBLIC STARTER: import once, then edit proxy parameters locally.
+# No whole-profile auto_update. Remote rule sets update every 86400 seconds.
+# Proxy addresses below are non-working reserved examples.
+ipv6: false
+allow_external_connections: false
+block_quic: true
+close_connections_on_policy_change: true
+include_all_networks: true
+include_apns: false
+include_cellular_services: false
+include_local_networks: false
+bypass_tunnel_proxy: []
+real_ip_domains: []
+hijack_dns:
+- '*:53'
+proxy_latency_test_url: https://www.gstatic.com/generate_204
+dns:
+  bootstrap:
+  - system
+  upstreams:
+    local:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+    remote:
+    - https://1.1.1.1/dns-query
+  forward:
+  - domain:
+      match: ai.google.dev
+      value: remote
+  - domain:
+      match: aicode.googleapis.com
+      value: remote
+  - domain:
+      match: aida.googleapis.com
+      value: remote
+  - domain:
+      match: aisandbox-pa.googleapis.com
+      value: remote
+  - domain:
+      match: alkalicore-pa.clients6.google.com
+      value: remote
+  - domain:
+      match: antigravity-unleash.goog
+      value: remote
+  - domain:
+      match: antigravity.google
+      value: remote
+  - domain:
+      match: api.github.com
+      value: remote
+  - domain:
+      match: api.jetbrains.ai
+      value: remote
+  - domain:
+      match: bridge.claudeusercontent.com
+      value: remote
+  - domain:
+      match: claude.site
+      value: remote
+  - domain:
+      match: cloud.zed.dev
+      value: remote
+  - domain:
+      match: daily-cloudcode-pa.googleapis.com
+      value: remote
+  - domain:
+      match: daily-cloudcode-pa.sandbox.googleapis.com
+      value: remote
+  - domain:
+      match: file.oaiusercontent.com
+      value: remote
+  - domain:
+      match: gateway.ai.cloudflare.com
+      value: remote
+  - domain:
+      match: inference.codeium.com
+      value: remote
+  - domain:
+      match: jules.google.com
+      value: remote
+  - domain:
+      match: openrouter.ai
+      value: remote
+  - domain:
+      match: robinfrontend-pa.googleapis.com
+      value: remote
+  - domain:
+      match: server.codeium.com
+      value: remote
+  - domain:
+      match: server.self-serve.windsurf.com
+      value: remote
+  - domain_keyword:
+      match: alkalimakersuite-pa.clients6.google.com
+      value: remote
+  - domain_keyword:
+      match: openai
+      value: remote
+  - domain_suffix:
+      match: ai.com
+      value: remote
+  - domain_suffix:
+      match: ai.google.dev
+      value: remote
+  - domain_suffix:
+      match: aistudio.google.com
+      value: remote
+  - domain_suffix:
+      match: anthropic.com
+      value: remote
+  - domain_suffix:
+      match: bard.google.com
+      value: remote
+  - domain_suffix:
+      match: bigmodel.cn
+      value: remote
+  - domain_suffix:
+      match: chat.com
+      value: remote
+  - domain_suffix:
+      match: chatgpt.com
+      value: remote
+  - domain_suffix:
+      match: chatgpt.site
+      value: remote
+  - domain_suffix:
+      match: clau.de
+      value: remote
+  - domain_suffix:
+      match: claude.ai
+      value: remote
+  - domain_suffix:
+      match: claude.com
+      value: remote
+  - domain_suffix:
+      match: claude.site
+      value: remote
+  - domain_suffix:
+      match: claudeusercontent.com
+      value: remote
+  - domain_suffix:
+      match: clipdrop.co
+      value: remote
+  - domain_suffix:
+      match: cloudcode-pa.googleapis.com
+      value: remote
+  - domain_suffix:
+      match: codeium.com
+      value: remote
+  - domain_suffix:
+      match: copilot.microsoft.com
+      value: remote
+  - domain_suffix:
+      match: cursor.com
+      value: remote
+  - domain_suffix:
+      match: cursor.sh
+      value: remote
+  - domain_suffix:
+      match: dashscope.aliyuncs.com
+      value: remote
+  - domain_suffix:
+      match: deepmind.com
+      value: remote
+  - domain_suffix:
+      match: deepmind.google
+      value: remote
+  - domain_suffix:
+      match: deepseek.com
+      value: remote
+  - domain_suffix:
+      match: dify.ai
+      value: remote
+  - domain_suffix:
+      match: doubao.com
+      value: remote
+  - domain_suffix:
+      match: g.ai
+      value: remote
+  - domain_suffix:
+      match: geller-pa.googleapis.com
+      value: remote
+  - domain_suffix:
+      match: gemini.google
+      value: remote
+  - domain_suffix:
+      match: gemini.google.com
+      value: remote
+  - domain_suffix:
+      match: generativeai.google
+      value: remote
+  - domain_suffix:
+      match: generativelanguage.googleapis.com
+      value: remote
+  - domain_suffix:
+      match: githubcopilot.com
+      value: remote
+  - domain_suffix:
+      match: grok.com
+      value: remote
+  - domain_suffix:
+      match: groq.com
+      value: remote
+  - domain_suffix:
+      match: jasper.ai
+      value: remote
+  - domain_suffix:
+      match: kimi.ai
+      value: remote
+  - domain_suffix:
+      match: kimi.com
+      value: remote
+  - domain_suffix:
+      match: makersuite.google.com
+      value: remote
+  - domain_suffix:
+      match: meta.ai
+      value: remote
+  - domain_suffix:
+      match: minimax.io
+      value: remote
+  - domain_suffix:
+      match: minimaxi.com
+      value: remote
+  - domain_suffix:
+      match: moonshot.ai
+      value: remote
+  - domain_suffix:
+      match: moonshot.cn
+      value: remote
+  - domain_suffix:
+      match: notebooklm.google
+      value: remote
+  - domain_suffix:
+      match: notebooklm.google.com
+      value: remote
+  - domain_suffix:
+      match: oaistatic.com
+      value: remote
+  - domain_suffix:
+      match: oaiusercontent.com
+      value: remote
+  - domain_suffix:
+      match: openai.com
+      value: remote
+  - domain_suffix:
+      match: openart.ai
+      value: remote
+  - domain_suffix:
+      match: openrouter.ai
+      value: remote
+  - domain_suffix:
+      match: perplexity.ai
+      value: remote
+  - domain_suffix:
+      match: poe.com
+      value: remote
+  - domain_suffix:
+      match: pplx.ai
+      value: remote
+  - domain_suffix:
+      match: proactivebackend-pa.googleapis.com
+      value: remote
+  - domain_suffix:
+      match: qianfan.baidubce.com
+      value: remote
+  - domain_suffix:
+      match: qianwen.com
+      value: remote
+  - domain_suffix:
+      match: qwen.ai
+      value: remote
+  - domain_suffix:
+      match: siliconflow.cn
+      value: remote
+  - domain_suffix:
+      match: sora.com
+      value: remote
+  - domain_suffix:
+      match: tongyi.com
+      value: remote
+  - domain_suffix:
+      match: windsurf.com
+      value: remote
+  - domain_suffix:
+      match: x.ai
+      value: remote
+  - domain_suffix:
+      match: yiyan.baidu.com
+      value: remote
+  - domain_suffix:
+      match: yuanbao.tencent.com
+      value: remote
+  - domain_suffix:
+      match: z.ai
+      value: remote
+  - domain_suffix:
+      match: zhipuai.cn
+      value: remote
+  - proxy_rule_set:
+      match: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/egern/public/rules/AI.yaml
+      value: remote
+      update_interval: 86400
+  - proxy_rule_set:
+      match: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/egern/public/rules/AppleDirect.yaml
+      value: local
+      update_interval: 86400
+  - proxy_rule_set:
+      match: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/egern/public/rules/DomesticDirect.yaml
+      value: local
+      update_interval: 86400
+  - domain_suffix:
+      match: local
+      value: system
+  - domain_suffix:
+      match: lan
+      value: system
+  - domain_wildcard:
+      match: '*'
+      value: remote
+  proxy_nameservers:
+  - https://dns.alidns.com/dns-query
+  - https://doh.pub/dns-query
+  skip_tls_verify: false
+proxies:
+- shadowsocks:
+    name: Upstream-A
+    server: 198.51.100.1
+    port: 9
+    method: aes-256-gcm
+    password: REPLACE_UPSTREAM_A_PASSWORD
+    tfo: false
+    udp_relay: false
+    block_quic: true
+- socks5:
+    name: Mars-via-A
+    server: 192.0.2.1
+    port: 9
+    username: REPLACE_MARS_USERNAME
+    password: REPLACE_MARS_PASSWORD
+    prev_hop: Upstream-A
+    tfo: false
+    udp_relay: false
+    block_quic: true
+policy_groups:
+- select:
+    name: AI-Mars
+    policies:
+    - Mars-via-A
+    block_quic: true
+rules:
+- and:
+    match:
+    - protocol:
+        match: udp
+    - dest_port:
+        match: '443'
+    policy: REJECT
+    name: TCP阶段：拒绝UDP443
+- and:
+    match:
+    - or:
+        match:
+        - domain:
+            match: ai.google.dev
+        - domain:
+            match: aicode.googleapis.com
+        - domain:
+            match: aida.googleapis.com
+        - domain:
+            match: aisandbox-pa.googleapis.com
+        - domain:
+            match: alkalicore-pa.clients6.google.com
+        - domain:
+            match: antigravity-unleash.goog
+        - domain:
+            match: antigravity.google
+        - domain:
+            match: api.github.com
+        - domain:
+            match: api.jetbrains.ai
+        - domain:
+            match: bridge.claudeusercontent.com
+        - domain:
+            match: claude.site
+        - domain:
+            match: cloud.zed.dev
+        - domain:
+            match: daily-cloudcode-pa.googleapis.com
+        - domain:
+            match: daily-cloudcode-pa.sandbox.googleapis.com
+        - domain:
+            match: file.oaiusercontent.com
+        - domain:
+            match: gateway.ai.cloudflare.com
+        - domain:
+            match: inference.codeium.com
+        - domain:
+            match: jules.google.com
+        - domain:
+            match: openrouter.ai
+        - domain:
+            match: robinfrontend-pa.googleapis.com
+        - domain:
+            match: server.codeium.com
+        - domain:
+            match: server.self-serve.windsurf.com
+        - domain_keyword:
+            match: alkalimakersuite-pa.clients6.google.com
+        - domain_keyword:
+            match: openai
+        - domain_suffix:
+            match: ai.com
+        - domain_suffix:
+            match: ai.google.dev
+        - domain_suffix:
+            match: aistudio.google.com
+        - domain_suffix:
+            match: anthropic.com
+        - domain_suffix:
+            match: bard.google.com
+        - domain_suffix:
+            match: bigmodel.cn
+        - domain_suffix:
+            match: chat.com
+        - domain_suffix:
+            match: chatgpt.com
+        - domain_suffix:
+            match: chatgpt.site
+        - domain_suffix:
+            match: clau.de
+        - domain_suffix:
+            match: claude.ai
+        - domain_suffix:
+            match: claude.com
+        - domain_suffix:
+            match: claude.site
+        - domain_suffix:
+            match: claudeusercontent.com
+        - domain_suffix:
+            match: clipdrop.co
+        - domain_suffix:
+            match: cloudcode-pa.googleapis.com
+        - domain_suffix:
+            match: codeium.com
+        - domain_suffix:
+            match: copilot.microsoft.com
+        - domain_suffix:
+            match: cursor.com
+        - domain_suffix:
+            match: cursor.sh
+        - domain_suffix:
+            match: dashscope.aliyuncs.com
+        - domain_suffix:
+            match: deepmind.com
+        - domain_suffix:
+            match: deepmind.google
+        - domain_suffix:
+            match: deepseek.com
+        - domain_suffix:
+            match: dify.ai
+        - domain_suffix:
+            match: doubao.com
+        - domain_suffix:
+            match: g.ai
+        - domain_suffix:
+            match: geller-pa.googleapis.com
+        - domain_suffix:
+            match: gemini.google
+        - domain_suffix:
+            match: gemini.google.com
+        - domain_suffix:
+            match: generativeai.google
+        - domain_suffix:
+            match: generativelanguage.googleapis.com
+        - domain_suffix:
+            match: githubcopilot.com
+        - domain_suffix:
+            match: grok.com
+        - domain_suffix:
+            match: groq.com
+        - domain_suffix:
+            match: jasper.ai
+        - domain_suffix:
+            match: kimi.ai
+        - domain_suffix:
+            match: kimi.com
+        - domain_suffix:
+            match: makersuite.google.com
+        - domain_suffix:
+            match: meta.ai
+        - domain_suffix:
+            match: minimax.io
+        - domain_suffix:
+            match: minimaxi.com
+        - domain_suffix:
+            match: moonshot.ai
+        - domain_suffix:
+            match: moonshot.cn
+        - domain_suffix:
+            match: notebooklm.google
+        - domain_suffix:
+            match: notebooklm.google.com
+        - domain_suffix:
+            match: oaistatic.com
+        - domain_suffix:
+            match: oaiusercontent.com
+        - domain_suffix:
+            match: openai.com
+        - domain_suffix:
+            match: openart.ai
+        - domain_suffix:
+            match: openrouter.ai
+        - domain_suffix:
+            match: perplexity.ai
+        - domain_suffix:
+            match: poe.com
+        - domain_suffix:
+            match: pplx.ai
+        - domain_suffix:
+            match: proactivebackend-pa.googleapis.com
+        - domain_suffix:
+            match: qianfan.baidubce.com
+        - domain_suffix:
+            match: qianwen.com
+        - domain_suffix:
+            match: qwen.ai
+        - domain_suffix:
+            match: siliconflow.cn
+        - domain_suffix:
+            match: sora.com
+        - domain_suffix:
+            match: tongyi.com
+        - domain_suffix:
+            match: windsurf.com
+        - domain_suffix:
+            match: x.ai
+        - domain_suffix:
+            match: yiyan.baidu.com
+        - domain_suffix:
+            match: yuanbao.tencent.com
+        - domain_suffix:
+            match: z.ai
+        - domain_suffix:
+            match: zhipuai.cn
+        - rule_set:
+            match: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/egern/public/rules/AI.yaml
+            update_interval: 86400
+    - or:
+        match:
+        - protocol:
+            match: udp
+        - protocol:
+            match: quic
+        - protocol:
+            match: stun
+    policy: REJECT
+    name: AI数据报尚未验收：明确拒绝
+- domain:
+    match: ai.google.dev
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: aicode.googleapis.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: aida.googleapis.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: aisandbox-pa.googleapis.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: alkalicore-pa.clients6.google.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: antigravity-unleash.goog
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: antigravity.google
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: api.github.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: api.jetbrains.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: bridge.claudeusercontent.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: claude.site
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: cloud.zed.dev
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: daily-cloudcode-pa.googleapis.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: daily-cloudcode-pa.sandbox.googleapis.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: file.oaiusercontent.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: gateway.ai.cloudflare.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: inference.codeium.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: jules.google.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: openrouter.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: robinfrontend-pa.googleapis.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: server.codeium.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain:
+    match: server.self-serve.windsurf.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_keyword:
+    match: alkalimakersuite-pa.clients6.google.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_keyword:
+    match: openai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: ai.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: ai.google.dev
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: aistudio.google.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: anthropic.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: bard.google.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: bigmodel.cn
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: chat.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: chatgpt.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: chatgpt.site
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: clau.de
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: claude.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: claude.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: claude.site
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: claudeusercontent.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: clipdrop.co
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: cloudcode-pa.googleapis.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: codeium.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: copilot.microsoft.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: cursor.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: cursor.sh
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: dashscope.aliyuncs.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: deepmind.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: deepmind.google
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: deepseek.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: dify.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: doubao.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: g.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: geller-pa.googleapis.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: gemini.google
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: gemini.google.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: generativeai.google
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: generativelanguage.googleapis.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: githubcopilot.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: grok.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: groq.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: jasper.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: kimi.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: kimi.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: makersuite.google.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: meta.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: minimax.io
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: minimaxi.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: moonshot.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: moonshot.cn
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: notebooklm.google
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: notebooklm.google.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: oaistatic.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: oaiusercontent.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: openai.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: openart.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: openrouter.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: perplexity.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: poe.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: pplx.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: proactivebackend-pa.googleapis.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: qianfan.baidubce.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: qianwen.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: qwen.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: siliconflow.cn
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: sora.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: tongyi.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: windsurf.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: x.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: yiyan.baidu.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: yuanbao.tencent.com
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: z.ai
+    policy: AI-Mars
+    name: AI固定保护
+- domain_suffix:
+    match: zhipuai.cn
+    policy: AI-Mars
+    name: AI固定保护
+- rule_set:
+    match: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/egern/public/rules/AI.yaml
+    update_interval: 86400
+    policy: AI-Mars
+    name: 远程AI补充：完整Mars链
+- domain:
+    match: api.ipify.org
+    policy: AI-Mars
+    name: 完整链路出口/健康检测
+- domain:
+    match: api64.ipify.org
+    policy: AI-Mars
+    name: 完整链路出口/健康检测
+- domain:
+    match: api4.ipify.org
+    policy: AI-Mars
+    name: 完整链路出口/健康检测
+- domain:
+    match: ifconfig.me
+    policy: AI-Mars
+    name: 完整链路出口/健康检测
+- domain:
+    match: ipinfo.io
+    policy: AI-Mars
+    name: 完整链路出口/健康检测
+- domain:
+    match: www.cloudflare.com
+    policy: AI-Mars
+    name: 完整链路出口/健康检测
+- domain:
+    match: www.gstatic.com
+    policy: AI-Mars
+    name: 完整链路出口/健康检测
+- ip_cidr:
+    match: 1.1.1.1/32
+    policy: AI-Mars
+    no_resolve: true
+    name: 默认DoH经过完整链路
+- domain:
+    match: dns.alidns.com
+    policy: DIRECT
+    name: 引导DNS
+- domain:
+    match: doh.pub
+    policy: DIRECT
+    name: 引导DNS
+- domain_suffix:
+    match: local
+    policy: DIRECT
+    name: 本地域名
+- domain_suffix:
+    match: lan
+    policy: DIRECT
+    name: 本地域名
+- ip_cidr:
+    match: 10.0.0.0/8
+    policy: DIRECT
+    no_resolve: true
+    name: 局域网
+- ip_cidr:
+    match: 172.16.0.0/12
+    policy: DIRECT
+    no_resolve: true
+    name: 局域网
+- ip_cidr:
+    match: 192.168.0.0/16
+    policy: DIRECT
+    no_resolve: true
+    name: 局域网
+- ip_cidr:
+    match: 127.0.0.0/8
+    policy: DIRECT
+    no_resolve: true
+    name: 局域网
+- ip_cidr:
+    match: 169.254.0.0/16
+    policy: DIRECT
+    no_resolve: true
+    name: 局域网
+- domain:
+    match: mask.icloud.com
+    policy: REJECT
+    name: 固定出口：禁用Private Relay
+- domain:
+    match: mask-h2.icloud.com
+    policy: REJECT
+    name: 固定出口：禁用Private Relay
+- domain:
+    match: mask-api.icloud.com
+    policy: REJECT
+    name: 固定出口：禁用Private Relay
+- and:
+    match:
+    - rule_set:
+        match: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/egern/public/rules/AppleDirect.yaml
+        update_interval: 86400
+    - or:
+        match:
+        - protocol:
+            match: tcp
+        - protocol:
+            match: http
+        - protocol:
+            match: https
+    policy: DIRECT
+    name: Apple基础服务直连
+- rule_set:
+    match: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/egern/public/rules/DomesticDirect.yaml
+    update_interval: 86400
+    policy: DIRECT
+    name: 国内服务直连
+- and:
+    match:
+    - rule_set:
+        match: https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/egern/public/rules/MailProxy.yaml
+        update_interval: 86400
+    - or:
+        match:
+        - protocol:
+            match: tcp
+        - protocol:
+            match: http
+        - protocol:
+            match: https
+    policy: Upstream-A
+    name: 邮件使用机场
+- or:
+    match:
+    - protocol:
+        match: udp
+    - protocol:
+        match: quic
+    - protocol:
+        match: stun
+    policy: REJECT
+    name: 非直连数据报未验收：禁止旁路
+- default:
+    policy: AI-Mars
+    name: 未分类流量也保留Mars出口
+mitm:
+  hostnames:
+    includes: []
+    excludes:
+    - '*.ai.com'
+    - '*.ai.google.dev'
+    - '*.aistudio.google.com'
+    - '*.anthropic.com'
+    - '*.bard.google.com'
+    - '*.bigmodel.cn'
+    - '*.chat.com'
+    - '*.chatgpt.com'
+    - '*.chatgpt.site'
+    - '*.clau.de'
+    - '*.claude.ai'
+    - '*.claude.com'
+    - '*.claude.site'
+    - '*.claudeusercontent.com'
+    - '*.clipdrop.co'
+    - '*.cloudcode-pa.googleapis.com'
+    - '*.codeium.com'
+    - '*.copilot.microsoft.com'
+    - '*.cursor.com'
+    - '*.cursor.sh'
+    - '*.dashscope.aliyuncs.com'
+    - '*.deepmind.com'
+    - '*.deepmind.google'
+    - '*.deepseek.com'
+    - '*.dify.ai'
+    - '*.doubao.com'
+    - '*.g.ai'
+    - '*.geller-pa.googleapis.com'
+    - '*.gemini.google'
+    - '*.gemini.google.com'
+    - '*.generativeai.google'
+    - '*.generativelanguage.googleapis.com'
+    - '*.githubcopilot.com'
+    - '*.grok.com'
+    - '*.groq.com'
+    - '*.jasper.ai'
+    - '*.kimi.ai'
+    - '*.kimi.com'
+    - '*.makersuite.google.com'
+    - '*.meta.ai'
+    - '*.minimax.io'
+    - '*.minimaxi.com'
+    - '*.moonshot.ai'
+    - '*.moonshot.cn'
+    - '*.notebooklm.google'
+    - '*.notebooklm.google.com'
+    - '*.oaistatic.com'
+    - '*.oaiusercontent.com'
+    - '*.openai.com'
+    - '*.openart.ai'
+    - '*.openrouter.ai'
+    - '*.perplexity.ai'
+    - '*.poe.com'
+    - '*.pplx.ai'
+    - '*.proactivebackend-pa.googleapis.com'
+    - '*.qianfan.baidubce.com'
+    - '*.qianwen.com'
+    - '*.qwen.ai'
+    - '*.siliconflow.cn'
+    - '*.sora.com'
+    - '*.tongyi.com'
+    - '*.windsurf.com'
+    - '*.x.ai'
+    - '*.yiyan.baidu.com'
+    - '*.yuanbao.tencent.com'
+    - '*.z.ai'
+    - '*.zhipuai.cn'
+    - ai.com
+    - ai.google.dev
+    - aicode.googleapis.com
+    - aida.googleapis.com
+    - aisandbox-pa.googleapis.com
+    - aistudio.google.com
+    - alkalicore-pa.clients6.google.com
+    - anthropic.com
+    - antigravity-unleash.goog
+    - antigravity.google
+    - api.github.com
+    - api.jetbrains.ai
+    - bard.google.com
+    - bigmodel.cn
+    - bridge.claudeusercontent.com
+    - chat.com
+    - chatgpt.com
+    - chatgpt.site
+    - clau.de
+    - claude.ai
+    - claude.com
+    - claude.site
+    - claudeusercontent.com
+    - clipdrop.co
+    - cloud.zed.dev
+    - cloudcode-pa.googleapis.com
+    - codeium.com
+    - copilot.microsoft.com
+    - cursor.com
+    - cursor.sh
+    - daily-cloudcode-pa.googleapis.com
+    - daily-cloudcode-pa.sandbox.googleapis.com
+    - dashscope.aliyuncs.com
+    - deepmind.com
+    - deepmind.google
+    - deepseek.com
+    - dify.ai
+    - doubao.com
+    - file.oaiusercontent.com
+    - g.ai
+    - gateway.ai.cloudflare.com
+    - geller-pa.googleapis.com
+    - gemini.google
+    - gemini.google.com
+    - generativeai.google
+    - generativelanguage.googleapis.com
+    - githubcopilot.com
+    - grok.com
+    - groq.com
+    - inference.codeium.com
+    - jasper.ai
+    - jules.google.com
+    - kimi.ai
+    - kimi.com
+    - makersuite.google.com
+    - meta.ai
+    - minimax.io
+    - minimaxi.com
+    - moonshot.ai
+    - moonshot.cn
+    - notebooklm.google
+    - notebooklm.google.com
+    - oaistatic.com
+    - oaiusercontent.com
+    - openai.com
+    - openart.ai
+    - openrouter.ai
+    - perplexity.ai
+    - poe.com
+    - pplx.ai
+    - proactivebackend-pa.googleapis.com
+    - qianfan.baidubce.com
+    - qianwen.com
+    - qwen.ai
+    - robinfrontend-pa.googleapis.com
+    - server.codeium.com
+    - server.self-serve.windsurf.com
+    - siliconflow.cn
+    - sora.com
+    - tongyi.com
+    - windsurf.com
+    - x.ai
+    - yiyan.baidu.com
+    - yuanbao.tencent.com
+    - z.ai
+    - zhipuai.cn
+    - icloud.com
+    - '*.icloud.com'
+    - icloud.com.cn
+    - '*.icloud.com.cn'
+    - icloud-content.com
+    - '*.icloud-content.com'
+    - icloud.apple.com
+    - '*.icloud.apple.com'
+    - apple-cloudkit.com
+    - '*.apple-cloudkit.com'
+    - apple-livephotoskit.com
+    - '*.apple-livephotoskit.com'
+    - apzones.com
+    - '*.apzones.com'
+    - cdn-apple.com
+    - '*.cdn-apple.com'
+    - gc.apple.com
+    - '*.gc.apple.com'
+    - iwork.apple.com
+    - '*.iwork.apple.com'
+    - apple-dns.net
+    - '*.apple-dns.net'
+    - itunes.apple.com
+    - '*.itunes.apple.com'
+    - apps.apple.com
+    - '*.apps.apple.com'
+    - mzstatic.com
+    - '*.mzstatic.com'
+    - account.apple.com
+    - idmsa.apple.com
+    - gsa.apple.com
+    - certs.apple.com
+    - crl.apple.com
+    - ocsp.apple.com
+    - ocsp2.apple.com
+    - valid.apple.com
+modules: []

@@ -1,0 +1,10 @@
+{
+  "ai_base": "https://raw.githubusercontent.com/Repcz/Tool/feb1e1860f5e02b7ae617cc475ca5a63e71e2216/Egern/Rules/AI.yaml",
+  "ai_changes": "Domain-only snapshot plus explicit service domains; URL matching removed.",
+  "apple_reference": "https://support.apple.com/en-us/101555",
+  "egern_rules": "https://egernapp.com/docs/configuration/rules/",
+  "egern_dns": "https://egernapp.com/docs/configuration/dns/",
+  "egern_modules": "https://egernapp.com/docs/configuration/modules/",
+  "domestic_and_mail": "Explicit domain lists maintained in this repository.",
+  "scope": "Public starter and rule sets only. No advertisements, user diagnostics or credentials."
+}
