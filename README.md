@@ -15,7 +15,7 @@
 
 ### Egern：Mars 双跳与分批去广告
 
-新增独立的 [`egern/`](egern/) 目录，维护不含真实凭据的单链、双链 fallback、通用去广告模板及本机私有配置生成工具。AI 候选只包含有机场前置的 Mars 链。手机当前 Quantumult X 的资源核对与 Egern 真机验收尚未完成，详见 [`egern/VALIDATION.md`](egern/VALIDATION.md)。
+新增独立的 [`egern/`](egern/) 目录，维护不含真实凭据的单链、双链 fallback、通用去广告模板及本机私有配置生成工具。AI 候选只包含有机场前置的 Mars 链。已解析用户提供的最新 Quantumult X 导出；当前先验收代理链，通过后仅试点微博、淘宝和哔哩哔哩，再决定扩大去广告。见 [`egern/CHAIN_FIRST.md`](egern/CHAIN_FIRST.md) 和 [`egern/VALIDATION.md`](egern/VALIDATION.md)。
 
 ### Mars AI 链路快检（Loon）
 

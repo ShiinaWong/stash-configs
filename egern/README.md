@@ -8,8 +8,9 @@
 
 - 模板按 2026-11-23 的 Egern 官方文档准备，建议版本 2.20.0 或更新。
 - 静态检查与桌面辅助连通性测试已有结果；Egern 原生导入、真机代理链、长回答和网络切换仍待验证。
-- **尚未读取到手机当前 Quantumult X 的资源列表。** 不能把电脑里的旧导出或本仓库的历史归档认作当前启用项。
-- App 专用模块的最终选择将在直接核对手机后补充。现阶段模板没有自动启用这些模块。
+- 已解析用户提供的 2026-11-23 22:21:40 Quantumult X 导出：18 个启用的远程重写、11 个启用的远程分流资源，没有本地重写。导出文件只留在用户本机，不进入仓库。
+- 已在本机确认导出的 Mars 四项连接参数与已准备的 Egern 配置一致，公开记录不展示参数。
+- **当前只推进代理链验收。通过后仅试点微博、淘宝、哔哩哔哩，三者无异常后再扩大去广告。** 现阶段不启用 App 模块，也不把旧客户端的“资源已启用”当作 Egern 效果证明。执行顺序见 [`CHAIN_FIRST.md`](CHAIN_FIRST.md)。
 
 ## 配置
 
@@ -48,7 +49,7 @@ python3 -m venv .venv
 
 通用规则引用 Repcz/Tool 的固定 Egern Reject 版本；AI 采用其 AI 快照加服务专属域名。快照来源及校验值见 `sources.json`。广告规则可以单独停用。
 
-阶段顺序：单链验收 → 双链故障测试 → 通用广告 → 按手机当前资源逐个加入 App/小程序模块。AI 正常代理不需要 MITM；模块只允许明确的去广告域名，不开启全局 HTTPS 解密。
+当前阶段顺序：单链验收 → 双链故障测试 → 微博、淘宝、哔哩哔哩逐个试点 → 三者验收后再扩展通用/App/小程序覆盖。第三份通用去广告模板保留为候选，暂不作为部署入口。AI 正常代理不需要 MITM；后续模块只允许明确的去广告域名，不开启全局 HTTPS 解密。
 
 当前官方资料：[代理](https://egernapp.com/docs/configuration/proxies/)、[策略组](https://egernapp.com/docs/configuration/policy_groups/)、[完整配置](https://egernapp.com/docs/configuration/example/)、[模块](https://egernapp.com/docs/configuration/modules/)。
 
