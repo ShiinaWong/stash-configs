@@ -4,9 +4,9 @@
 
 ## 现在：只导入第一份单链配置
 
-1. 查看手机 Egern 的版本号及 Pro 状态。当前模板建议 2.20.0 或更新；安装版本尚未确认。
+1. 已确认手机为 Egern Pro 2.21.0（798），无需再次提供版本。本阶段继续验证原生导入和运行。
 2. 备份手机现有 Egern 配置，导入本机已填入真实参数的 `Egern_01_SingleChain.yaml`。GitHub 上同名文件是无效示例模板，需本机渲染后才能使用。
-3. 确认 `AI-Mars` 选中 `Mars-via-A`，该节点 `prev_hop` 是 `Upstream-A`。此阶段无去广告模块，不需要 MITM 证书。
+3. 使用规则分流模式，确认 `AI-Mars` 选中 `Mars-via-A`，该节点 `prev_hop` 是 `Upstream-A`。此阶段无去广告模块，不需要 MITM 证书。
 4. 启动 Egern；用 Safari 新开 https://api.ipify.org/ 和 https://www.cloudflare.com/cdn-cgi/trace ，在本机核对 Mars 出口。
 5. 查看请求详情：确认命中 `AI-Mars`、最终 `Mars-via-A`，再核对其前置 `Upstream-A`。若当前版本日志未显示整个链，不凭一个策略名称宣称双跳运行路径已完全证明。
 6. 实际打开常用 AI，发送一个较长问题，检查流式回答能正常结束。记录时间、成功/失败、无凭据的错误信息；不公开 IP、账号、密码或完整配置。
