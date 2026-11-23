@@ -1,0 +1,16 @@
+[
+  {
+    "file": "AI-upstream.yaml",
+    "ok": true,
+    "bytes": 1491,
+    "url": "https://raw.githubusercontent.com/Repcz/Tool/feb1e1860f5e02b7ae617cc475ca5a63e71e2216/Egern/Rules/AI.yaml",
+    "sha256": "936c99e8fa8aff40f3ac0fdb0c8124264b34642d60a38b82a6a7f893bc62160a"
+  },
+  {
+    "file": "Advertising-upstream.yaml",
+    "ok": true,
+    "bytes": 147171,
+    "url": "https://raw.githubusercontent.com/Repcz/Tool/a16b6e4c2fdde1d9b5d290ee52161b9a490cb77f/Egern/Rules/Reject.yaml",
+    "sha256": "6f42c012decca6855dff7e9971e6e40511a48c2689602e6cd97ffdf35e9a2847"
+  }
+]

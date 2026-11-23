@@ -1,0 +1,9 @@
+private/
+*.private.yaml*
+*.private.json
+*.p12
+*.pfx
+*.har
+*.zip
+__pycache__/
+.venv/

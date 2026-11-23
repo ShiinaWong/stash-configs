@@ -13,6 +13,10 @@
 
 ## 当前配置
 
+### Egern：Mars 双跳与分批去广告
+
+新增独立的 [`egern/`](egern/) 目录，维护不含真实凭据的单链、双链 fallback、通用去广告模板及本机私有配置生成工具。AI 候选只包含有机场前置的 Mars 链。手机当前 Quantumult X 的资源核对与 Egern 真机验收尚未完成，详见 [`egern/VALIDATION.md`](egern/VALIDATION.md)。
+
 ### Mars AI 链路快检（Loon）
 
 按现有 `香港手动策略 → Mars-ISP` 链路提供手动网络检查和入口切换。一次添加插件链接，Loon 获取配套 JS；无定时测速。
@@ -117,4 +121,5 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/quantumult/rules
 ```
 
 本仓库中的 BiliBili ADBlock Lite 基于 [BiliUniverse/ADBlock](https://github.com/BiliUniverse/ADBlock)，统一订阅中的轻量广告域名规则来自 [217heidai/adblockfilters](https://github.com/217heidai/adblockfilters)。详见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)、[`licenses/BiliUniverse-ADBlock-LICENSE`](licenses/BiliUniverse-ADBlock-LICENSE) 和 [`licenses/217heidai-adblockfilters-LICENSE`](licenses/217heidai-adblockfilters-LICENSE)。
+
 
