@@ -128,5 +128,11 @@
     }
   ],
   "runtime_validation": "pending on iPhone",
-  "third_party_code_redistributed_in_public_directory": false
+  "third_party_code_redistributed_in_public_directory": false,
+  "revision": "20261124-R2",
+  "chain_binding": "Explicit local native front nodes; bare subscription member references retired after confirmed iPhone save-time hop loss",
+  "premium_pool": {
+    "ikuuu": 20,
+    "云梯": 21
+  }
 }
