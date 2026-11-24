@@ -1,0 +1,12 @@
+{
+  "providers": [
+    {"name": "ikuuu", "url": "https://example.invalid/replace-with-your-original-subscription"},
+    {"name": "云梯", "url": "https://example.invalid/replace-with-your-original-subscription"}
+  ],
+  "mars": {
+    "server": "mars.example.invalid",
+    "port": 1080,
+    "username": "LOCAL_USERNAME",
+    "password": "LOCAL_PASSWORD"
+  }
+}
