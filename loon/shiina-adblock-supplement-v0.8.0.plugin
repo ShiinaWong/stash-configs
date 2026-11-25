@@ -44,6 +44,9 @@ douban_web = switch,true,tag=豆瓣移动网页净化,desc=沿用墨鱼网页脚
 netease_extra = switch,true,tag=网易云推广补充,desc=仅拦截活动模板、优惠券配置及评论区插入推广三个接口
 
 [Rule]
+# 哔咔：独立广告主机，供弹窗、横幅配置和素材使用；不拦漫画 API 或图床。
+DOMAIN,pica-ad-api.diwodiwo.xyz,REJECT
+
 # 与 Quantumult 微博配置保持一致：SDK 返回交给脚本处理。
 DOMAIN,sdkapp.uve.weibo.com,DIRECT
 DOMAIN,adstrategy.biz.weibo.com,REJECT
