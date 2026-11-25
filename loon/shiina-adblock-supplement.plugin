@@ -1,8 +1,8 @@
-# 配置版本：2026.11.25-r2（可选补充 v0.7.1）
-# 更新时间：2026-11-25 16:42:51（北京时间）
-# 本次变更：明确可选用途，更新奶思核对基准；生效规则与开关保持不变。
-#!name = Shiina 去广告补充（可选）
-#!desc = v0.7.1｜可选补充，奶思精简主模板默认不加载；已对照新版 blockAds.plugin 复核。原有规则和开关保持。
+# 配置版本：2026.11.25-r4（补充插件 v0.7.2）
+# 更新时间：2026-11-25 18:02:48（北京时间）
+# 本次变更：r4 主配置启用本补充；生效规则与开关保持不变。
+#!name = Shiina 去广告补充
+#!desc = v0.7.2｜与奶思配合，自 r4 起随主配置启用；各应用可按需关闭。原有规则和开关保持。
 #!author = ShiinaWong；规则及字段参考：ddgksf2013、rssvcn；微博：ddgksf2013、zmqcherish
 #!homepage = https://github.com/ShiinaWong/stash-configs/tree/main/loon
 #!raw-url = https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-adblock-supplement.plugin
