@@ -19,10 +19,10 @@
 
 ### Loon：奶思基础与家宽单链
 
-当前公开模板 **2026.11.25-r5**：云梯 + ikuuu 远程订阅 → 亚洲机场自动 → 家宽 SOCKS5，启用奶思与 Shiina 补充两个去广告插件。手机可直接维护机场订阅；旧多链生成器与诊断工具已归档。
+当前公开模板 **2026.11.25-r6**：云梯 + ikuuu 远程订阅 → 亚洲机场自动 → 家宽 SOCKS5，启用奶思与 Shiina 补充两个去广告插件，另加一个家宽出口手动检测插件。手机可直接维护机场订阅；旧多链生成器与诊断工具已归档。
 
 - [Loon 配置入口与说明](loon/README.md)
-- [公开占位模板](loon/mars/Loon_奶思家宽_2026.11.25-r5.template.conf)
+- [公开占位模板](loon/mars/Loon_奶思家宽_2026.11.25-r6.template.conf)
 - [本次核对与精简记录](loon/docs/naisi-cleanup-20261125.md)
 
 ### Shiina AdBlock Lite（日常推荐）

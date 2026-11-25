@@ -1,6 +1,6 @@
 # Loon：奶思基础 + 机场自动 + 家宽出口
 
-当前公开模板：**2026.11.25-r5**。日常只维护一份主配置，去广告启用奶思 `blockAds.plugin` 与 Shiina 补充两个插件。
+当前公开模板：**2026.11.25-r6**。日常只维护一份主配置，去广告启用奶思 `blockAds.plugin` 与 Shiina 补充，另启用家宽出口手动检测，共三个插件。
 
 ```text
 手机 → 机场自动（云梯 + ikuuu 的亚洲专线候选）→ 家宽 SOCKS5 → 境外网站
@@ -10,7 +10,8 @@
 
 | 内容 | 用途 |
 | --- | --- |
-| [公开主模板](mars/Loon_奶思家宽_2026.11.25-r5.template.conf) | 1 个自动组、1 个筛选器、1 条家宽链、2 个去广告插件（奶思 + Shiina）；只含占位参数 |
+| [公开主模板](mars/Loon_奶思家宽_2026.11.25-r6.template.conf) | 1 个自动组、1 个筛选器、1 条家宽链、2 个去广告插件（奶思 + Shiina）及 1 个手动检测插件；只含占位参数 |
+| [家宽出口手动检测](docs/ipquality.md) | 基础信息、风险、流媒体与 AI；当前分流、隐藏 IP、手动运行 |
 | [填写与维护](mars/README.md) | 在本地填写机场和家宽，之后在手机更新订阅 |
 | [Shiina 补充](shiina-adblock-supplement-v0.8.0.plugin) | 补充奶思尚未覆盖的已核对样例；r5 新增四项 Quantumult 对应功能 |
 | [本次核对与精简记录](docs/naisi-cleanup-20261125.md) | 上游版本、保留理由、归档范围及验证方式 |
@@ -22,8 +23,8 @@
 
 每次交付新建带版本号的文件，文件头同步写明版本、北京时间和变更。日常目录只保留最新版与上一版备份；新文件和备份核验完成后移除更早的废弃版。
 
-- [最新版 r5](mars/Loon_奶思家宽_2026.11.25-r5.template.conf)
-- [上一版 r4 备份](mars/Loon_奶思家宽_2026.11.25-r4_上一版备份.template.conf)
+- [最新版 r6](mars/Loon_奶思家宽_2026.11.25-r6.template.conf)
+- [上一版 r5 备份](mars/Loon_奶思家宽_2026.11.25-r5_上一版备份.template.conf)
 
 GitHub 文件为公开占位模板。手机私人配置单独同步到 iCloud，文件名同样带版本号；两边的“上一版”取各自上次实际交付的版本。
 
@@ -57,12 +58,12 @@ https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-adbl
 
 ## 验证
 
-70 项离线测试使用固定奶思和墨鱼快照，涵盖代表性 URL 重叠、开关、字段保留、异常响应和脚本行为。测试在仓库根目录运行：
+77 项离线测试使用固定奶思和墨鱼快照，涵盖代表性 URL 重叠、开关、字段保留、异常响应和脚本行为。测试在仓库根目录运行：
 
 ```sh
 node --test loon/tests/*.test.cjs
 ```
 
-默认下载固定公开上游；离线时可用 `MILK_PLUGIN`、`WEIBO_UPSTREAM_SCRIPT`、`AMAP_UPSTREAM_SCRIPT`、`DOUBAN_UPSTREAM_SCRIPT` 指定原始文件，测试会校验 Git blob SHA。测试范围见核对记录，手机上的完整链和广告效果仍以实测为准。
+默认下载固定公开上游；离线时可用 `MILK_PLUGIN`、`WEIBO_UPSTREAM_SCRIPT`、`AMAP_UPSTREAM_SCRIPT`、`DOUBAN_UPSTREAM_SCRIPT`、`IPQUALITY_CORE` 指定原始文件，测试会校验 Git blob SHA。测试范围见核对记录，手机上的完整链和广告效果仍以实测为准。
 
-上一版 r4 继续引用旧补充入口 v0.7.2，旧文件保持，供撤回本次新增功能。当前版本请更新 r5 内已有的两个插件。
+上一版 r5 保留原样。当前 r6 新增一个手动检测插件，原奶思与 Shiina 功能补充保持；日常刷新插件即可。SideStore 未启用。

@@ -1,0 +1,20 @@
+# 配置版本：2026.11.25-r6（检测入口 v1.0.0）
+# 更新时间：2026-11-25 19:31:01（北京时间）
+# 本次变更：加入 MaYIHEI 检测核心的三个手动入口；沿用当前分流并默认隐藏 IP。
+#!name = 家宽出口检测 · MaYIHEI 核心
+#!desc = v1.0.0｜检测当前分流出口，适用于本方案的境外家宽。手动运行、隐藏 IP；基础信息、风险及流媒体与 AI。首次使用保持分流模式。
+#!author = ShiinaWong；检测核心：MaYIHEI（参考 Roddy-D、xykt）
+#!homepage = https://github.com/ShiinaWong/stash-configs/blob/main/loon/docs/ipquality.md
+#!raw-url = https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-ipquality.plugin
+#!loon_version = 3.5.1(983)
+#!date = 2026-11-25
+#!tag = 家宽,出口,诊断
+#!type = normal
+
+# 当前分流适配：从任何手动入口运行都检测当前业务路由，不使用入口点选的单个机场节点。
+# 不带定时任务、不修改网络策略、不增加 MitM。原作者的完整网页检测版仍可单独查看。
+# 核心原文件按固定提交下载；检测算法和报告布局由原作者提供。
+[Script]
+generic then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/ipquality-current-route.js", "basic") with tag="家宽检测 · 基础信息", img_url="network.system", timeout=65
+generic then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/ipquality-current-route.js", "risk") with tag="家宽检测 · 风险", img_url="shield.lefthalf.filled.system", timeout=65
+generic then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/ipquality-current-route.js", "media") with tag="家宽检测 · 流媒体与 AI", img_url="play.tv.fill.system", timeout=65
