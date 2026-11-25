@@ -1,8 +1,8 @@
-# 配置版本：2026.11.25-r5（补充插件 v0.8.0）
-# 更新时间：2026-11-25 18:35:20（北京时间）
-# 本次变更：对照 Quantumult，补入 Safari 快捷搜索、Google 中国域名跳转、豆瓣网页净化和网易云三处推广拦截。
+# 插件版本：v0.8.1
+# 更新时间：2026-11-25 23:06:49（北京时间）
+# 本次变更：补充哔咔弹窗与横幅广告域名拦截。
 #!name = Shiina 功能补充
-#!desc = v0.8.0｜奶思之外的去广告与网页功能；r5 启用。Safari 快捷搜索需默认搜索引擎设为 DuckDuckGo。各项可独立关闭。
+#!desc = v0.8.1｜奶思之外的去广告与网页功能；新增哔咔广告拦截。Safari 快捷搜索需默认搜索引擎设为 DuckDuckGo。
 #!author = ShiinaWong；规则及字段参考：ddgksf2013、rssvcn；微博：ddgksf2013、zmqcherish
 #!homepage = https://github.com/ShiinaWong/stash-configs/tree/main/loon
 #!raw-url = https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-adblock-supplement-v0.8.0.plugin
