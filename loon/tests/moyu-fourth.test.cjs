@@ -10,7 +10,7 @@ const source = fs.readFileSync(path.join(__dirname,"../scripts/moyu-extra-clean-
 const controls = ["unicom_clean","moji_clean","chelaile_clean"];
 let milk;
 before(async () => {
-  const url = "https://raw.githubusercontent.com/fmz200/wool_scripts/c3f8128dd03c6b3cb35821c347968282cc45b34f/Loon/plugin/blockAdsV2.plugin";
+  const url = "https://raw.githubusercontent.com/fmz200/wool_scripts/58f6cce6dbd5c5fe50c2998938f9c2ba631a7c18/Loon/plugin/blockAds.plugin";
   let bytes;
   if (process.env.MILK_PLUGIN) bytes = fs.readFileSync(process.env.MILK_PLUGIN);
   else {
@@ -18,7 +18,7 @@ before(async () => {
     assert.equal(response.status,200);
     bytes = Buffer.from(await response.arrayBuffer());
   }
-  assert.equal(crypto.createHash("sha1").update("blob "+bytes.length+"\0").update(bytes).digest("hex"),"0eeb11f1fe45618966ba3d4a2f7c6d9c86b1ee45");
+  assert.equal(crypto.createHash("sha1").update("blob "+bytes.length+"\0").update(bytes).digest("hex"),"a699c8de8b6e82be3d46c03fc126a1749fe002f4");
   milk = bytes.toString("utf8");
 });
 function urlRegex(line) {

@@ -101,10 +101,10 @@ test("generic WeChat URLs do not duplicate the audited milk URL or domain rules"
   let bytes;
   if(process.env.MILK_PLUGIN)bytes=fs.readFileSync(process.env.MILK_PLUGIN);
   else{
-    const response=await fetch("https://raw.githubusercontent.com/fmz200/wool_scripts/c3f8128dd03c6b3cb35821c347968282cc45b34f/Loon/plugin/blockAdsV2.plugin",{signal:AbortSignal.timeout(15000)});
+    const response=await fetch("https://raw.githubusercontent.com/fmz200/wool_scripts/58f6cce6dbd5c5fe50c2998938f9c2ba631a7c18/Loon/plugin/blockAds.plugin",{signal:AbortSignal.timeout(15000)});
     assert.equal(response.status,200);bytes=Buffer.from(await response.arrayBuffer());
   }
-  assert.equal(crypto.createHash("sha1").update("blob "+bytes.length+"\0").update(bytes).digest("hex"),"0eeb11f1fe45618966ba3d4a2f7c6d9c86b1ee45");
+  assert.equal(crypto.createHash("sha1").update("blob "+bytes.length+"\0").update(bytes).digest("hex"),"a699c8de8b6e82be3d46c03fc126a1749fe002f4");
   const rules=[],unparsed=[];
   for(const line of bytes.toString("utf8").split("\n")){
     if(/^(request|response) if/.test(line)){

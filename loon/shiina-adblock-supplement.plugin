@@ -1,11 +1,14 @@
-#!name = Shiina 去广告补充（V2）
-#!desc = v0.7.0｜奶思为主；微信升级为同类广告图片和视频路径拦截，覆盖换素材与换品牌；仍可能保留文字或占位。保留其他应用处理。
+# 配置版本：2026.11.25-r2（可选补充 v0.7.1）
+# 更新时间：2026-11-25 16:42:51（北京时间）
+# 本次变更：明确可选用途，更新奶思核对基准；生效规则与开关保持不变。
+#!name = Shiina 去广告补充（可选）
+#!desc = v0.7.1｜可选补充，奶思精简主模板默认不加载；已对照新版 blockAds.plugin 复核。原有规则和开关保持。
 #!author = ShiinaWong；规则及字段参考：ddgksf2013、rssvcn；微博：ddgksf2013、zmqcherish
 #!homepage = https://github.com/ShiinaWong/stash-configs/tree/main/loon
 #!raw-url = https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-adblock-supplement.plugin
 #!system = iOS,iPadOS
 #!loon_version = 3.5.1(983)
-#!date = 2026-10-30
+#!date = 2026-11-25
 #!tag = 去广告,补充,Shiina
 #!type = normal
 
@@ -56,7 +59,7 @@ request if ${caiyun_clean} == true && ${url} ~= /^https?:\/\/ad\.cyapi\.cn\/v\d+
 request if ${netdisk_clean} == true && ${url} ~= /^https?:\/\/pan\.baidu\.com\/(?:feed\/hotlist|queryintent\/queryhint|coins\/center\/notice)\/?(?:\?|$)/ then reject(200)
 request if ${netdisk_clean} == true && ${url} ~= /^https?:\/\/pan\.baidu\.com\/recommend\/shortseries\/list\/?(?:\?|$)/ then reject_dict(200)
 
-# v0.5.0：对照奶思 V2，只补缺少的主机/接口。各项来源与取舍见 docs/moyu-third-batch.md。
+# v0.5.0：对照奶思 V2，只补缺少的主机/接口。各项来源与取舍见 docs/naisi-cleanup-20261125.md。
 # 闲鱼：acs 的 splash 已由奶思拦截；不增加 AMDC/HTTPDNS 处理。
 request if ${goofish_clean} == true && ${url} ~= /^https?:\/\/g-acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idlecommerce\.splash\.ads(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ then reject(200)
 request if ${goofish_clean} == true && ${url} ~= /^https?:\/\/(?:g-)?acs\.m\.goofish\.com\/gw\/mtop\.idle\.ad\.expose(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ then reject(200)

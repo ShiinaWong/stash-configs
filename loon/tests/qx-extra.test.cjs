@@ -8,7 +8,7 @@ const crypto = require("node:crypto");
 const plugin = fs.readFileSync(path.join(__dirname, "../shiina-adblock-supplement.plugin"), "utf8");
 const ownSource = fs.readFileSync(path.join(__dirname, "../scripts/qx-extra-clean-v0.4.0.js"), "utf8");
 const amapURL = "https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/amap.js";
-const milkURL = "https://raw.githubusercontent.com/fmz200/wool_scripts/c3f8128dd03c6b3cb35821c347968282cc45b34f/Loon/plugin/blockAdsV2.plugin";
+const milkURL = "https://raw.githubusercontent.com/fmz200/wool_scripts/58f6cce6dbd5c5fe50c2998938f9c2ba631a7c18/Loon/plugin/blockAds.plugin";
 let amapSource, milk;
 async function pinned(url, envName, blob) {
   let bytes;
@@ -24,7 +24,7 @@ async function pinned(url, envName, blob) {
 before(async () => {
   [amapSource, milk] = await Promise.all([
     pinned(amapURL, "AMAP_UPSTREAM_SCRIPT", "578533ad02749c09431997fc3ab70421d51953da"),
-    pinned(milkURL, "MILK_PLUGIN", "0eeb11f1fe45618966ba3d4a2f7c6d9c86b1ee45")
+    pinned(milkURL, "MILK_PLUGIN", "a699c8de8b6e82be3d46c03fc126a1749fe002f4")
   ]);
 });
 function urlRegex(line) {
@@ -103,7 +103,7 @@ test("account, weather forecast, file operations, route calculation and adjacent
     assert.deepEqual(run(ownSource, url, {data:[],result:{list:[1]}}), {}, url);
   }
 });
-test("selected scripts are not intercepted by the audited milk V2 Rewrite/Script rules", () => {
+test("selected scripts are not intercepted by the audited milk Rewrite/Script rules", () => {
   const candidateLines = milk.split("\n").filter(l => /^(request|response) if/.test(l));
   const relevant = candidateLines.filter(l => /amap|cyapi|caiyun|pan\\.baidu/.test(l));
   for (const line of relevant) assert.ok(urlRegex(line), "Relevant rule must be examined");

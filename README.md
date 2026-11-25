@@ -17,17 +17,13 @@
 
 新增独立的 [`egern/`](egern/) 目录，维护不含真实凭据的单链、双链 fallback、通用去广告模板及本机私有配置生成工具。AI 候选只包含有机场前置的 Mars 链。已解析用户提供的最新 Quantumult X 导出；当前先验收代理链，通过后仅试点微博、淘宝和哔哩哔哩，再决定扩大去广告。见 [`egern/CHAIN_FIRST.md`](egern/CHAIN_FIRST.md) 和 [`egern/VALIDATION.md`](egern/VALIDATION.md)。
 
-### Mars AI 链路快检（Loon）
+### Loon：奶思基础与家宽单链
 
-按现有 `香港手动策略 → Mars-ISP` 链路提供手动网络检查和入口切换。一次添加插件链接，Loon 获取配套 JS；无定时测速。
+当前公开模板 **2026.11.25-r2**：云梯 + ikuuu 远程订阅 → 亚洲机场自动 → 家宽 SOCKS5，默认仅启用奶思去广告。手机可直接维护机场订阅。旧多链生成器与诊断工具已归档，Shiina 去广告补充按需使用。
 
-- [插件与安装说明](loon/docs/mars-ai-check.md)
-- [一键导入 Loon](https://www.nsloon.com/openloon/import?plugin=https%3A%2F%2Fraw.githubusercontent.com%2FShiinaWong%2Fstash-configs%2Fmain%2Floon%2Fmars-ai-check.plugin)
-- 固定订阅地址：
-
-```text
-https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/mars-ai-check.plugin
-```
+- [Loon 配置入口与说明](loon/README.md)
+- [公开占位模板](loon/mars/Loon_Mars.template.conf)
+- [本次核对与精简记录](loon/docs/naisi-cleanup-20261125.md)
 
 ### Shiina AdBlock Lite（日常推荐）
 

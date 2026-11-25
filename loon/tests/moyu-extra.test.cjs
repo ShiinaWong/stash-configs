@@ -8,7 +8,7 @@ const crypto = require("node:crypto");
 const plugin = fs.readFileSync(path.join(__dirname, "../shiina-adblock-supplement.plugin"), "utf8");
 const source = fs.readFileSync(path.join(__dirname, "../scripts/moyu-extra-clean-v0.5.0.js"), "utf8");
 const sourceURL = "https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js";
-const milkURL = "https://raw.githubusercontent.com/fmz200/wool_scripts/c3f8128dd03c6b3cb35821c347968282cc45b34f/Loon/plugin/blockAdsV2.plugin";
+const milkURL = "https://raw.githubusercontent.com/fmz200/wool_scripts/58f6cce6dbd5c5fe50c2998938f9c2ba631a7c18/Loon/plugin/blockAds.plugin";
 const controls = ["goofish_clean", "mailmaster_clean", "qishui_clean", "tencentdocs_clean", "taopiaopiao_clean", "idaily_clean"];
 let milk;
 before(async () => {
@@ -20,7 +20,7 @@ before(async () => {
     bytes = Buffer.from(await response.arrayBuffer());
   }
   assert.equal(crypto.createHash("sha1").update("blob " + bytes.length + "\0").update(bytes).digest("hex"),
-    "0eeb11f1fe45618966ba3d4a2f7c6d9c86b1ee45");
+    "a699c8de8b6e82be3d46c03fc126a1749fe002f4");
   milk = bytes.toString("utf8");
 });
 function urlRegex(line) {
