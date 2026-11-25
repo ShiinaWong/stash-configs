@@ -5,7 +5,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 const crypto = require("node:crypto");
-const plugin = fs.readFileSync(path.join(__dirname,"../shiina-adblock-supplement.plugin"),"utf8");
+const plugin = fs.readFileSync(path.join(__dirname,"../shiina-adblock-supplement-v0.8.0.plugin"),"utf8");
 const source = fs.readFileSync(path.join(__dirname,"../scripts/moyu-extra-clean-v0.6.0.js"),"utf8");
 const controls = ["unicom_clean","moji_clean","chelaile_clean"];
 let milk;
@@ -22,7 +22,7 @@ before(async () => {
   milk = bytes.toString("utf8");
 });
 function urlRegex(line) {
-  const match=line.match(/\$\{url\} ~= \/((?:\\.|[^\\])*?)\/([ims]*)(?=\s*(?:then|&&|\|\||\)))/);
+  const match=line.match(/\$\{url\} ~= \/((?:\\.|[^\\])*?)\/([ims]*)(?=\s*(?:then|as\s|&&|\|\||\)))/);
   return match ? new RegExp(match[1],match[2]) : null;
 }
 const entries=plugin.split("\n").filter(line=>/^(request|response) if/.test(line) && controls.some(c=>line.includes("${"+c+"}")))
@@ -93,7 +93,7 @@ test("fourth batch has three independent controls, two scripts and nine requests
     }
   }
   const hosts=plugin.match(/^hostname = (.+)$/m)[1].split(", ");
-  assert.equal(hosts.length,39);
+  assert.equal(hosts.length,56);
   assert.equal(new Set(hosts).size,hosts.length);
   assert.deepEqual(hosts.filter(h=>/[?*]/.test(h)),["*.api.moji.com"]);
   for(const u of [...responseSamples,...requestSamples]) {

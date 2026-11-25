@@ -1,0 +1,219 @@
+# 配置版本：2026.11.25-r5（补充插件 v0.8.0）
+# 更新时间：2026-11-25 18:35:20（北京时间）
+# 本次变更：对照 Quantumult，补入 Safari 快捷搜索、Google 中国域名跳转、豆瓣网页净化和网易云三处推广拦截。
+#!name = Shiina 功能补充
+#!desc = v0.8.0｜奶思之外的去广告与网页功能；r5 启用。Safari 快捷搜索需默认搜索引擎设为 DuckDuckGo。各项可独立关闭。
+#!author = ShiinaWong；规则及字段参考：ddgksf2013、rssvcn；微博：ddgksf2013、zmqcherish
+#!homepage = https://github.com/ShiinaWong/stash-configs/tree/main/loon
+#!raw-url = https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-adblock-supplement-v0.8.0.plugin
+#!system = iOS,iPadOS
+#!loon_version = 3.5.1(983)
+#!date = 2026-11-25
+#!tag = 去广告,补充,Shiina
+#!type = normal
+
+# 参考 ddgksf2013/Rewrite/AdBlock/WeiboAds.conf V2.0.114。
+# 直接引用 ddgksf2013/Scripts/weibo_json.js V2.0.142；固定提交以便复核。
+# 不复制原脚本，不引入个人主页、会员皮肤、搜索页整体改造等入口。
+# 相同接口不要同时启用另一份微博专用插件；响应脚本不是串行叠加。
+# 原始抓包、Cookie、Token、个人配置及节点凭据不得提交至公开仓库。
+
+[Argument]
+weibo_intl = switch,true,tag=微博净化脚本与复写,desc=控制本插件微博 Script 和 Rewrite；完整停用（含分流与 MitM）请关闭整个插件
+weibo_intl_feed = switch,true,tag=微博信息流与详情广告,desc=启用墨鱼时间线和卡片过滤及 open_app 详情横幅处理；不再猜测五个广告开关
+
+amap_clean = switch,true,tag=高德页面净化,desc=清理推广与部分推荐和 AI 入口；保留实际路线计算和地图业务接口
+caiyun_clean = switch,true,tag=彩云页面净化,desc=清理首页推广和发现页推荐；保留天气预报及会员信息
+netdisk_clean = switch,true,tag=网盘页面净化,desc=清理广告配置与任务推广；首页精简为文件功能和最近记录
+goofish_clean = switch,true,tag=闲鱼广告补充,desc=补 g-acs 开屏和搜索推广及商品推荐广告；奶思已有的信息流继续由奶思处理
+mailmaster_clean = switch,true,tag=网易邮箱大师推广,desc=清理页面运营推广和任务悬浮入口；保留登录引导及账号信息
+qishui_clean = switch,true,tag=汽水音乐推广,desc=清理广告请求和奖励横幅及热门搜索活动；保留歌曲流与付费接口
+tencentdocs_clean = switch,true,tag=腾讯文档广告,desc=拦截文档服务下的专用广告路径；不修改文档内容
+taopiaopiao_clean = switch,true,tag=淘票票推广,desc=清理广告预加载和横幅及启动弹窗；保留电影推荐和购票功能
+idaily_clean = switch,true,tag=iDaily 系列推广,desc=清理 iDaily 和 iDays 开屏及同系应用交叉推广
+unicom_clean = switch,true,tag=中国联通推广,desc=清理热搜和首页营销背景商城角标及新人推广；保留钱包积分和账户服务
+moji_clean = switch,true,tag=墨迹天气推广,desc=补浮窗商品推广和 banner 区；保留天气工具发现页及短视频；仅匹配 api.moji.com 子域名
+chelaile_clean = switch,true,tag=车来了广告补充,desc=补小程序推广位和详情信息流及 CDN 广告接口；保留公交查询路线规划和原有底栏
+
+wechat_dxm_assets = switch,true,tag=微信通用广告素材,desc=按已知目录拦广告图片及广告视频；可能留文字或占位；普通图片或视频异常时关闭此项对照
+
+# v0.8.0：由 Quantumult 中 ddgksf2013 的公开配置移植；详见 docs/quantum-comparison-20261125.md。
+safari_search = switch,true,tag=Safari 快捷搜索,desc=将 Safari 默认搜索引擎设为 DuckDuckGo；gh 关键词搜索 GitHub、bli 搜索 B站、yt 搜索 YouTube；无指令使用 Google
+google_cn_redirect = switch,true,tag=Google 中国域名跳转,desc=google.cn 和 g.cn 跳转至 www.google.com 并保留路径与查询
+douban_web = switch,true,tag=豆瓣移动网页净化,desc=沿用墨鱼网页脚本；隐藏唤起 App 横幅并清理网页推广
+netease_extra = switch,true,tag=网易云推广补充,desc=仅拦截活动模板、优惠券配置及评论区插入推广三个接口
+
+[Rule]
+# 与 Quantumult 微博配置保持一致：SDK 返回交给脚本处理。
+DOMAIN,sdkapp.uve.weibo.com,DIRECT
+DOMAIN,adstrategy.biz.weibo.com,REJECT
+DOMAIN-SUFFIX,api.touch-moblie.com,REJECT
+
+[Rewrite]
+# 实时开屏、专用广告接口与 SDK 配置；预加载由下方脚本处理。
+request if ${weibo_intl} == true && ${url} ~= /^https?:\/\/(?:bootpreload\.uve|bootrealtime\.uve|boot\.biz)\.weibo\.com\/v\d+\/ad\/realtime(?:\?|$)/ then reject(200)
+request if ${weibo_intl} == true && ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/ad\/(?:preload|weibointl)(?:\?|$)/ then reject_dict(200)
+request if ${weibo_intl} == true && ${url} ~= /^https?:\/\/sdkapp\.uve\.weibo\.com\/interface\/sdk\/sdkconfig\.php(?:\?|$)/ then reject(404)
+
+# 高德：仅补充奶思未处理的推广接口；不接管其 valueadded 开屏拦截。
+request if ${amap_clean} == true && ${url} ~= /^https?:\/\/(?:m5|m5-zb|center|amap-aos-info-nogw|ai)\.amap\.com\/v\d+\/ai_rec\// then reject_dict(200)
+request if ${amap_clean} == true && ${url} ~= /^https?:\/\/(?:m5|m5-zb|center|amap-aos-info-nogw|ai)\.amap\.com\/ws\/(?:faas\/amap-navigation\/card-service-route-plan|shield\/scene\/recommend)\/?(?:\?|$)/ then reject_dict(200)
+request if ${amap_clean} == true && ${url} ~= /^https?:\/\/(?:m5|m5-zb|center|amap-aos-info-nogw|ai)\.amap\.com\/ws\/(?:boss\/order_web\/\w{8}_information|asa\/ads_attribution)\/?(?:\?|$)/ then reject(200)
+# 彩云：活动接口仍由奶思处理，此处仅拦截独立广告服务。
+request if ${caiyun_clean} == true && ${url} ~= /^https?:\/\/ad\.cyapi\.cn\/v\d+(?:\/|\?|$)/ then reject(200)
+# 网盘：只补专用推荐入口；不整段拦截 getconfig、账号或会员接口。
+request if ${netdisk_clean} == true && ${url} ~= /^https?:\/\/pan\.baidu\.com\/(?:feed\/hotlist|queryintent\/queryhint|coins\/center\/notice)\/?(?:\?|$)/ then reject(200)
+request if ${netdisk_clean} == true && ${url} ~= /^https?:\/\/pan\.baidu\.com\/recommend\/shortseries\/list\/?(?:\?|$)/ then reject_dict(200)
+
+# v0.5.0：对照奶思 V2，只补缺少的主机/接口。各项来源与取舍见 docs/naisi-cleanup-20261125.md。
+# 闲鱼：acs 的 splash 已由奶思拦截；不增加 AMDC/HTTPDNS 处理。
+request if ${goofish_clean} == true && ${url} ~= /^https?:\/\/g-acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idlecommerce\.splash\.ads(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ then reject(200)
+request if ${goofish_clean} == true && ${url} ~= /^https?:\/\/(?:g-)?acs\.m\.goofish\.com\/gw\/mtop\.idle\.ad\.expose(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ then reject(200)
+# 邮箱：仅任务推广/悬浮图标，登录配置与 user/info 保持原状。
+request if ${mailmaster_clean} == true && ${url} ~= /^https?:\/\/dashi\.163\.com\/task-center-api\/fapi\/task(?:\/|\?|$)/ then reject_dict(200)
+request if ${mailmaster_clean} == true && ${url} ~= /^https?:\/\/appconf\.mail\.163\.com\/mailmaster\/api\/config\/function\.do(?:\?|$)/ then reject_dict(200)
+# 汽水：使用两个明确的业务主机；不拦截 commerce、位置服务或 TNC。
+request if ${qishui_clean} == true && ${url} ~= /^https?:\/\/(?:beta-luna\.douyin\.com|api\.qishui\.com)\/luna\/(?:media_ads|ads)(?:\/|\?|$)/ then reject(200)
+# 腾讯文档：限定 URL 路径，查询参数里出现 /ad/ 不应误伤正常文档。
+request if ${tencentdocs_clean} == true && ${url} ~= /^https?:\/\/docs\.qq\.com\/(?:(?:[^\/?#]+\/)+ad\/|api\/advertise\/)/ then reject(404)
+# iDaily 系列：保留正文接口，仅采用作者列出的广告路径。
+request if ${idaily_clean} == true && ${url} ~= /^https?:\/\/idaily-cdn\.idailycdn\.com\/api\/intro(?:\/|\?|$)/ then reject(200)
+request if ${idaily_clean} == true && ${url} ~= /^https?:\/\/icity-pres\.2q10\.com\/api\/v\d+\/idly\/common\/launching\/?(?:\?|$)/ then reject(200)
+request if ${idaily_clean} == true && ${url} ~= /^https?:\/\/idaily-cdn\.idailycdn\.com\/app\/idaily_portable\/honored\/?(?:\?|$)/ then reject(200)
+request if ${idaily_clean} == true && ${url} ~= /^https?:\/\/app-cdn\.2q10\.com\/app\/idays\/popups\/?(?:\?|$)/ then reject(200)
+request if ${idaily_clean} == true && ${url} ~= /^https?:\/\/idays-cdn\.2q10\.com\/app\/idays\/app_ad\/?(?:\?|$)/ then reject(200)
+
+# v0.6.0：保留联通账户/钱包/积分和客服接口，仅拦截明确的新人优惠推广。
+request if ${unicom_clean} == true && ${url} ~= /^https?:\/\/m\.client\.10010\.com\/clientIndex\/api\/v1\/index\/queryIndexExclusiveOffers\/?(?:\?|$)/ then reject(404)
+# 墨迹：按作者 API 子域名范围补缺，排除奶思已拒绝的 me/ad/fds；不处理 TNC 或整页内容。
+request if ${moji_clean} == true && ${url} ~= /^https?:\/\/(?![^\/?#]*me\.api\.moji\.com)(?!(?:ad|(?:[a-z0-9-]+\.)*fds)\.api\.moji\.com\/)(?:[a-z0-9-]+\.)+api\.moji\.com\/flycard\/flyCard(?:\/|\?|$)/ then reject(200)
+request if ${moji_clean} == true && ${url} ~= /^https?:\/\/(?![^\/?#]*me\.api\.moji\.com)(?!(?:ad|(?:[a-z0-9-]+\.)*fds)\.api\.moji\.com\/)(?:[a-z0-9-]+\.)+api\.moji\.com\/json\/advertising_goods(?:\/|\?|$)/ then reject(200)
+# 车来了：不重复奶思 api/adpub、web/api/adpub/ad 和 atrace 域名拒绝，也不接管共享 IP。
+request if ${chelaile_clean} == true && ${url} ~= /^https?:\/\/(?:(?:cdn\.)?(?:api|web))\.chelaile\.net\.cn\/goocity\/flowPos\/listByPos\/?(?:\?|$)/ then reject(404)
+request if ${chelaile_clean} == true && ${url} ~= /^https?:\/\/cdn\.web\.chelaile\.net\.cn\/info-flow\/index\.html(?:\?|$)/ then reject(200)
+request if ${chelaile_clean} == true && ${url} ~= /^https?:\/\/cdn\.(?:api|web)\.chelaile\.net\.cn\/(?:api\/)?adpub(?:\/|\?|$)/ then reject(200)
+request if ${chelaile_clean} == true && ${url} ~= /^https?:\/\/web\.chelaile\.net\.cn\/adpub(?:\/|\?|$)/ then reject(200)
+request if ${chelaile_clean} == true && ${url} ~= /^https?:\/\/api\.chelaile\.net\.cn\/api\/adpub(?:\/|\?|$)/ then reject(200)
+request if ${chelaile_clean} == true && ${url} ~= /^https?:\/\/web\.chelaile\.net\.cn\/api\/operative_position\/infoflow\/?(?:\?|$)/ then reject(200)
+
+# v0.7.0 微信：使用已观察到的素材目录，不再固定度小满素材 ID。
+# 保留 wechat_dxm_assets 参数名以继承已保存的开关；没有整域名拒绝。
+# 图片路径参考公开过滤器并收窄到 wximg；它是路径归纳，无法保证未来同目录无业务资源。
+request if ${wechat_dxm_assets} == true && ${url} ~= /^https?:\/\/wximg\.wxs\.qq\.com\/\d+\/\d+\/snscosdownload\/(?:SH|SZ)\/reserved\/[A-Za-z0-9_-]+(?:\.(?:jpe?g|png|webp|gif|avif))?(?:\?|$)/ then reject_img(200)
+# 视频要求 ads_svp_video__ 文件名前缀；不处理普通视频路径或整段微信通信。
+request if ${wechat_dxm_assets} == true && ${url} ~= /^https?:\/\/wxsmw\.wxs\.qq\.com\/\d+\/\d+\/snssvpdownload\/(?:SH|SZ)\/reserved\/ads_svp_video__[A-Za-z0-9_.-]+\.mp4(?:\?|$)/ then reject_video(200)
+
+# v0.8.0：Safari 快捷搜索，参考 ddgksf2013/Rewrite/Html/Q-Search.conf。
+# 保留关键词前后缀用法；支持空格的 + / %20 编码和任意参数顺序；仅匹配 GET 搜索请求。
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=zh(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.zhihu.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=yd(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://dict.youdao.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=trc(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://translate.google.com/#view=home&op=translate&sl=auto&tl=zh-CN&text=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=tre(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://translate.google.com/#view=home&op=translate&sl=auto&tl=en&text=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=trj(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://translate.google.com/#view=home&op=translate&sl=auto&tl=ja&text=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=tt(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://so.toutiao.com/search?keyword=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=db(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://m.douban.com/search?query=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=wb(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://s.weibo.com/weibo/${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=wx(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://weixin.sogou.com/weixinwap?query=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=up(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://unsplash.com/s/photos/${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=sspai(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://sspai.com/search/post/${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=ssp(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.google.com/search?as_q=${search.1}&as_sitesearch=sspai.com")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=tw(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://twitter.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=gh(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://github.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=gu(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://github.com/search?q=${search.1}&type=users")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=gc(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://github.com/search?o=desc&q=${search.1}&s=indexed&type=Code")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=so(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://stackoverflow.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=se(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://stackexchange.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=wa(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.wolframalpha.com/input/?i=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=rd(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.reddit.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=zdm(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://search.m.smzdm.com/?v=b&s=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=yt(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.youtube.com/results?search_query=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=bli(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://m.bilibili.com/search?keyword=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=gd(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.google.com/search?q=%22Google+Drive%22+${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=af(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.acfun.cn/search?keyword=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=bd(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.baidu.com/s?wd=${search.1}%20-adclear")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=wk(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://zh.wikipedia.org/wiki/${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=wz(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.wuzhuiso.com/s?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=yh(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://greasyfork.org/zh-CN/scripts?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=gi(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.google.com/search?&tbm=isch&q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=by(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.bing.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=ios(?:\+|%20)([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.qimai.cn/search/index/search/${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)zh(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.zhihu.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)yd(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://dict.youdao.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)trc(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://translate.google.com/#view=home&op=translate&sl=auto&tl=zh-CN&text=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)tre(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://translate.google.com/#view=home&op=translate&sl=auto&tl=en&text=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)trj(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://translate.google.com/#view=home&op=translate&sl=auto&tl=ja&text=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)tt(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://so.toutiao.com/search?keyword=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)db(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://m.douban.com/search?query=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)wb(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://s.weibo.com/weibo/${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)wx(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://weixin.sogou.com/weixinwap?query=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)up(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://unsplash.com/s/photos/${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)sspai(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://sspai.com/search/post/${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)ssp(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.google.com/search?as_q=${search.1}&as_sitesearch=sspai.com")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)tw(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://twitter.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)gh(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://github.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)gu(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://github.com/search?q=${search.1}&type=users")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)gc(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://github.com/search?o=desc&q=${search.1}&s=indexed&type=Code")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)so(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://stackoverflow.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)se(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://stackexchange.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)wa(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.wolframalpha.com/input/?i=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)rd(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.reddit.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)zdm(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://search.m.smzdm.com/?v=b&s=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)yt(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.youtube.com/results?search_query=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)bli(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://m.bilibili.com/search?keyword=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)gd(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.google.com/search?q=%22Google+Drive%22+${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)af(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.acfun.cn/search?keyword=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)bd(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.baidu.com/s?wd=${search.1}%20-adclear")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)wk(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://zh.wikipedia.org/wiki/${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)wz(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.wuzhuiso.com/s?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)yh(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://greasyfork.org/zh-CN/scripts?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)gi(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.google.com/search?&tbm=isch&q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)by(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.bing.com/search?q=${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:\+|%20)ios(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.qimai.cn/search/index/search/${search.1}")
+request if ${safari_search} == true && ${request.method} == "GET" && ${url} ~= /^https:\/\/duckduckgo\.com\/\?(?:[^&#\r\n]*&)*q=([^&#\r\n]+)(?:&[^#\r\n]*)?$/ as search then redirect(302, "https://www.google.com/search?q=${search.1}")
+
+# Google 中国域名跳转；保留路径和参数，MITM 只加入中国域名。
+request if ${google_cn_redirect} == true && ${request.method} == "GET" && ${url} ~= /^https?:\/\/(?:www\.)?(?:google|g)\.cn((?:[\/?][^#\r\n]*)?)$/ as google then redirect(302, "https://www.google.com${google.1}")
+
+# 网易云：沿用墨鱼的 reject-200；路径严格收口，保留播放、账号和会员购买。
+request if ${netease_extra} == true && ${url} ~= /^https?:\/\/interface\d?\.music\.163\.com\/e?api\/content\/activity\/music\/jar\/template\/list\/?(?:\?|$)/ then reject(200)
+request if ${netease_extra} == true && ${url} ~= /^https?:\/\/interface\d?\.music\.163\.com\/e?api\/vipmall\/couponcfg\/get\/?(?:\?|$)/ then reject(200)
+request if ${netease_extra} == true && ${url} ~= /^https?:\/\/interface\d?\.music\.163\.com\/e?api\/comment\/feed\/inserted\/resources\/?(?:\?|$)/ then reject(200)
+
+[Script]
+# 开屏保留广告 ID，调整展示日期、时长与次数；get_coopen_ads 返回 data={display_ad:1}。
+# SDK PHP 保留原脚本的 OK 后缀；open_app 的 a 参数需位于首位，与当前抓包一致。
+# 时间线、卡片沿用上游广告与推荐元素过滤；不再使用 v0.2.0 的五个字段推测。
+response if ${url} ~= /^https?:\/\/(?:bootpreload\.uve|bootrealtime\.uve|boot\.biz)\.weibo\.com\/v\d+\/ad\/preload(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼开屏"
+response if ${url} ~= /^https?:\/\/weibointl\.api\.weibo\.c(?:n|om)\/portal\.php\?(?:[^&#]*&)*a=get_coopen_ads(?:&|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼广告配置"
+response if ${url} ~= /^https?:\/\/(?:sdkapp\.uve\.weibo\.com\/interface\/sdk\/sdkad\.php|wbapp\.uve\.weibo\.com\/wbapplua\/wbpullad\.lua)(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼SDK"
+response if ${url} ~= /^https?:\/\/weibointl\.api\.weibo\.cn\/portal\.php\?a=open_app(?:&|$)/ && ${response.status} == 200 && ${weibo_intl_feed} == true then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼详情横幅"
+response if ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/(?:statuses\/(?:friends\/timeline|friends_timeline|unread_friends_timeline|unread_hot_timeline)|groups\/timeline)(?:\?|$)/ && ${response.status} == 200 && ${weibo_intl_feed} == true then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼时间线"
+response if ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/cardlist(?:\?|$)/ && ${response.status} == 200 && ${weibo_intl_feed} == true then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼卡片"
+response if ${url} ~= /^https?:\/\/m?api\.weibo\.c(?:n|om)\/\d+\/statuses\/(?:container_timeline|container_timeline_topic|video_mixtimeline)(?:\?|$)/ && ${response.status} == 200 && ${weibo_intl_feed} == true then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js") with enable=${weibo_intl}, requires_body=true, timeout=10, tag="Shiina-微博-墨鱼新版信息流"
+
+# 高德仅使用已审阅的 QX 同源脚本；主机范围与原 QX MitM 列表一致。
+response if ${url} ~= /^https?:\/\/(?:m5|m5-zb|center|amap-aos-info-nogw|ai)\.amap\.com\/ws\/(?:message\/notice\/list|shield\/frogserver\/aocs\/updatable|shield\/search\/nearbyrec_smart|promotion-web\/resource|faas\/amap-navigation\/main-page|msgbox\/pull|shield\/dsp\/profile\/index\/nodefaas|shield\/search\/new_hotword)\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/amap.js") with enable=${amap_clean}, requires_body=true, timeout=10, tag="Shiina-高德-墨鱼页面净化"
+# 彩云和网盘参考 QX 广告处理；保留响应封装，不使用原脚本会员修改或固定推广内容。
+response if ${url} ~= /^https?:\/\/starplucker\.cyapi\.cn\/v\d+\/(?:operation\/(?:homefeatures|banners|features|feeds)|notification\/message_center|config\/cypage|campaigns)\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/qx-extra-clean-v0.4.0.js") with enable=${caiyun_clean}, requires_body=true, timeout=10, tag="Shiina-彩云-页面推广"
+response if ${url} ~= /^https?:\/\/pan\.baidu\.com\/(?:api\/getsyscfg|feed\/cardinfos|api\/taskscore\/tasklist)\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/qx-extra-clean-v0.4.0.js") with enable=${netdisk_clean}, requires_body=true, timeout=10, tag="Shiina-网盘-页面推广"
+
+# 闲鱼缺口：只补 g-acs 上奶思没有处理的四类接口；recommend.list 留给奶思。
+response if ${url} ~= /^https?:\/\/g-acs\.m\.goofish\.com\/gw\/mtop\.taobao\.(?:idle\.user\.strategy\.list|idlemtopsearch\.(?:search\.(?:shade|discover)|item\.search\.activate))(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${goofish_clean}, requires_body=true, timeout=10, tag="Shiina-闲鱼-搜索与悬浮推广"
+response if ${url} ~= /^https?:\/\/(?:g-)?acs\.m\.goofish\.com\/gw\/mtop\.taobao\.idle\.item\.recommend(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${goofish_clean}, requires_body=true, timeout=10, tag="Shiina-闲鱼-商品推荐广告"
+# 邮箱保留登录引导和扩展配置；汽水不按 track 白名单清空其他音乐内容。
+response if ${url} ~= /^https?:\/\/appconf\.mail\.163\.com\/mailmaster\/api\/page\/[^?#]*conf\.do(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${mailmaster_clean}, requires_body=true, timeout=10, tag="Shiina-邮箱大师-页面推广"
+response if ${url} ~= /^https?:\/\/(?:beta-luna\.douyin\.com|api\.qishui\.com)\/luna\/(?:me|search-block|activities)\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${qishui_clean}, requires_body=true, timeout=10, tag="Shiina-汽水音乐-页面推广"
+# 淘票票不重复处理奶思的 queryloadingbanner；保留首页猜你喜欢和搜索配置。
+response if ${url} ~= /^https?:\/\/acs\.m\.taobao\.com\/gw\/mtop\.film\.(?:independentadvertiseapi\.querypreloadadvertise|mtop(?:independent|item)advertiseapi\.queryadvertise|life\.(?:aristotle|popup)\.get)(?:\/\d+(?:\.\d+)*)?\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${taopiaopiao_clean}, requires_body=true, timeout=10, tag="Shiina-淘票票-推广补充"
+response if ${url} ~= /^https?:\/\/app-cdn\.2q10\.com\/app\/\w+\/honored\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js") with enable=${idaily_clean}, requires_body=true, timeout=10, tag="Shiina-iDaily-交叉推广"
+
+# 中国联通仅改作者明确列出的营销字段，不清空我的页或任何业务账户信息。
+response if ${url} ~= /^https?:\/\/m\.client\.10010\.com\/(?:search_service\/search\/searchScrollWord|clientIndex\/homefusion\/fuInter)\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.6.0.js") with enable=${unicom_clean}, requires_body=true, timeout=10, tag="Shiina-中国联通-营销补充"
+# 墨迹只过滤 banner 区；保留作者原规则还会删除的工具区、我页面灯泡及未知区域。
+response if ${url} ~= /^https?:\/\/(?![^\/?#]*me\.api\.moji\.com)(?!(?:ad|(?:[a-z0-9-]+\.)*fds)\.api\.moji\.com\/)(?:[a-z0-9-]+\.)+api\.moji\.com\/json\/entrance\/list\/?(?:\?|$)/ && ${response.status} == 200 then script("https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.6.0.js") with enable=${moji_clean}, requires_body=true, timeout=10, tag="Shiina-墨迹天气-横幅补充"
+
+# 豆瓣：原作者固定提交，限定移动网页和成功的 HTML 响应。
+response if ${url} ~= /^https?:\/\/m\.douban\.com\/(?:home_guide|movie|tv|book|group|music)(?:\/|\?|$)/ && ${response.status} == 200 && ${response.header['Content-Type']} ~= /^text\/html(?:\s*;|$)/i then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/203e38b7b8dd1082ececbd17de3aeb587ac2826c/douban.js") with enable=${douban_web}, requires_body=true, timeout=10, tag="Shiina-豆瓣-网页净化"
+
+[Mitm]
+hostname = bootpreload.uve.weibo.com, bootrealtime.uve.weibo.com, boot.biz.weibo.com, weibointl.api.weibo.cn, weibointl.api.weibo.com, sdkapp.uve.weibo.com, wbapp.uve.weibo.com, api.weibo.cn, api.weibo.com, mapi.weibo.cn, mapi.weibo.com, m5.amap.com, m5-zb.amap.com, center.amap.com, amap-aos-info-nogw.amap.com, ai.amap.com, starplucker.cyapi.cn, ad.cyapi.cn, pan.baidu.com, acs.m.goofish.com, g-acs.m.goofish.com, dashi.163.com, appconf.mail.163.com, beta-luna.douyin.com, api.qishui.com, docs.qq.com, acs.m.taobao.com, app-cdn.2q10.com, idaily-cdn.idailycdn.com, icity-pres.2q10.com, idays-cdn.2q10.com, m.client.10010.com, *.api.moji.com, web.chelaile.net.cn, api.chelaile.net.cn, cdn.api.chelaile.net.cn, cdn.web.chelaile.net.cn, wximg.wxs.qq.com, wxsmw.wxs.qq.com, duckduckgo.com, google.cn, www.google.cn, g.cn, www.g.cn, m.douban.com, interface.music.163.com, interface0.music.163.com, interface1.music.163.com, interface2.music.163.com, interface3.music.163.com, interface4.music.163.com, interface5.music.163.com, interface6.music.163.com, interface7.music.163.com, interface8.music.163.com, interface9.music.163.com

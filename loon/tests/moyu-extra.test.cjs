@@ -5,7 +5,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 const crypto = require("node:crypto");
-const plugin = fs.readFileSync(path.join(__dirname, "../shiina-adblock-supplement.plugin"), "utf8");
+const plugin = fs.readFileSync(path.join(__dirname, "../shiina-adblock-supplement-v0.8.0.plugin"), "utf8");
 const source = fs.readFileSync(path.join(__dirname, "../scripts/moyu-extra-clean-v0.5.0.js"), "utf8");
 const sourceURL = "https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/scripts/moyu-extra-clean-v0.5.0.js";
 const milkURL = "https://raw.githubusercontent.com/fmz200/wool_scripts/58f6cce6dbd5c5fe50c2998938f9c2ba631a7c18/Loon/plugin/blockAds.plugin";
@@ -24,7 +24,7 @@ before(async () => {
   milk = bytes.toString("utf8");
 });
 function urlRegex(line) {
-  const match = line.match(/\$\{url\} ~= \/((?:\\.|[^\\])*?)\/([ims]*)(?=\s*(?:then|&&|\|\||\)))/);
+  const match = line.match(/\$\{url\} ~= \/((?:\\.|[^\\])*?)\/([ims]*)(?=\s*(?:then|as\s|&&|\|\||\)))/);
   return match ? new RegExp(match[1], match[2]) : null;
 }
 const entries = plugin.split("\n").filter(line => /^(request|response) if/.test(line) &&
@@ -130,7 +130,8 @@ test("v0.5 adds six independent switches, precise MitM and versioned scripts", (
   }
   const hosts = plugin.match(/^hostname = (.+)$/m)[1].split(", ");
   const fourthBatch = new Set(["m.client.10010.com", "*.api.moji.com", "web.chelaile.net.cn", "api.chelaile.net.cn", "cdn.api.chelaile.net.cn", "cdn.web.chelaile.net.cn", "wximg.wxs.qq.com", "wxsmw.wxs.qq.com"]);
-  assert.equal(hosts.filter(host => !fourthBatch.has(host)).length,31);
+  const quantumHosts = new Set(["duckduckgo.com", "google.cn", "www.google.cn", "g.cn", "www.g.cn", "m.douban.com", "interface.music.163.com", "interface0.music.163.com", "interface1.music.163.com", "interface2.music.163.com", "interface3.music.163.com", "interface4.music.163.com", "interface5.music.163.com", "interface6.music.163.com", "interface7.music.163.com", "interface8.music.163.com", "interface9.music.163.com"]);
+  assert.equal(hosts.filter(host => !fourthBatch.has(host) && !quantumHosts.has(host)).length,31);
   assert.equal(new Set(hosts).size,hosts.length);
   assert.ok(hosts.every(host => host === "*.api.moji.com" || /^[a-z0-9.-]+$/.test(host)));
   for (const url of [...responseSamples,...requestSamples]) assert.ok(hosts.includes(new URL(url).hostname),url);

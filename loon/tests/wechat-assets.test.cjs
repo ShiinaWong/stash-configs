@@ -4,11 +4,11 @@ const assert=require("node:assert/strict");
 const fs=require("node:fs");
 const path=require("node:path");
 const crypto=require("node:crypto");
-const plugin=fs.readFileSync(path.join(__dirname,"../shiina-adblock-supplement.plugin"),"utf8");
+const plugin=fs.readFileSync(path.join(__dirname,"../shiina-adblock-supplement-v0.8.0.plugin"),"utf8");
 const control="wechat_dxm_assets"; // Keep v0.6 saved switch preferences.
 const lines=plugin.split("\n").filter(l=>/^request if/.test(l)&&l.includes("${"+control+"}"));
 function urlRegex(line){
-  const m=line.match(/\$\{url\} ~= \/((?:\\.|[^\\])*?)\/([ims]*)(?=\s*(?:then|&&|\|\||\)))/);
+  const m=line.match(/\$\{url\} ~= \/((?:\\.|[^\\])*?)\/([ims]*)(?=\s*(?:then|as\s|&&|\|\||\)))/);
   return m?new RegExp(m[1],m[2]):null;
 }
 const entries=lines.map(line=>({line,re:urlRegex(line),action:line.split(" then ")[1]}));

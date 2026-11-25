@@ -5,7 +5,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 const crypto = require("node:crypto");
-const plugin = fs.readFileSync(path.join(__dirname, "../shiina-adblock-supplement.plugin"), "utf8");
+const plugin = fs.readFileSync(path.join(__dirname, "../shiina-adblock-supplement-v0.8.0.plugin"), "utf8");
 const ownSource = fs.readFileSync(path.join(__dirname, "../scripts/qx-extra-clean-v0.4.0.js"), "utf8");
 const amapURL = "https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/amap.js";
 const milkURL = "https://raw.githubusercontent.com/fmz200/wool_scripts/58f6cce6dbd5c5fe50c2998938f9c2ba631a7c18/Loon/plugin/blockAds.plugin";
@@ -28,7 +28,7 @@ before(async () => {
   ]);
 });
 function urlRegex(line) {
-  const match = line.match(/\$\{url\} ~= \/((?:\\.|[^\\])*?)\/([ims]*)(?=\s*(?:then|&&|\|\||\)))/);
+  const match = line.match(/\$\{url\} ~= \/((?:\\.|[^\\])*?)\/([ims]*)(?=\s*(?:then|as\s|&&|\|\||\)))/);
   return match ? new RegExp(match[1], match[2]) : null;
 }
 const newLines = plugin.split("\n").filter(line => /^(request|response) if/.test(line) && /\$\{(?:amap_clean|caiyun_clean|netdisk_clean)\}/.test(line));

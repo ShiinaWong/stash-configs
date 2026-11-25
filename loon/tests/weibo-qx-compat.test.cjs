@@ -5,7 +5,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 const crypto = require("node:crypto");
-const plugin = fs.readFileSync(path.join(__dirname, "../shiina-adblock-supplement.plugin"), "utf8");
+const plugin = fs.readFileSync(path.join(__dirname, "../shiina-adblock-supplement-v0.8.0.plugin"), "utf8");
 const upstreamURL = "https://raw.githubusercontent.com/ddgksf2013/Scripts/0cddbb6bc31344315afba773ebb4e7ce29f7fd8f/weibo_json.js";
 const expectedBlob = "2e2fcb24a34b6b60ea9b23c1af049947660e0061";
 let source;
