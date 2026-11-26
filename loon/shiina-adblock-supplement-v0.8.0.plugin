@@ -1,14 +1,14 @@
-# 插件版本：v0.8.1
-# 更新时间：2026-11-25 23:06:49（北京时间）
-# 本次变更：补充哔咔弹窗与横幅广告域名拦截。
+# 插件版本：v0.8.2
+# 更新时间：2026-11-26 09:04:14（北京时间）
+# 本次变更：微信文章模板中隐藏文末广告容器；保留原有素材拦截与哔咔规则。
 #!name = Shiina 功能补充
-#!desc = v0.8.1｜奶思之外的去广告与网页功能；新增哔咔广告拦截。Safari 快捷搜索需默认搜索引擎设为 DuckDuckGo。
+#!desc = v0.8.2｜奶思之外的去广告与网页功能；新增微信文末广告开关。Safari 快捷搜索需默认搜索引擎设为 DuckDuckGo。
 #!author = ShiinaWong；规则及字段参考：ddgksf2013、rssvcn；微博：ddgksf2013、zmqcherish
 #!homepage = https://github.com/ShiinaWong/stash-configs/tree/main/loon
 #!raw-url = https://raw.githubusercontent.com/ShiinaWong/stash-configs/main/loon/shiina-adblock-supplement-v0.8.0.plugin
 #!system = iOS,iPadOS
 #!loon_version = 3.5.1(983)
-#!date = 2026-11-25
+#!date = 2026-11-26
 #!tag = 去广告,补充,Shiina
 #!type = normal
 
@@ -36,6 +36,7 @@ moji_clean = switch,true,tag=墨迹天气推广,desc=补浮窗商品推广和 ba
 chelaile_clean = switch,true,tag=车来了广告补充,desc=补小程序推广位和详情信息流及 CDN 广告接口；保留公交查询路线规划和原有底栏
 
 wechat_dxm_assets = switch,true,tag=微信通用广告素材,desc=按已知目录拦广告图片及广告视频；可能留文字或占位；普通图片或视频异常时关闭此项对照
+wechat_article_bottom_ad = switch,true,tag=微信文章文末广告,desc=仅隐藏指定微信网页模板中的广告容器；可关闭对照；有可能保留外层空位
 
 # v0.8.0：由 Quantumult 中 ddgksf2013 的公开配置移植；详见 docs/quantum-comparison-20261125.md。
 safari_search = switch,true,tag=Safari 快捷搜索,desc=将 Safari 默认搜索引擎设为 DuckDuckGo；gh 关键词搜索 GitHub、bli 搜索 B站、yt 搜索 YouTube；无指令使用 Google
@@ -105,6 +106,9 @@ request if ${chelaile_clean} == true && ${url} ~= /^https?:\/\/web\.chelaile\.ne
 request if ${wechat_dxm_assets} == true && ${url} ~= /^https?:\/\/wximg\.wxs\.qq\.com\/\d+\/\d+\/snscosdownload\/(?:SH|SZ)\/reserved\/[A-Za-z0-9_-]+(?:\.(?:jpe?g|png|webp|gif|avif))?(?:\?|$)/ then reject_img(200)
 # 视频要求 ads_svp_video__ 文件名前缀；不处理普通视频路径或整段微信通信。
 request if ${wechat_dxm_assets} == true && ${url} ~= /^https?:\/\/wxsmw\.wxs\.qq\.com\/\d+\/\d+\/snssvpdownload\/(?:SH|SZ)\/reserved\/ads_svp_video__[A-Za-z0-9_.-]+\.mp4(?:\?|$)/ then reject_video(200)
+
+# 微信公众号文末广告：只改抓包确认的模板，隐藏动态创建的广告容器，不改正文、评论及业务 API。
+response if ${wechat_article_bottom_ad} == true && ${url} ~= /^https:\/\/wxa\.wxs\.qq\.com\/tmpl\/qh\/base_tmpl\.html(?:\?|$)/i then response.body.replace(/<\/head>/i, "<style>#ad_container{display:none!important}</style></head>")
 
 # v0.8.0：Safari 快捷搜索，参考 ddgksf2013/Rewrite/Html/Q-Search.conf。
 # 保留关键词前后缀用法；支持空格的 + / %20 编码和任意参数顺序；仅匹配 GET 搜索请求。
@@ -219,4 +223,4 @@ response if ${url} ~= /^https?:\/\/(?![^\/?#]*me\.api\.moji\.com)(?!(?:ad|(?:[a-
 response if ${url} ~= /^https?:\/\/m\.douban\.com\/(?:home_guide|movie|tv|book|group|music)(?:\/|\?|$)/ && ${response.status} == 200 && ${response.header['Content-Type']} ~= /^text\/html(?:\s*;|$)/i then script("https://raw.githubusercontent.com/ddgksf2013/Scripts/203e38b7b8dd1082ececbd17de3aeb587ac2826c/douban.js") with enable=${douban_web}, requires_body=true, timeout=10, tag="Shiina-豆瓣-网页净化"
 
 [Mitm]
-hostname = bootpreload.uve.weibo.com, bootrealtime.uve.weibo.com, boot.biz.weibo.com, weibointl.api.weibo.cn, weibointl.api.weibo.com, sdkapp.uve.weibo.com, wbapp.uve.weibo.com, api.weibo.cn, api.weibo.com, mapi.weibo.cn, mapi.weibo.com, m5.amap.com, m5-zb.amap.com, center.amap.com, amap-aos-info-nogw.amap.com, ai.amap.com, starplucker.cyapi.cn, ad.cyapi.cn, pan.baidu.com, acs.m.goofish.com, g-acs.m.goofish.com, dashi.163.com, appconf.mail.163.com, beta-luna.douyin.com, api.qishui.com, docs.qq.com, acs.m.taobao.com, app-cdn.2q10.com, idaily-cdn.idailycdn.com, icity-pres.2q10.com, idays-cdn.2q10.com, m.client.10010.com, *.api.moji.com, web.chelaile.net.cn, api.chelaile.net.cn, cdn.api.chelaile.net.cn, cdn.web.chelaile.net.cn, wximg.wxs.qq.com, wxsmw.wxs.qq.com, duckduckgo.com, google.cn, www.google.cn, g.cn, www.g.cn, m.douban.com, interface.music.163.com, interface0.music.163.com, interface1.music.163.com, interface2.music.163.com, interface3.music.163.com, interface4.music.163.com, interface5.music.163.com, interface6.music.163.com, interface7.music.163.com, interface8.music.163.com, interface9.music.163.com
+hostname = bootpreload.uve.weibo.com, bootrealtime.uve.weibo.com, boot.biz.weibo.com, weibointl.api.weibo.cn, weibointl.api.weibo.com, sdkapp.uve.weibo.com, wbapp.uve.weibo.com, api.weibo.cn, api.weibo.com, mapi.weibo.cn, mapi.weibo.com, m5.amap.com, m5-zb.amap.com, center.amap.com, amap-aos-info-nogw.amap.com, ai.amap.com, starplucker.cyapi.cn, ad.cyapi.cn, pan.baidu.com, acs.m.goofish.com, g-acs.m.goofish.com, dashi.163.com, appconf.mail.163.com, beta-luna.douyin.com, api.qishui.com, docs.qq.com, acs.m.taobao.com, app-cdn.2q10.com, idaily-cdn.idailycdn.com, icity-pres.2q10.com, idays-cdn.2q10.com, m.client.10010.com, *.api.moji.com, web.chelaile.net.cn, api.chelaile.net.cn, cdn.api.chelaile.net.cn, cdn.web.chelaile.net.cn, wximg.wxs.qq.com, wxsmw.wxs.qq.com, wxa.wxs.qq.com, duckduckgo.com, google.cn, www.google.cn, g.cn, www.g.cn, m.douban.com, interface.music.163.com, interface0.music.163.com, interface1.music.163.com, interface2.music.163.com, interface3.music.163.com, interface4.music.163.com, interface5.music.163.com, interface6.music.163.com, interface7.music.163.com, interface8.music.163.com, interface9.music.163.com
