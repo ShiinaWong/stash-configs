@@ -1,0 +1,44 @@
+#!name = Shiina 本机回环 v0.1.0
+#!desc = 为 StikDebug、SideStore 等提供 10.7.0.1 本机回环。需要 Loon Build 1007+；启用后重连 Loon。兼容设置会关闭 TUN 的 IPv6 地址。v0.1.0 待真机验证。
+#!author = shiina
+#!system = iOS,iPadOS
+#!loon_version = 3.5.3(1007)
+#!date = 2026-11-28
+#!tag = 工具,本机回环,JIT
+#!type = normal
+
+# 版本：0.1.0（2026-11-28）
+# 用途：通过 Loon 的 IP Rewrite / reflect 提供 LocalDevVPN 所用的 IPv4 回环机制。
+# 验证状态：依据 Loon 官方文档制作，已静态核对；尚未在用户 iPhone 上实测。
+#
+# 使用：
+# 1. 确认 Loon 的构建号至少为 1007，将本文件导入为插件并启用。
+# 2. 断开 LocalDevVPN 或旧 SideStore WireGuard 隧道，连接 Wi-Fi。
+# 3. 断开并重新连接 Loon，使 TUN 设置生效。
+# 4. 打开已导入有效配对文件的 StikDebug，尝试连接设备并启用 JIT。
+# 5. 若调试工具允许手动指定设备端点，目标地址使用 10.7.0.1。
+#
+# 插件提供设备连接通道；配对、调试服务和 JIT 操作由 StikDebug 等应用完成。
+# 使用 TUN Only 或 HTTP Proxy & TUN 模式；IP Rewrite 处理进入 TUN 的 IP 数据包。
+# 命中 10.7.0.1 后在本机回送，其他目的地址继续使用原有处理流程。
+# ipv6-vif = off 会影响整个 Loon TUN 的 IPv6 地址配置。
+# 恢复：关闭本插件并重连 Loon；最终路由和 IPv6 VIF 模式由剩余配置决定。
+#
+# 排查：
+# - 查看 Loon 是否成功解析本插件，确认构建号满足要求。
+# - 检查靠前的其他插件是否对 10.7.0.1 声明了 reject/drop 等 IP Rewrite。
+# - 若工具自动检测到了其他设备端点，记录显示地址与完整错误供后续分析。
+# - 回环在常规规则、HTTP 脚本和 MitM 之前处理，普通 HTTP 抓包可能看不到它。
+#
+# 依据（核对日期 2026-11-28）：
+# https://nsloon.app/docs/Plugin/
+# https://nsloon.app/docs/General/
+# https://github.com/jkcoxson/LocalDevVPN/blob/main/TunnelProv/PacketTunnelProvider.swift
+# https://github.com/StikDebug/StikDebug
+
+[General]
+include-tun = 10.7.0.1/32
+ipv6-vif = off
+
+[IP Rewrite]
+10.7.0.1 = reflect
